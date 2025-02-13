@@ -43,6 +43,7 @@ export class UserDashboardComponent implements AfterViewInit {
   ngOnInit() {
 
     if (localStorage.getItem('userLoggedIn')!= 'true'){
+      console.log("checked url: " + localStorage.getItem('userLoggedIn'));
       this.router.navigate(['/user-login']);
     }
   }
