@@ -37,7 +37,7 @@
                       </tr>
                     </thead>
                     <tbody>
-                      <tr *ngFor="let student of students">
+                      <tr *ngFor="let student of students | paginate: {itemsPerPage: itemsPerPage, currentPage: currentPage}">
                         <td>{{ student.id }}</td>
                         <td>
                           <span *ngIf="!student.isEditing">{{ student.fullName }}</span>
@@ -70,6 +70,7 @@
                   </table>
                 </div>
               </div>
+              <pagination-controls class="text-center" (pageChange)="currentPage = $event"></pagination-controls>
         </div>
 
 

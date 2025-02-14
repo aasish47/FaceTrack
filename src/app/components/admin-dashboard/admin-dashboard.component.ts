@@ -21,6 +21,8 @@ interface Student {
 export class AdminDashboardComponent {
 
   activeSection: string = 'dashboard';
+  itemsPerPage: number = 10;
+  currentPage: number = 1;
   constructor(private router: Router) { }
   // test: string = 'test';
 
