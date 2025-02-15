@@ -23,6 +23,13 @@ export class AdminDashboardComponent {
   activeSection: string = 'dashboard';
   itemsPerPage: number = 10;
   currentPage: number = 1;
+
+  
+  showFilters: boolean = false;
+  selectedId: string = '';
+  selectedDepartment: string = '';
+  selectedStatus: string = '';
+
   constructor(private router: Router) { }
   // test: string = 'test';
 
@@ -79,6 +86,16 @@ export class AdminDashboardComponent {
     { id: 24, fullName: 'Ella Baker', designation: 'Student', department: 'Computer Science', status: 'Late', time: '09:12 AM', isEditing: false }
   ];
 
+  filteredStudents = [...this.students]; // copy of students array 
+
+  uniqueDepartments = Array.from(
+    new Map(this.students.map(student => [student.department, student])).values()
+  );
+
+  uniqueStatus = Array.from(
+    new Map(this.students.map(student => [student.status, student])).values()
+  );
+
   editStudent(student: Student) {
     console.log('Editing student:', student);
     student.isEditing = true;
@@ -104,10 +121,31 @@ export class AdminDashboardComponent {
 
   showSection(section: string) {
     this.activeSection = section;
-    if(this.activeSection == 'reports'){
-      setTimeout(() => this.loadChart(),100);
+    if (this.activeSection == 'reports') {
+      setTimeout(() => this.loadChart(), 100);
     }
   }
+
+  // Filter And Reset Start
+  toggleFilters() {
+    this.showFilters = !this.showFilters; // Toggle visibility
+  }
+  applyFilters() {
+    this.filteredStudents = this.students.filter(student => {
+      return (
+        (!this.selectedId || student.id.toString()===this.selectedId) &&
+        (!this.selectedDepartment || student.department === this.selectedDepartment) &&
+        (!this.selectedStatus || student.status === this.selectedStatus)
+      );
+    });
+  }
+  onResetFilters() {
+    this.selectedId = '';
+    this.selectedDepartment = '';
+    this.selectedStatus = '';
+    this.filteredStudents = [...this.students]; // Reset table to original data
+  }
+  // Filter And Reset End
 
   logout() {
     localStorage.removeItem('adminLoggedIn');

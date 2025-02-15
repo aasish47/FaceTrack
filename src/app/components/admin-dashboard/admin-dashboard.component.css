@@ -1,0 +1,38 @@
+.FilterBox {
+    padding: 10px; /* Reduce overall padding */
+    max-width: 100%; /* Keep it responsive */
+  }
+  
+  .FilterBox .card {
+    padding: 8px; /* Reduce card padding */
+    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1); /* Lighter shadow */
+  }
+  
+  .FilterBox h5 {
+    font-size: 16px; /* Smaller heading */
+    margin-bottom: 5px;
+  }
+  
+  .FilterBox .form-label {
+    font-size: 14px; /* Reduce label size */
+    margin-bottom: 2px; /* Reduce space below labels */
+  }
+  
+  .FilterBox .form-control,
+  .FilterBox .form-select {
+    height: 32px; /* Reduce input/select height */
+    font-size: 14px; /* Reduce font size */
+    padding: 4px 8px; /* Smaller padding inside inputs */
+  }
+  
+  .FilterBox .row.g-3 {
+    row-gap: 8px; /* Reduce space between form elements */
+  }
+  
+  .FilterBox .btn {
+    padding: 6px 12px; /* Reduce button padding */
+    font-size: 14px; /* Reduce button font */
+  }
+  .MainHeading {
+    margin:0px ;
+  }
