@@ -86,7 +86,7 @@ export class AdminDashboardComponent {
     { id: 24, fullName: 'Ella Baker', designation: 'Student', department: 'Computer Science', status: 'Late', time: '09:12 AM', isEditing: false }
   ];
 
-  filteredStudents = [...this.students]; // copy of students array 
+  filteredStudents = [...this.students];
 
   uniqueDepartments = Array.from(
     new Map(this.students.map(student => [student.department, student])).values()
