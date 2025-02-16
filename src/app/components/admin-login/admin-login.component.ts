@@ -22,7 +22,7 @@ export class AdminLoginComponent {
     if(this.username === 'admin' && this.password === 'password'){
       localStorage.setItem('adminLoggedIn', 'true');
       console.log("Admin Logged In Success");
-      this.router.navigate(['/admin-dashboard']);
+      this.router.navigate(['/admin']);
     } else {
       alert('Invalid credentials');
     }

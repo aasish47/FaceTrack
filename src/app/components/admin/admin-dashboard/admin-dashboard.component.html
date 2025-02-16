@@ -1,0 +1,29 @@
+<h2 class="mb-3">Dashboard</h2>
+
+<!-- Summary Cards -->
+<div class="row mb-4">
+    <div class="col-md-4">
+        <div class="card bg-primary text-white p-3">
+            <h5>Total Students</h5>
+            <h3>{{ totalStudents }}</h3>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card bg-success text-white p-3">
+            <h5>Present Today</h5>
+            <h3>{{ presentStudents }}</h3>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card bg-danger text-white p-3">
+            <h5>Absent Today</h5>
+            <h3>{{ absentStudents }}</h3>
+        </div>
+    </div>
+</div>
+
+<!-- Attendance Chart Placeholder -->
+<div class="card p-3">
+    <h5>Attendance Trend (Last 7 Days)</h5>
+    <canvas #attendanceChart></canvas>
+</div>

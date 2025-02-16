@@ -1,32 +1,21 @@
-import { Component, ViewChild, ElementRef, AfterViewInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { Router } from '@angular/router';
-import { Chart } from 'chart.js';
-
-interface Student {
-  id: number;
-  fullName: string;
-  designation: string;
-  department: string;
-  status: string;
-  time: string;
-  isEditing: boolean;
-}
+import { Student } from 'src/app/models/student.model';
 
 
 @Component({
-  selector: 'app-admin-dashboard',
-  templateUrl: './admin-dashboard.component.html',
-  styleUrls: ['./admin-dashboard.component.css']
+  selector: 'app-admin',
+  templateUrl: './admin.component.html',
+  styleUrls: ['./admin.component.css']
 })
-export class AdminDashboardComponent {
+export class AdminComponent {
 
   activeSection: string = 'dashboard';
   itemsPerPage: number = 10;
   currentPage: number = 1;
+  isSidebarOpen: boolean = true;
   constructor(private router: Router) { }
   // test: string = 'test';
-
-  @ViewChild('attendanceChart') attendanceChart!: ElementRef;
 
   ngOnInit() {
     if (localStorage.getItem('adminLoggedIn') != 'true') {
@@ -35,23 +24,7 @@ export class AdminDashboardComponent {
     // Fetch attendance data from backend api
   }
 
-  ngAfterViewInit() {
-    this.loadChart();
-  }
 
-  loadChart() {
-    new Chart(this.attendanceChart.nativeElement, {
-      type: "bar",
-      data: {
-        labels: ['present', 'absent', 'late'],
-        datasets: [{
-          label: 'Attendance Chart',
-          data: [this.presentStudents, this.absentStudents, this.lateStudents],
-          backgroundColor: ['#28a745', '#dc3545', '#ffc107']
-        }]
-      }
-    });
-  }
   students: Student[] = [
     { id: 1, fullName: 'John Doe', designation: 'Student', department: 'Computer Science', status: 'Present', time: '08:30 AM', isEditing: false },
     { id: 2, fullName: 'Jane Smith', designation: 'Student', department: 'Mathematics', status: 'Absent', time: 'N/A', isEditing: false },
@@ -79,16 +52,9 @@ export class AdminDashboardComponent {
     { id: 24, fullName: 'Ella Baker', designation: 'Student', department: 'Computer Science', status: 'Late', time: '09:12 AM', isEditing: false }
   ];
 
-  editStudent(student: Student) {
-    console.log('Editing student:', student);
-    student.isEditing = true;
+  toggleSidebar(value: boolean) {
+    this.isSidebarOpen = value;
   }
-
-  saveStudent(student: Student) {
-    console.log('Saving student:', student);
-    student.isEditing = false;
-  }
-
 
   // Will be used when backend is integrated
 
@@ -102,32 +68,25 @@ export class AdminDashboardComponent {
   // }
 
 
-  showSection(section: string) {
-    this.activeSection = section;
-    if(this.activeSection == 'reports'){
-      setTimeout(() => this.loadChart(),100);
+  showSection(value: string) {
+    console.log("Admin Section",value);
+    this.activeSection = value;
+  }
+
+
+  isAddUserModalOpen = false;
+
+  openAddUserModal() {
+    this.isAddUserModalOpen = true;
+  }
+
+  closeAddUserModal() {
+    this.isAddUserModalOpen = false;
+  }
+
+  userAdded(value: boolean){
+    if(value){
+      alert('User added successfully!');
     }
   }
-
-  logout() {
-    localStorage.removeItem('adminLoggedIn');
-    this.router.navigate(['/admin-login']);
-  }
-
-  get totalStudents(): number {
-    return this.students.length;
-  }
-
-  get presentStudents(): number {
-    return this.students.filter(s => s.status === 'Present').length;
-  }
-
-  get absentStudents(): number {
-    return this.students.filter(s => s.status === 'Absent').length;
-  }
-
-  get lateStudents(): number {
-    return this.students.filter(s => s.status === 'Late').length;
-  }
-
 }

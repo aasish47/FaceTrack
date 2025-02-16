@@ -1,0 +1,75 @@
+<div class="bg-dark text-white p-3 vh-100" style="width: 200px; margin-top: 40px; position: fixed;">
+  <br><h4 class="text-center">Admin Panel</h4><br>
+  <ul class="nav flex-column">
+    <li class="nav-item mb-2">
+      <button class="btn btn-outline-light w-100" (click)="showSection('dashboard')">Dashboard</button>
+    </li>
+    <li class="nav-item mb-2">
+      <button class="btn btn-outline-light w-100" (click)="showSection('student-details')">Student Details</button>
+    </li>
+    <li class="nav-item mb-2">
+      <button class="btn btn-outline-light w-100" (click)="showSection('attendance-log')">Attendance Log</button>
+    </li>
+    <li class="nav-item mb-2">
+      <button class="btn btn-outline-light w-100" (click)="showSection('notification')">Notifications</button>
+    </li>
+  </ul>
+</div>
+
+
+<!-- Button to toggle the offcanvas sidebar -->
+  
+  <!-- Offcanvas Sidebar
+  <div class="offcanvas offcanvas-start" tabindex="-1" id="sidebar" aria-labelledby="sidebarLabel">
+    <div class="offcanvas-header">
+      <h5 class="offcanvas-title" id="sidebarLabel">Admin Panel</h5>
+      <button type="button" class="btn-close text-reset" (click)="toggleSidebar()" aria-label="Close"></button>
+    </div>
+    <div class="offcanvas-body">
+      <ul class="nav flex-column">
+        <li class="nav-item mb-2">
+          <button class="btn btn-outline-light w-100" (click)="showSection('dashboard')">Dashboard</button>
+        </li>
+        <li class="nav-item mb-2">
+          <button class="btn btn-outline-light w-100" (click)="showSection('reports')">Reports & Analytics</button>
+        </li>
+        <li class="nav-item mb-2">
+          <button class="btn btn-outline-light w-100" (click)="showSection('notification')">Notifications</button>
+        </li>
+      </ul>
+    </div>
+  </div> -->
+
+
+  <!-- <div class="sidebar bg-dark text-white vh-100 d-flex flex-column"
+     [class.collapsed]="isSidebarOpen">
+    <button class="btn btn-outline-light toggle-btn" (click)="toggleSidebar($event)">
+        <i class="bi bi-list"></i>
+    </button>
+
+    <h4 class="text-center" *ngIf="!isSidebarOpen">Admin Panel</h4>
+
+    <ul class="nav flex-column mt-3">
+        <li class="nav-item">
+            <button class="btn btn-outline-light w-100 d-flex align-items-center"
+                    (click)="showSection('dashboard')">
+                <i class="bi bi-house-door me-2"></i>
+                <span *ngIf="!isSidebarOpen">Dashboard</span>
+            </button>
+        </li>
+        <li class="nav-item">
+            <button class="btn btn-outline-light w-100 d-flex align-items-center"
+                    (click)="showSection('reports')">
+                <i class="bi bi-bar-chart me-2"></i>
+                <span *ngIf="!isSidebarOpen">Reports & Analytics</span>
+            </button>
+        </li>
+        <li class="nav-item">
+            <button class="btn btn-outline-light w-100 d-flex align-items-center"
+                    (click)="showSection('notification')">
+                <i class="bi bi-bell me-2"></i>
+                <span *ngIf="!isSidebarOpen">Notifications</span>
+            </button>
+        </li>
+    </ul>
+</div> -->
