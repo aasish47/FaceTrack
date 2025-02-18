@@ -13,7 +13,7 @@ import { LoginComponent } from './testComponents/login/login.component';
 import { AdminPanelComponent } from './testComponents/admin-panel/admin-panel.component';
 import { DashboardComponent } from './testComponents/admin-panel/dashboard/dashboard.component';
 import { UserDetailsComponent } from './testComponents/admin-panel/user-details/user-details.component';
-
+import { LogsComponent } from './testComponents/admin-panel/logs/logs.component';
 // These are previous Routes.
 // const routes: Routes = [
 //   { path: '', component: HomeComponent},
@@ -34,6 +34,7 @@ const routes: Routes = [
       { path: '', redirectTo: 'dashboard', pathMatch: 'full' },  // Default to dashboard
       { path: 'dashboard', component: DashboardComponent },
       { path: 'user-details', component: UserDetailsComponent },
+      { path: 'attendance-log', component: LogsComponent },
     ]
   },
 ];
