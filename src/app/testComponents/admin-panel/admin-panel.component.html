@@ -8,7 +8,6 @@
            'position': 'fixed',
            'top': '10px',
            'left': '0',
-           'transition': 'width 0.5s ease, visibility 0.5s ease'
          }">
       <br><h4 class="text-center">Admin Panel</h4><br>
       <ul class="nav flex-column">
@@ -31,7 +30,6 @@
     <div class="container-fluid" [ngClass]="{'collapsed': !isSidebarOpen}" 
          [ngStyle]="{
            'margin-left': isSidebarOpen ? '250px' : '0',
-           'transition': 'margin-left 0.5s ease',
            'padding-top': '60px',
            'flex-grow': '1',
            'overflow-y': 'auto'
@@ -56,6 +54,8 @@
       </nav>
   
       <!-- Main Content Rendered via Router Outlet -->
-      <router-outlet></router-outlet>
+      <!-- <router-outlet></router-outlet> -->
+       <!-- <app-dashboard [students]="student"></app-dashboard> -->
+       <app-dashboard *ngIf="activeSection === 'dashboard'" [students]="student"></app-dashboard>
     </div>
   </div>
