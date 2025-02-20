@@ -1,6 +1,7 @@
 import { Component, ElementRef, Input, ViewChild } from '@angular/core';
 import { Chart } from 'chart.js';
 import { Student } from 'src/app/models/student.model';
+import { StudentService } from 'src/app/services/student.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -9,18 +10,23 @@ import { Student } from 'src/app/models/student.model';
 })
 export class DashboardComponent {
 
+  constructor(private studentService: StudentService
+  ) { }
+
+  students: Student[] = [];
+
   itemsPerPage: number = 10;
   currentPage: number = 1;
 
+  ngOnInit() {
+    this.students = this.studentService.getStudents();
+  }
+
   @ViewChild('attendanceChart') attendanceChart!: ElementRef;
-  @Input() students: Student[] = [];
 
   ngAfterViewInit() {
     this.loadChart();
   }
-
-
-
 
   loadChart() {
     new Chart(this.attendanceChart.nativeElement, {
