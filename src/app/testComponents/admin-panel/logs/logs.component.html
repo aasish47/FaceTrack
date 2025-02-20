@@ -15,7 +15,7 @@
                     </tr>
                 </thead>
                 <tbody
-                    *ngFor="let student of filteredStudents | paginate: {itemsPerPage: itemsPerPage, currentPage: currentPage}">
+                    *ngFor="let student of students | paginate: {itemsPerPage: itemsPerPage, currentPage: currentPage}">
                     <tr>
                         <td>{{ student.id }}</td>
                         <td>
