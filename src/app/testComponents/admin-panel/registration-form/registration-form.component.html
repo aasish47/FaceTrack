@@ -1,1 +1,66 @@
-<p>registration-form works!</p>
+
+<div class="container mt-5">
+  <h2 class="text-center">New  User  Registration</h2>
+  <div>
+    <!-- First Name -->
+    <div class="form-group">
+      <label for="firstName">First Name</label>
+      <input type="text" [(ngModel)]="userForm.fName" name="fName" class="form-control" id="firstName" placeholder="Enter your first name" required>
+    </div>
+   
+    <!-- Last Name -->
+    <div class="form-group">
+      <label for="lastName">Last Name</label>
+      <input type="text" [(ngModel)]="userForm.lName" class="form-control" id="lastName" placeholder="Enter your last name" required>
+    </div>
+
+    <!-- User ID -->
+    <div class="form-group">
+      <label for="userId">User  ID</label>
+      <input type="text" [(ngModel)]="userForm.userId" class="form-control" id="userId" placeholder="Enter your user ID" required>
+    </div>
+
+    <!-- Gender -->
+    <div class="form-group">
+      <label for="gender">Gender</label>
+      <select [(ngModel)]="userForm.gender" class="form-control" id="gender" required>
+        <option value="" disabled selected>Select your gender</option>
+        <option value="male">Male</option>
+        <option value="female">Female</option>
+        <option value="other">Other</option>
+      </select>
+    </div>
+
+    <!-- Department -->
+    <div class="form-group">
+      <label for="department">Department</label>
+      <select [(ngModel)]="userForm.department" class="form-control" id="department" required>
+        <option value="" disabled selected>Select your department</option>
+        <option value="IT">Information Technology</option>
+        <option value="HR">Human Resources</option>
+        <option value="Finance">Finance</option>
+        <option value="Marketing">Marketing</option>
+      </select>
+    </div>
+
+    <!-- Date of Birth -->
+    <div class="form-group">
+      <label for="dob">Date of Birth</label>
+      <input type="date" [(ngModel)]="userForm.dob" class="form-control" id="dob" required>
+    </div>
+
+    <!-- User Photo -->
+    <div class="form-group">
+      <label for="userPhoto">Upload Photo</label>
+      <input type="file" [(ngModel)]="userForm.userPhoto" class="form-control-file" id="userPhoto" accept="image/*" required><br>
+      <small class="form-text text-muted">Please upload a clear photo (JPEG, PNG).</small>
+    </div>
+
+    <!-- Submit and Reset buttons -->
+    <div class="d-flex justify-content-center">
+      <button type="submit" class="btn btn-primary w-25 mx-1" (click)="onSubmit()" >Register</button>
+      <button class="btn btn-secondary w-25 mx-1" type="reset" value="Reset" (click)="onReset()">Reset</button>
+    </div>
+  </div>
+</div>
+
