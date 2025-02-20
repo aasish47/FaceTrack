@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
+import { Student } from 'src/app/models/student.model';
 import { trigger, state, style, transition, animate } from '@angular/animations';
 
 @Component({
@@ -24,6 +25,7 @@ import { trigger, state, style, transition, animate } from '@angular/animations'
 })
 export class AdminPanelComponent {
 
+  // Sidebar toggle state
   isSidebarOpen: boolean = true;
   currentRoute: string = '';
   activeSection: string = 'dashboard';
@@ -40,6 +42,7 @@ export class AdminPanelComponent {
 
   // Change the active section based on button click
   showSection(section: string) {
+    this.activeSection = section;
     this.router.navigate([`/admin-panel/${section}`]);
   }
 
