@@ -14,6 +14,7 @@ import { AdminPanelComponent } from './testComponents/admin-panel/admin-panel.co
 import { DashboardComponent } from './testComponents/admin-panel/dashboard/dashboard.component';
 import { UserDetailsComponent } from './testComponents/admin-panel/user-details/user-details.component';
 import { LogsComponent } from './testComponents/admin-panel/logs/logs.component';
+import { NotificationComponent } from './testComponents/admin-panel/notification/notification.component';
 // These are previous Routes.
 // const routes: Routes = [
 //   { path: '', component: HomeComponent},
@@ -35,6 +36,7 @@ const routes: Routes = [
       { path: 'dashboard', component: DashboardComponent },
       { path: 'user-details', component: UserDetailsComponent },
       { path: 'attendance-log', component: LogsComponent },
+      { path: 'notification', component: NotificationComponent },
     ]
   },
 ];

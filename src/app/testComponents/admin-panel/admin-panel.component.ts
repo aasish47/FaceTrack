@@ -1,33 +1,49 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
+import { trigger, state, style, transition, animate } from '@angular/animations';
 
 @Component({
   selector: 'app-admin-panel',
   templateUrl: './admin-panel.component.html',
-  styleUrls: ['./admin-panel.component.css']
+  styleUrls: ['./admin-panel.component.css'],
+  animations:[
+    trigger('slideInOut', [
+      state('in', style({
+        opacity: 1,
+        transform: 'translateX(0)'
+      })),
+      state('out', style({
+        opacity: 0,
+        transform: 'translateX(-15px)'
+      })),
+      transition('in <=> out', [
+        animate('0.3s ease-in-out')
+      ])
+    ])
+  ] 
 })
 export class AdminPanelComponent {
 
-  // Sidebar toggle state
   isSidebarOpen: boolean = true;
+  currentRoute: string = '';
+  activeSection: string = 'dashboard';
 
-  // Active section to show
-  activeSection: string = 'dashboard'; // Default to dashboard
+  constructor(private router: Router) {
+    this.router.events.subscribe(() => {
+      this.currentRoute = this.router.url;
+    });
+   }
 
-  constructor(private router: Router) { }
-
-  // Toggle sidebar visibility
   toggleSidebar() {
     this.isSidebarOpen = !this.isSidebarOpen;
   }
 
   // Change the active section based on button click
   showSection(section: string) {
-    // Use the router to navigate to the appropriate child route
     this.router.navigate([`/admin-panel/${section}`]);
   }
 
-  // Trigger Add User modal (implement your modal logic here)
+  // Trigger Add User modal
   triggerAddUserModal() {
     console.log("Add User Modal Triggered");
   }
