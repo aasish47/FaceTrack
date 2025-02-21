@@ -13,6 +13,8 @@ import { LoginComponent } from './testComponents/login/login.component';
 import { AdminPanelComponent } from './testComponents/admin-panel/admin-panel.component';
 import { DashboardComponent } from './testComponents/admin-panel/dashboard/dashboard.component';
 import { UserDetailsComponent } from './testComponents/admin-panel/user-details/user-details.component';
+import { RegistrationFormComponent } from './testComponents/admin-panel/registration-form/registration-form.component';
+
 import { LogsComponent } from './testComponents/admin-panel/logs/logs.component';
 import { NotificationComponent } from './testComponents/admin-panel/notification/notification.component';
 import { UserPanelComponent } from './testComponents/user-panel/user-panel.component';
@@ -38,6 +40,7 @@ const routes: Routes = [
       { path: '', redirectTo: 'dashboard', pathMatch: 'full' },  // Default to dashboard
       { path: 'dashboard', component: DashboardComponent },
       { path: 'user-details', component: UserDetailsComponent },
+      { path: 'registration-form', component: RegistrationFormComponent },
       { path: 'attendance-log', component: LogsComponent },
       { path: 'notification', component: NotificationComponent },
     ]
