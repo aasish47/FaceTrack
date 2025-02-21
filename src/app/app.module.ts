@@ -4,11 +4,9 @@ import { BrowserModule } from '@angular/platform-browser';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { HomeComponent } from './components/home/home.component';
-import { AdminLoginComponent } from './components/admin-login/admin-login.component';
 import { AdminComponent } from './components/admin/admin.component';
-import { UserLoginComponent } from './components/user-login/user-login.component';
 import { UserDashboardComponent } from './components/user-dashboard/user-dashboard.component';
-import { FormsModule } from '@angular/forms';
+import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { NgxPaginationModule } from 'ngx-pagination';
 import { AdminSidebarComponent } from './components/admin/admin-sidebar/admin-sidebar.component';
 import { AdminNavbarComponent } from './components/admin/admin-navbar/admin-navbar.component';
@@ -34,9 +32,7 @@ import { UserLogsComponent } from './testComponents/user-panel/user-logs/user-lo
   declarations: [
     AppComponent,
     HomeComponent,
-    AdminLoginComponent,
     AdminComponent,
-    UserLoginComponent,
     UserDashboardComponent,
     AdminSidebarComponent,
     AdminNavbarComponent,
@@ -61,6 +57,7 @@ import { UserLogsComponent } from './testComponents/user-panel/user-logs/user-lo
   imports: [
     BrowserModule,
     AppRoutingModule,
+    ReactiveFormsModule,
     FormsModule,
     NgxPaginationModule
   ],

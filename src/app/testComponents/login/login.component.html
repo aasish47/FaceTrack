@@ -1,1 +1,28 @@
-<p>login works!</p>
+<div class="container d-flex justify-content-center align-items-center vh-100">
+    <div class="card p-4 shadow-lg" style="width: 350px;">
+      <h2 class="text-center mb-3" *ngIf="!isAdmin">User Login</h2>
+      <h2 class="text-center mb-3" *ngIf="isAdmin">Admin Login</h2>
+  
+      <form [formGroup]="loginForm" (ngSubmit)="onLogin()">
+        <div class="mb-3">
+          <label for="username" class="form-label">Username</label>
+          <input id="username" type="text" class="form-control" formControlName="username" required />
+        </div>
+  
+        <div class="mb-3">
+          <label for="password" class="form-label">Password</label>
+          <input id="password" type="password" class="form-control" formControlName="password" required />
+        </div>
+  
+        <button type="submit" class="btn btn-primary w-100" [disabled]="loginForm.invalid">Login</button>
+      </form>
+  
+      <button class="btn btn-link mt-3 w-100" (click)="toggleLogin()">
+        {{ isAdmin ? 'Login as User Instead' : 'Login as Admin Instead' }}
+      </button>
+  
+      <p *ngIf="errorMessage" class="text-danger text-center mt-2">{{ errorMessage }}</p>
+    </div>
+  </div>
+  
+  
