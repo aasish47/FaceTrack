@@ -48,6 +48,6 @@ export class UserPanelComponent {
   // Logout and navigate to login page
   logout() {
     localStorage.removeItem('userLoggedIn');
-    this.router.navigate(['/user-login']);
+    this.router.navigate(['/login']);
   }
 }

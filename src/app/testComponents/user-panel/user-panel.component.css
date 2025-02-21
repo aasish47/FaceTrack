@@ -1,5 +1,5 @@
 .sidebar {
-    width: 230px;
+    width: 210px;
     position: fixed;
     margin-top: 55px;
     transition: width 0.3s ease-in-out;
@@ -12,7 +12,7 @@
   }
   
   .sidebar-btn i {
-    font-size: 1.2rem;
+    font-size: 1rem;
     margin-right: 10px;
   }
   
@@ -49,5 +49,5 @@
   }
 
   .nav-icon-btn {
-    font-size: 1.2rem;
+    font-size: 1rem;
   }

@@ -28,7 +28,7 @@
     <div class="sidebar bg-dark text-white vh-100 d-flex flex-column align-items-center"
       [class.shrinked]="!isSidebarOpen">
   
-      <h4 class="text-center w-100 admin-label" *ngIf="isSidebarOpen">Admin Panel</h4>
+      <h4 class="text-center w-100 admin-label" *ngIf="isSidebarOpen">User Panel</h4>
   
       <ul class="nav flex-column w-100">
         <li class="nav-item mb-2">
@@ -53,9 +53,9 @@
     <!-- Main Content Area -->
   
     <div class="container-fluid" [ngClass]="{'collapsed': !isSidebarOpen}" [ngStyle]="{
-          'margin-left': isSidebarOpen ? '230px' : '70px',
+          'margin-left': isSidebarOpen ? '210px' : '60px',
           'transition': 'margin-left 0.5s ease',
-          'padding-top': '65px',
+          'padding-top': '55px',
           'flex-grow': '1',
           'overflow-y': 'auto'
         }">

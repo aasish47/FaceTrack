@@ -53,6 +53,6 @@ export class AdminPanelComponent {
   // Logout and navigate to login page
   logout() {
     localStorage.removeItem('adminLoggedIn');
-    this.router.navigate(['/admin-login']);
+    this.router.navigate(['/login']);
   }
 }
