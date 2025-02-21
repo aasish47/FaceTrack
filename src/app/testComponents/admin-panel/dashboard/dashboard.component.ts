@@ -10,8 +10,7 @@ import { StudentService } from 'src/app/services/student.service';
 })
 export class DashboardComponent {
 
-  constructor(private studentService: StudentService
-  ) { }
+  constructor(private studentService: StudentService) { }
 
   students: Student[] = [];
 

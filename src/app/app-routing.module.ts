@@ -15,6 +15,9 @@ import { DashboardComponent } from './testComponents/admin-panel/dashboard/dashb
 import { UserDetailsComponent } from './testComponents/admin-panel/user-details/user-details.component';
 import { LogsComponent } from './testComponents/admin-panel/logs/logs.component';
 import { NotificationComponent } from './testComponents/admin-panel/notification/notification.component';
+import { UserPanelComponent } from './testComponents/user-panel/user-panel.component';
+import { UserDashboardComponent } from './testComponents/user-panel/user-dashboard/user-dashboard.component';
+import { UserLogsComponent } from './testComponents/user-panel/user-logs/user-logs.component';
 // These are previous Routes.
 // const routes: Routes = [
 //   { path: '', component: HomeComponent},
@@ -37,6 +40,16 @@ const routes: Routes = [
       { path: 'user-details', component: UserDetailsComponent },
       { path: 'attendance-log', component: LogsComponent },
       { path: 'notification', component: NotificationComponent },
+    ]
+  },
+  {
+    path: 'user-panel', 
+    component: UserPanelComponent,
+    children: [
+      { path: '', redirectTo: 'dashboard', pathMatch: 'full' },  // Default to dashboard
+      { path: 'dashboard', component: UserDashboardComponent },
+      { path: 'user-log', component: UserLogsComponent },
+      // { path: 'notification', component: NotificationComponent },
     ]
   },
 ];
