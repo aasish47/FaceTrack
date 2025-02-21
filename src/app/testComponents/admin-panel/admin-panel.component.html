@@ -6,7 +6,7 @@
         [attr.title]="isSidebarOpen ? 'Close Sidebar' : 'Open Sidebar'">
         <i [ngClass]="isSidebarOpen ? 'bi bi-layout-sidebar-inset' : 'bi bi-layout-sidebar'"></i>
       </button>
-      <button class="btn btn-dark nav-icon-btn" type="button" (click)="triggerAddUserModal()" title="Add User">
+      <button class="btn btn-dark nav-icon-btn" type="button" (click)="showSection('registration-form')" title="Add User">
         <i class="bi bi-person-plus"></i>
       </button>
     </div>
@@ -50,13 +50,7 @@
         <span *ngIf="isSidebarOpen">Attendance Log</span>
       </button>
     </li>
-    <li class="nav-item mb-2">
-      <button class="btn btn-dark w-100 d-flex align-items-center sidebar-btn" (click)="showSection('registration-form')"
-        [attr.title]="isSidebarOpen ? '' : 'User Registration'">
-        <i class="bi bi-person-lines-fill"></i>
-        <span *ngIf="isSidebarOpen">User Registration</span>
-      </button>
-    </li>
+    
   </ul>
 </div>
 
