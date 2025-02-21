@@ -5,7 +5,6 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { HomeComponent } from './components/home/home.component';
 import { AdminComponent } from './components/admin/admin.component';
-import { UserDashboardComponent } from './components/user-dashboard/user-dashboard.component';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { NgxPaginationModule } from 'ngx-pagination';
 import { AdminSidebarComponent } from './components/admin/admin-sidebar/admin-sidebar.component';
@@ -27,7 +26,9 @@ import { AddCameraComponent } from './testComponents/admin-panel/add-camera/add-
 import { CustomizableErrorComponent } from './testComponents/admin-panel/customizable-error/customizable-error.component';
 import { NotificationComponent } from './testComponents/admin-panel/notification/notification.component';
 import { UserLogsComponent } from './testComponents/user-panel/user-logs/user-logs.component';
-
+import { UserDashboardComponent } from './testComponents/user-panel/user-dashboard/user-dashboard.component';
+import { NgChartsModule } from 'ng2-charts'; //npm install chart.js@3.9.1 ng2-charts@4.0.0 --force
+import { RouterModule } from '@angular/router';
 @NgModule({
   declarations: [
     AppComponent,
@@ -52,14 +53,16 @@ import { UserLogsComponent } from './testComponents/user-panel/user-logs/user-lo
     AddCameraComponent,
     CustomizableErrorComponent,
     NotificationComponent,
-    UserLogsComponent,
+    UserLogsComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     ReactiveFormsModule,
     FormsModule,
-    NgxPaginationModule
+    NgxPaginationModule,
+    NgChartsModule,
+    RouterModule
   ],
   providers: [],
   bootstrap: [AppComponent]

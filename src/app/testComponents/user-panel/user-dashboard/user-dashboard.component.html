@@ -1,1 +1,59 @@
-<p>user-dashboard works!</p>
+<div class="d-flex flex-column flex-md-row">
+    <!-- Main Content -->
+    <div class="flex-grow-1 p-4 dashboard-content">
+      <h2 class="text-primary mb-4">User Dashboard</h2>
+  
+      <div class="row">
+        <!-- User Profile -->
+        <div class="col-lg-6 col-md-12">
+          <div class="card p-3 mb-4 shadow-sm">
+            <h5 class="text-secondary">User Profile</h5>
+            <p><strong>Name:</strong> {{ user.name }}</p>
+            <p><strong>Email:</strong> {{ user.email }}</p>
+            <p><strong>Role:</strong> {{ user.role }}</p>
+          </div>
+        </div>
+  
+        <!-- Attendance Chart -->
+        <div class="col-lg-6 col-md-12">
+            <div class="card p-3 mb-4 shadow-sm">
+              <h5 class="text-primary">Attendance Overview</h5>
+              <canvas baseChart [datasets]="attendanceData" [labels]="attendanceLabels" [options]="chartOptions"></canvas>
+            </div>
+          </div>
+  
+      <div class="row">
+        <!-- Recent Logs -->
+        <div class="col-md-6">
+          <div class="card p-3 mb-4 shadow-sm">
+            <h5 class="text-secondary">Recent Logs</h5>
+            <ul>
+              <li *ngFor="let log of recentLogs">{{ log }}</li>
+            </ul>
+          </div>
+        </div>
+  
+        <!-- Notifications -->
+        <div class="col-md-6">
+          <div class="card p-3 mb-4 shadow-sm">
+            <h5 class="text-secondary">Notifications</h5>
+            <ul>
+              <li *ngFor="let notification of notifications">{{ notification }}</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+  
+      <!-- Quick Actions -->
+      <div class="row">
+        <div class="col-12">
+          <div class="card p-3 mb-4 shadow-sm text-center">
+            <h5 class="text-secondary">Quick Actions</h5>
+            <button class="btn btn-primary mx-2" (click)="updateProfile()">Update Profile</button>
+            <button class="btn btn-warning mx-2" (click)="changePassword()">Change Password</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
