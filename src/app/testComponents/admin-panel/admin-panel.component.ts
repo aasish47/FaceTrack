@@ -52,7 +52,10 @@ export class AdminPanelComponent {
 
   // Logout and navigate to login page
   logout() {
-    localStorage.removeItem('adminLoggedIn');
-    this.router.navigate(['/login']);
+    const confirmLogout = window.confirm("Are you sure you want to logout?");
+    if (confirmLogout) {
+      localStorage.removeItem('adminLoggedIn');
+      this.router.navigate(['/login']);
+    }
   }
 }
