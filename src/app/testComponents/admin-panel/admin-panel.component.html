@@ -34,9 +34,8 @@
            'position': 'fixed',
            'top': '10px',
            'left': '0',
-           'transition': 'width 0.5s ease, visibility 0.5s ease'
          }">
-      <br><h4 class="text-center">Admin Panel</h4><br>
+      <br><h4 class="text-center mt-2">Admin Panel</h4><br>
       <ul class="nav flex-column">
         <li class="nav-item mb-2">
           <button class="btn btn-outline-light w-100" (click)="showSection('dashboard')">Dashboard</button>
@@ -61,7 +60,6 @@
     <div class="container-fluid" [ngClass]="{'collapsed': !isSidebarOpen}" 
          [ngStyle]="{
            'margin-left': isSidebarOpen ? '250px' : '0',
-           'transition': 'margin-left 0.5s ease',
            'padding-top': '60px',
            'flex-grow': '1',
            'overflow-y': 'auto'
@@ -87,6 +85,7 @@
   
       <!-- Main Content Rendered via Router Outlet -->
       <router-outlet></router-outlet>
+
     </div>
   </div>
 
@@ -120,20 +119,4 @@
         </button>
       </li>
     </ul>
-  </div>
-
-
-
-  <!-- Main Content Area -->
-
-  <div class="container-fluid" [ngClass]="{'collapsed': !isSidebarOpen}" [ngStyle]="{
-        'margin-left': isSidebarOpen ? '230px' : '70px',
-        'transition': 'margin-left 0.5s ease',
-        'padding-top': '65px',
-        'flex-grow': '1',
-        'overflow-y': 'auto'
-      }">
-    <!-- Main Content Rendered via Router Outlet -->
-    <router-outlet></router-outlet>
-    
   </div>
