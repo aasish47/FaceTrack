@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { ChartConfiguration, ChartOptions } from 'chart.js';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-user-dashboard',
@@ -13,23 +13,11 @@ export class UserDashboardComponent {
     role: 'Manager'
   };
 
-  // Define chart data
-  attendanceData = [
-    { data: [80, 90, 75, 95, 85], label: 'Attendance' }
-  ];
+  editProfileForm: FormGroup;
+  isEditing: boolean = false; // Track edit mode
 
+  attendanceData = [{ data: [80, 90, 75, 95, 85], label: 'Attendance' }];
   attendanceLabels = ['Jan', 'Feb', 'Mar', 'Apr', 'May'];
-
-  chartOptions = {
-    responsive: true,
-    plugins: {
-      legend: { position: 'top' },
-    },
-    scales: {
-      x: { ticks: { font: { size: 14 } } },
-      y: { ticks: { font: { size: 14 } } }
-    }
-  };
 
   recentLogs = [
     'Logged in at 8:45 AM',
@@ -44,11 +32,36 @@ export class UserDashboardComponent {
     'Holiday announced on Friday'
   ];
 
-  updateProfile() {
-    alert('Update Profile Clicked');
+  constructor(private fb: FormBuilder) {
+    this.editProfileForm = this.fb.group({
+      name: [this.user.name, Validators.required],
+      email: [this.user.email, [Validators.required, Validators.email]],
+      role: [this.user.role, Validators.required]
+    });
   }
 
-  changePassword() {
-    alert('Change Password Clicked');
+  toggleEdit() {
+    this.isEditing = !this.isEditing;
+    if (this.isEditing) {
+      this.editProfileForm.patchValue(this.user); // Populate form with user data
+    }
+  }
+
+  saveProfile() {
+    if (this.editProfileForm.valid) {
+      this.user = { ...this.editProfileForm.value }; // Update user data
+      this.isEditing = false; // Exit edit mode
+      console.log('Profile Updated:', this.user);
+    }
+  }
+
+  cancelEdit() {
+    this.isEditing = false;
+  }
+  updateProfile(){
+
+  }
+  changePassword(){
+
   }
 }
