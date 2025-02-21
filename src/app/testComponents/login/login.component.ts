@@ -21,21 +21,25 @@ export class LoginComponent {
 
   toggleLogin() {
     this.isAdmin = !this.isAdmin;
+    this.loginForm.reset(); 
+    this.errorMessage = '';
   }
 
   onLogin() {
     const { username, password } = this.loginForm.value;
-    console.log(username);
+    this.errorMessage = ''; 
+
     if (!this.isAdmin && username === 'user' && password === 'password') {
       localStorage.setItem('userLoggedIn', 'true');
-      console.log("Admin Logged In Success");
+      console.log("User Logged In Successfully");
       this.router.navigate(['/user-panel']);
     } else if (this.isAdmin && username === 'admin' && password === 'password') {
       localStorage.setItem('adminLoggedIn', 'true');
-      console.log("Admin Logged In Success");
+      console.log("Admin Logged In Successfully");
       this.router.navigate(['/admin-panel']);
     } else {
       this.errorMessage = 'Invalid credentials!';
     }
   }
 }
+
