@@ -1,66 +1,88 @@
 
 <div class="container mt-5">
   <h2 class="text-center">New  User  Registration</h2>
-  <div>
-    <!-- First Name -->
-    <div class="form-group">
-      <label for="firstName">First Name</label>
-      <input type="text" [(ngModel)]="userForm.fName" name="fName" class="form-control" id="firstName" placeholder="Enter your first name" required>
+  <form class="row g-3 needs-validation" novalidate #form="ngForm">
+    <div>
+      <!-- First Name -->
+      <div class="form-group">
+        <label for="firstName">First Name</label>
+        <input type="text" #fName="ngModel" [(ngModel)]="userForm.fName" name="fName" class="form-control" id="firstName" placeholder="Enter your first name" required>
+        <div class="text-danger" *ngIf="fName.invalid && isFormSubmitted">
+          <span *ngIf="fName.errors?.['required']">This field is mandatory</span> 
+        </div>
+      </div>
+     
+      <!-- Last Name -->
+      <div class="form-group">
+        <label for="lastName">Last Name</label>
+        <input type="text" #lName="ngModel" [(ngModel)]="userForm.lName" name="lName" class="form-control" id="lastName" placeholder="Enter your last name" required>
+        <div class="text-danger" *ngIf="lName.invalid && isFormSubmitted">
+          <span *ngIf="lName.errors?.['required']">This field is mandatory</span> 
+        </div>
+      </div>
+  
+      <!-- User ID -->
+      <div class="form-group">
+        <label for="userId">User  ID</label>
+        <input type="text" #userId="ngModel" [(ngModel)]="userForm.userId" name="userId" class="form-control" id="userId" placeholder="Enter your user ID" required>
+        <div class="text-danger" *ngIf="userId.invalid && isFormSubmitted">
+          <span *ngIf="userId.errors?.['required']">This field is mandatory</span> 
+        </div>
+      </div>
+  
+      <!-- Gender -->
+      <div class="form-group">
+        <label for="gender">Gender</label>
+        <select #gender="ngModel" [(ngModel)]="userForm.gender" name="gender" class="form-control" id="gender" required>
+          <option value="" disabled selected>Select your gender</option>
+          <option value="male">Male</option>
+          <option value="female">Female</option>
+          <option value="other">Other</option>
+        </select>
+        <div class="text-danger" *ngIf="gender.invalid && isFormSubmitted">
+          <span *ngIf="gender.errors?.['required']">This field is mandatory</span> 
+        </div>
+      </div>
+  
+      <!-- Department -->
+      <div class="form-group">
+        <label for="department">Department</label>
+        <select #department="ngModel" [(ngModel)]="userForm.department" name="department" class="form-control" id="department" required>
+          <option value="" disabled selected>Select your department</option>
+          <option value="IT">Information Technology</option>
+          <option value="HR">Human Resources</option>
+          <option value="Finance">Finance</option>
+          <option value="Marketing">Marketing</option>
+        </select>
+        <div class="text-danger" *ngIf="department.invalid && isFormSubmitted">
+          <span *ngIf="department.errors?.['required']">This field is mandatory</span> 
+        </div>
+      </div>
+  
+      <!-- Date of Birth -->
+      <div class="form-group">
+        <label for="dob">Date of Birth</label>
+        <input type="date" #dob="ngModel" [(ngModel)]="userForm.dob" name="dob" class="form-control" id="dob" required>
+        <div class="text-danger" *ngIf="dob.invalid && isFormSubmitted">
+          <span *ngIf="dob.errors?.['required']">This field is mandatory</span> 
+        </div>
+      </div>
+  
+      <!-- User Photo -->
+      <div class="form-group">
+        <label for="userPhoto">Upload Photo</label>
+        <input type="file" #userPhoto="ngModel" [(ngModel)]="userForm.userPhoto" name="userPhoto" class="form-control-file" id="userPhoto" accept="image/*" required><br>
+        <small class="form-text text-muted">Please upload a clear photo (JPEG, PNG).</small>
+        <div class="text-danger" *ngIf="userPhoto.invalid && isFormSubmitted">
+          <span *ngIf="userPhoto.errors?.['required']">This field is mandatory</span> 
+        </div>
+      </div>
+  
+      <!-- Submit and Reset buttons -->
+      <div class="d-flex justify-content-center">
+        <button class="btn btn-primary w-25 mx-1" type="submit" (click)="onSubmit(form)" >Register</button>
+        <button class="btn btn-secondary w-25 mx-1" type="reset" value="reset" (click)="onReset()">Reset</button>
+      </div>
     </div>
-   
-    <!-- Last Name -->
-    <div class="form-group">
-      <label for="lastName">Last Name</label>
-      <input type="text" [(ngModel)]="userForm.lName" class="form-control" id="lastName" placeholder="Enter your last name" required>
-    </div>
-
-    <!-- User ID -->
-    <div class="form-group">
-      <label for="userId">User  ID</label>
-      <input type="text" [(ngModel)]="userForm.userId" class="form-control" id="userId" placeholder="Enter your user ID" required>
-    </div>
-
-    <!-- Gender -->
-    <div class="form-group">
-      <label for="gender">Gender</label>
-      <select [(ngModel)]="userForm.gender" class="form-control" id="gender" required>
-        <option value="" disabled selected>Select your gender</option>
-        <option value="male">Male</option>
-        <option value="female">Female</option>
-        <option value="other">Other</option>
-      </select>
-    </div>
-
-    <!-- Department -->
-    <div class="form-group">
-      <label for="department">Department</label>
-      <select [(ngModel)]="userForm.department" class="form-control" id="department" required>
-        <option value="" disabled selected>Select your department</option>
-        <option value="IT">Information Technology</option>
-        <option value="HR">Human Resources</option>
-        <option value="Finance">Finance</option>
-        <option value="Marketing">Marketing</option>
-      </select>
-    </div>
-
-    <!-- Date of Birth -->
-    <div class="form-group">
-      <label for="dob">Date of Birth</label>
-      <input type="date" [(ngModel)]="userForm.dob" class="form-control" id="dob" required>
-    </div>
-
-    <!-- User Photo -->
-    <div class="form-group">
-      <label for="userPhoto">Upload Photo</label>
-      <input type="file" [(ngModel)]="userForm.userPhoto" class="form-control-file" id="userPhoto" accept="image/*" required><br>
-      <small class="form-text text-muted">Please upload a clear photo (JPEG, PNG).</small>
-    </div>
-
-    <!-- Submit and Reset buttons -->
-    <div class="d-flex justify-content-center">
-      <button type="submit" class="btn btn-primary w-25 mx-1" (click)="onSubmit()" >Register</button>
-      <button class="btn btn-secondary w-25 mx-1" type="reset" value="Reset" (click)="onReset()">Reset</button>
-    </div>
-  </div>
+  </form>
 </div>
-
