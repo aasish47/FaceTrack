@@ -1,1 +1,80 @@
-<p>add-camera works!</p>
+<div class="container mt-5">
+    <h2>Add Camera</h2>
+    <form (ngSubmit)="addCamera()" class="mb-4">
+      <!-- Camera Name Field -->
+      <div class="form-group">
+        <label for="cameraName">Camera Name</label>
+        <input
+          type="text"
+          class="form-control"
+          id="cameraName"
+          [(ngModel)]="newCamera.name"
+          name="name"
+          required
+        />
+      </div>
+  
+      <!-- Camera Type Field -->
+      <div class="form-group">
+        <label for="cameraType">Camera Type</label>
+        <select
+          class="form-control"
+          id="cameraType"
+          [(ngModel)]="newCamera.type"
+          name="type"
+          required
+        >
+          <option value="entry">Entry</option>
+          <option value="exit">Exit</option>
+        </select>
+      </div>
+  
+      <!-- FPS Field -->
+      <div class="form-group">
+        <label for="fps">FPS</label>
+        <input
+          type="number"
+          class="form-control"
+          id="fps"
+          [(ngModel)]="newCamera.fps"
+          name="fps"
+          required
+        />
+      </div>
+  
+      <!-- URL Field -->
+      <div class="form-group mb-4"> 
+        <label for="url">URL</label>
+        <input
+          type="text"
+          class="form-control"
+          id="url"
+          [(ngModel)]="newCamera.url"
+          name="url"
+          required
+        />
+      </div>
+  
+      <!-- Submit Button -->
+      <button type="submit" class="btn btn-primary">Add Camera</button>
+    </form>
+  
+    <!-- Display Added Cameras -->
+    <h3>Cameras</h3>
+    <div *ngFor="let camera of cameras" class="card mb-3" [ngClass]="{'border-success': camera.operational}">
+      <div class="card-body">
+        <h5 class="card-title">{{ camera.name }}</h5> 
+        <p class="card-text">Type: {{ camera.type === 'entry' ? 'Entry Camera' : 'Exit Camera' }}</p>
+        <p class="card-text">FPS: {{ camera.fps }}</p>
+        <p class="card-text">URL: {{ camera.url }}</p>
+        <p class="card-text">
+          Status:
+          <span [ngClass]="{'text-success': camera.operational, 'text-danger': !camera.operational}">
+            {{ camera.operational ? 'Operational' : 'Not Operational' }}
+          </span>
+        </p>
+      </div>
+    </div>
+  </div>
+
+  

@@ -20,6 +20,7 @@ import { NotificationComponent } from './testComponents/admin-panel/notification
 import { UserPanelComponent } from './testComponents/user-panel/user-panel.component';
 import { UserDashboardComponent } from './testComponents/user-panel/user-dashboard/user-dashboard.component';
 import { UserLogsComponent } from './testComponents/user-panel/user-logs/user-logs.component';
+import { AddCameraComponent } from './testComponents/admin-panel/add-camera/add-camera.component';
 // These are previous Routes.
 // const routes: Routes = [
 //   { path: '', component: HomeComponent},
@@ -43,6 +44,7 @@ const routes: Routes = [
       { path: 'registration-form', component: RegistrationFormComponent },
       { path: 'attendance-log', component: LogsComponent },
       { path: 'notification', component: NotificationComponent },
+      { path: 'add-camera', component: AddCameraComponent },
     ]
   },
   {

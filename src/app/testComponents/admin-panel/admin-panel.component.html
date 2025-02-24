@@ -50,6 +50,13 @@
         <span *ngIf="isSidebarOpen">Attendance Log</span>
       </button>
     </li>
+    <li class="nav-item mb-2">
+      <button class="btn btn-dark w-100 d-flex align-items-center sidebar-btn" (click)="showSection('add-camera')"
+        [attr.title]="isSidebarOpen ? '' : 'add-camera'">
+        <i class="bi bi-camera"></i>
+        <span *ngIf="isSidebarOpen">Add Camera</span>
+      </button>
+    </li>
     
   </ul>
 </div>
