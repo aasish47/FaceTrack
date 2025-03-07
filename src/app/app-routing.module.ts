@@ -48,7 +48,7 @@ const routes: Routes = [
       { path: '', redirectTo: 'dashboard', pathMatch: 'full' },  // Default to dashboard
       { path: 'dashboard', component: UserDashboardComponent },
       { path: 'user-log', component: UserLogsComponent },
-      // { path: 'notification', component: NotificationComponent },
+      { path: 'notification', component: NotificationComponent },
     ]
   },
 ];
