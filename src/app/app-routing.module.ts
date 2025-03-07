@@ -2,25 +2,19 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
 
-// import { HomeComponent } from './components/home/home.component';
-// import { AdminLoginComponent } from './components/admin-login/admin-login.component';
-// import { UserLoginComponent } from './components/user-login/user-login.component';
-// import { UserDashboardComponent } from './components/user-dashboard/user-dashboard.component';
-// import { AdminComponent } from './components/admin/admin.component';
+import { LoginComponent } from './Components/login/login.component';
+import { AdminPanelComponent } from './Components/admin-panel/admin-panel.component';
+import { DashboardComponent } from './Components/admin-panel/dashboard/dashboard.component';
+import { UserDetailsComponent } from './Components/admin-panel/user-details/user-details.component';
+import { RegistrationFormComponent } from './Components/admin-panel/registration-form/registration-form.component';
 
+import { LogsComponent } from './Components/admin-panel/logs/logs.component';
+import { NotificationComponent } from './Components/admin-panel/notification/notification.component';
+import { UserPanelComponent } from './Components/user-panel/user-panel.component';
+import { UserDashboardComponent } from './Components/user-panel/user-dashboard/user-dashboard.component';
+import { UserLogsComponent } from './Components/user-panel/user-logs/user-logs.component';
+import { AddCameraComponent } from './Components/admin-panel/add-camera/add-camera.component';
 
-import { LoginComponent } from './testComponents/login/login.component';
-import { AdminPanelComponent } from './testComponents/admin-panel/admin-panel.component';
-import { DashboardComponent } from './testComponents/admin-panel/dashboard/dashboard.component';
-import { UserDetailsComponent } from './testComponents/admin-panel/user-details/user-details.component';
-import { RegistrationFormComponent } from './testComponents/admin-panel/registration-form/registration-form.component';
-
-import { LogsComponent } from './testComponents/admin-panel/logs/logs.component';
-import { NotificationComponent } from './testComponents/admin-panel/notification/notification.component';
-import { UserPanelComponent } from './testComponents/user-panel/user-panel.component';
-import { UserDashboardComponent } from './testComponents/user-panel/user-dashboard/user-dashboard.component';
-import { UserLogsComponent } from './testComponents/user-panel/user-logs/user-logs.component';
-import { AddCameraComponent } from './testComponents/admin-panel/add-camera/add-camera.component';
 // These are previous Routes.
 // const routes: Routes = [
 //   { path: '', component: HomeComponent},
