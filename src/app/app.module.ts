@@ -3,17 +3,8 @@ import { BrowserModule } from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { HomeComponent } from './components/home/home.component';
-import { AdminComponent } from './components/admin/admin.component';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { NgxPaginationModule } from 'ngx-pagination';
-import { AdminSidebarComponent } from './components/admin/admin-sidebar/admin-sidebar.component';
-import { AdminNavbarComponent } from './components/admin/admin-navbar/admin-navbar.component';
-import { AdminDashboardComponent } from './components/admin/admin-dashboard/admin-dashboard.component';
-import { UserDetailsComponent } from './components/admin/user-details/user-details.component';
-import { AdminNotificationComponent } from './components/admin/admin-notification/admin-notification.component';
-import { AttendanceLogsComponent } from './components/admin/attendance-logs/attendance-logs.component';
-import { AddUserComponent } from './components/admin/add-user/add-user.component';
 import { AdminPanelComponent } from './testComponents/admin-panel/admin-panel.component';
 import { UserPanelComponent } from './testComponents/user-panel/user-panel.component';
 import { LoginComponent } from './testComponents/login/login.component';
@@ -29,19 +20,11 @@ import { UserLogsComponent } from './testComponents/user-panel/user-logs/user-lo
 import { UserDashboardComponent } from './testComponents/user-panel/user-dashboard/user-dashboard.component';
 import { NgChartsModule } from 'ng2-charts'; //npm install chart.js@3.9.1 ng2-charts@4.0.0 --force
 import { RouterModule } from '@angular/router';
+import { CommonModule } from '@angular/common';
 @NgModule({
   declarations: [
     AppComponent,
-    HomeComponent,
-    AdminComponent,
     UserDashboardComponent,
-    AdminSidebarComponent,
-    AdminNavbarComponent,
-    AdminDashboardComponent,
-    UserDetailsComponent,
-    AdminNotificationComponent,
-    AttendanceLogsComponent,
-    AddUserComponent,
     AdminPanelComponent,
     UserPanelComponent,
     LoginComponent,
@@ -62,7 +45,8 @@ import { RouterModule } from '@angular/router';
     FormsModule,
     NgxPaginationModule,
     NgChartsModule,
-    RouterModule
+    RouterModule,
+    CommonModule
   ],
   providers: [],
   bootstrap: [AppComponent]
