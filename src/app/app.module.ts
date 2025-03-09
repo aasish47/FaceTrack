@@ -1,6 +1,5 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
@@ -11,6 +10,7 @@ import { LoginComponent } from './Components/login/login.component';
 import { AttendanceComponent } from './Components/attendance/attendance.component';
 import { DashboardComponent } from './Components/admin-panel/dashboard/dashboard.component';
 import { LogsComponent } from './Components/admin-panel/logs/logs.component';
+import { UserDetailsComponent } from './Components/admin-panel/user-details/user-details.component';
 import { FilterComponent } from './Components/admin-panel/filter/filter.component';
 import { RegistrationFormComponent } from './Components/admin-panel/registration-form/registration-form.component';
 import { AddCameraComponent } from './Components/admin-panel/add-camera/add-camera.component';
@@ -31,6 +31,7 @@ import { CommonModule } from '@angular/common';
     AttendanceComponent,
     DashboardComponent,
     LogsComponent,
+    UserDetailsComponent,
     FilterComponent,
     RegistrationFormComponent,
     AddCameraComponent,
