@@ -21,6 +21,7 @@ import { UserDashboardComponent } from './Components/user-panel/user-dashboard/u
 import { NgChartsModule } from 'ng2-charts'; //npm install chart.js@3.9.1 ng2-charts@4.0.0 --force
 import { RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
+import { HttpClientModule } from '@angular/common/http';
 @NgModule({
   declarations: [
     AppComponent,
@@ -47,7 +48,8 @@ import { CommonModule } from '@angular/common';
     NgxPaginationModule,
     NgChartsModule,
     RouterModule,
-    CommonModule
+    CommonModule,
+    HttpClientModule
   ],
   providers: [],
   bootstrap: [AppComponent]
