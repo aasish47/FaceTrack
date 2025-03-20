@@ -15,7 +15,7 @@ class User(models.Model):
         return self.id
 
 class UserAttendance(models.Model):
-    user = models.ForeignKey('User', on_delete=models.CASCADE)
+    user = models.ForeignKey('User', on_delete=models.CASCADE,primary_key=True)
     time_in = models.TimeField()
     time_out = models.TimeField()
     date = models.DateField()

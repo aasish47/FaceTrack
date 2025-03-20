@@ -15,9 +15,9 @@
 
           <!-- Profile Display -->
           <div *ngIf="!isEditing">
-            <p><strong>Name:</strong> {{ user.name }}</p>
+            <p><strong>Name:</strong> {{ user.fullname }}</p>
             <p><strong>Email:</strong> {{ user.email }}</p>
-            <p><strong>Role:</strong> {{ user.role }}</p>
+            <p><strong>Role:</strong> {{ user.designation }}</p>
           </div>
 
           <!-- Edit Profile Form -->

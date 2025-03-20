@@ -21,12 +21,8 @@ import { UserDashboardComponent } from './Components/user-panel/user-dashboard/u
 import { NgChartsModule } from 'ng2-charts'; //npm install chart.js@3.9.1 ng2-charts@4.0.0 --force
 import { RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
-<<<<<<< HEAD
+import { UserService } from './services/user.service';
 import {HttpClientModule} from '@angular/common/http';
-
-=======
-import { HttpClientModule } from '@angular/common/http';
->>>>>>> e9cc658f92d8babdffc2a459083830de750b9e37
 @NgModule({
   declarations: [
     AppComponent,
@@ -56,7 +52,7 @@ import { HttpClientModule } from '@angular/common/http';
     CommonModule,
     HttpClientModule
   ],
-  providers: [],
+  providers: [UserService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

@@ -1,56 +1,87 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { UserService } from 'src/app/services/user.service';
+
+interface User {
+  fullname: string;
+  email: string;
+  designation?: string;
+  name?: string; 
+  role?: string; 
+}
+
+interface AttendanceRecord {
+  date: string;
+  time_in: string;
+  time_out: string;
+}
 
 @Component({
   selector: 'app-user-dashboard',
   templateUrl: './user-dashboard.component.html',
   styleUrls: ['./user-dashboard.component.css']
 })
-export class UserDashboardComponent {
-  user = {
-    name: 'Tony Stark',
-    email: 'Ironman@marvel.com',
-    role: 'Manager'
-  };
-
+export class UserDashboardComponent implements OnInit {
+  user: User = { fullname: '', email: '', designation: 'User' };
   editProfileForm: FormGroup;
-  isEditing: boolean = false; // Track edit mode
+  isEditing: boolean = false;
 
-  attendanceData = [{ data: [80, 90, 75, 95, 85], label: 'Attendance' }];
-  attendanceLabels = ['Jan', 'Feb', 'Mar', 'Apr', 'May'];
+  attendanceData: { data: number[]; label: string }[] = [];
+  attendanceLabels: string[] = [];
+  recentLogs: string[] = [];
 
-  recentLogs = [
-    'Logged in at 8:45 AM',
-    'Timed out for lunch at 2:00 PM',
-    'Timed in after lunch at 2:45 PM',
-    'Logged out at 4:45 PM'
-  ];
-
-  notifications = [
+  notifications: string[] = [
     'Your attendance is above 85%',
     'New schedule updated for next week',
     'Holiday announced on Friday'
   ];
 
-  constructor(private fb: FormBuilder) {
+  constructor(private fb: FormBuilder, private userService: UserService) {
     this.editProfileForm = this.fb.group({
-      name: [this.user.name, Validators.required],
-      email: [this.user.email, [Validators.required, Validators.email]],
-      role: [this.user.role, Validators.required]
+      fullname: ['', Validators.required],
+      email: ['', [Validators.required, Validators.email]],
+      designation: ['', Validators.required]
     });
+  }
+
+  ngOnInit() {
+    const userId = 1; // Replace with dynamic user ID
+
+    // Fetch User Details
+    this.userService.getUserDetails(userId).subscribe((data: User) => {
+      this.user = {
+        fullname: data.fullname,
+        email: `${data.fullname.toLowerCase().replace(' ', '.')}@example.com`, // Mock email
+        designation: data.designation || 'User',
+        name: data.fullname, 
+        role: data.designation 
+      };
+      this.editProfileForm.patchValue(this.user);
+    });
+
+    // Fetch Attendance Data
+    this.userService.getUserAttendance(userId).subscribe((data: AttendanceRecord[]) => {
+      this.attendanceData = [{ data: data.map((item) => this.calculateAttendancePercentage(item)), label: 'Attendance' }];
+      this.attendanceLabels = data.map((item) => item.date);
+      this.recentLogs = data.map((item) => `Logged in at ${item.time_in}, Logged out at ${item.time_out}`);
+    });
+  }
+
+  calculateAttendancePercentage(attendance: AttendanceRecord): number {
+    return 100; 
   }
 
   toggleEdit() {
     this.isEditing = !this.isEditing;
     if (this.isEditing) {
-      this.editProfileForm.patchValue(this.user); // Populate form with user data
+      this.editProfileForm.patchValue(this.user);
     }
   }
 
   saveProfile() {
     if (this.editProfileForm.valid) {
-      this.user = { ...this.editProfileForm.value }; // Update user data
-      this.isEditing = false; // Exit edit mode
+      this.user = { ...this.editProfileForm.value };
+      this.isEditing = false;
       console.log('Profile Updated:', this.user);
     }
   }
@@ -58,10 +89,7 @@ export class UserDashboardComponent {
   cancelEdit() {
     this.isEditing = false;
   }
-  updateProfile(){
 
-  }
-  changePassword(){
-
-  }
+  updateProfile() {}
+  changePassword() {}
 }

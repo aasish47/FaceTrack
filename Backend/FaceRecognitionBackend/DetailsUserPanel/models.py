@@ -1,3 +1,3 @@
 from django.db import models
-
-# Create your models here.
+from DetailsAdminPanel.models import UserAttendance
+from DetailsAdminPanel.models import User as UserDetails
