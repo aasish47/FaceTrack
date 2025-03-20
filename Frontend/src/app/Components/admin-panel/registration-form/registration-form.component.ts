@@ -4,6 +4,7 @@ import { NgModule } from '@angular/core';
 import { NgModel } from '@angular/forms';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-registration-form',
@@ -13,6 +14,7 @@ import { BrowserModule } from '@angular/platform-browser';
 })
 
 export class RegistrationFormComponent {
+  constructor (private http: HttpClient){}
 
   isFormSubmitted: boolean = false;
 
@@ -20,12 +22,11 @@ export class RegistrationFormComponent {
 
   userForm: any =
     {
-    fName: '',
-    lName: '',
+    userName: '',
     userId: '',
-    gender: '',
-    department: '',
-    dob: '',
+    userEmail: '',
+    userDepartment: '',
+    userDesignation: '',
     userPhoto: null,
   }
 
@@ -39,21 +40,24 @@ export class RegistrationFormComponent {
     }
     const formValue = this.userForm;
     debugger;
-    window.alert("Registration Successful");
+    this.http.post("http://127.0.0.1:8000/Registration/user/", formValue).subscribe(response => {
+        console.log('User  registered successfully', response);
+        window.alert("Registration Successful");
+      }, error => {
+        console.error('Error registering user', error);
+      });
     this.onReset();
     this.isFormSubmitted = false;
   }
 
    //Reset function
   onReset(){
-
-    this.userForm.fName = '';
-    this.userForm.lName = '';
+    this.userForm.userName = '';
     this.userForm.userId = '';
-    this.userForm.gender = '';
-    this.userForm.department = '';
-    this.userForm.dob = '';
+    this.userForm.userDepartment = '';
+    this.userForm.userDesignation = '';
+    this.userForm.userEmail = '';
     this.userForm.userPhoto = null;
     this.isFormSubmitted = false;
-  }   
+  } 
 }
