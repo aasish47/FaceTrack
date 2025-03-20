@@ -14,6 +14,7 @@ import { UserPanelComponent } from './Components/user-panel/user-panel.component
 import { UserDashboardComponent } from './Components/user-panel/user-dashboard/user-dashboard.component';
 import { UserLogsComponent } from './Components/user-panel/user-logs/user-logs.component';
 import { AddCameraComponent } from './Components/admin-panel/add-camera/add-camera.component';
+import { AttendanceComponent } from './Components/attendance/attendance.component';
 
 // These are previous Routes.
 // const routes: Routes = [
@@ -28,6 +29,7 @@ import { AddCameraComponent } from './Components/admin-panel/add-camera/add-came
 const routes: Routes = [
   { path: '', component: LoginComponent },
   { path: 'login', component: LoginComponent },
+  { path: 'attendance', component: AttendanceComponent },
   {
     path: 'admin-panel', 
     component: AdminPanelComponent, 
