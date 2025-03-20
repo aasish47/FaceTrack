@@ -48,6 +48,9 @@ INSTALLED_APPS = [
     'Attendance',
     'Registration',
     'Camera',
+    'rest_framework',
+    'corsheaders',
+    
 ]
 
 MIDDLEWARE = [
@@ -58,8 +61,16 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+<<<<<<< HEAD
     'corsheaders.middleware.CorsMiddleware',
+=======
+    
+    'corsheaders.middleware.CorsMiddleware',
+    'django.middleware.common.CommonMiddleware',
+>>>>>>> e9cc658f92d8babdffc2a459083830de750b9e37
 ]
+
+CORS_ALLOW_ALL_ORIGINS = True
 
 ROOT_URLCONF = 'FaceRecognitionBackend.urls'
 
@@ -86,15 +97,25 @@ WSGI_APPLICATION = 'FaceRecognitionBackend.wsgi.application'
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
 DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': BASE_DIR / 'db.sqlite3',
+#     }
     'default': {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'testDB2',
         'USER': 'root',
         'PASSWORD': 'password',
+<<<<<<< HEAD
         'PORT': 3306,
         'HOST': '127.0.0.1'
 
     
+=======
+        'PORT': '3306',
+        'HOST': '127.0.0.1'
+
+>>>>>>> e9cc658f92d8babdffc2a459083830de750b9e37
     }
 }
 

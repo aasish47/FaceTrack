@@ -19,5 +19,9 @@ from django.urls import path, include
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+<<<<<<< HEAD
     path('Registration/', include('Registration.urls')),
+=======
+    path('DetailsAdminPanel/', include('DetailsAdminPanel.urls'))
+>>>>>>> e9cc658f92d8babdffc2a459083830de750b9e37
 ]

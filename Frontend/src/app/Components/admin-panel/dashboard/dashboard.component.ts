@@ -1,7 +1,6 @@
-import { Component, ElementRef, Input, ViewChild } from '@angular/core';
+import { Component, ElementRef, ViewChild } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
 import { Chart } from 'chart.js';
-import { Student } from 'src/app/models/student.model';
-import { StudentService } from 'src/app/services/student.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -10,28 +9,46 @@ import { StudentService } from 'src/app/services/student.service';
 })
 export class DashboardComponent {
 
-  constructor(private studentService: StudentService) { }
-
-  students: Student[] = [];
-
-  itemsPerPage: number = 10;
-  currentPage: number = 1;
-
-  ngOnInit() {
-    this.students = this.studentService.getStudents();
-  }
+  totalStudents: number = 0;
+  presentStudents: number = 0;
+  absentStudents: number = 0;
+  lateStudents: number = 0;
 
   @ViewChild('attendanceChart') attendanceChart!: ElementRef;
+  private chart: any;
+
+  private apiUrl = 'http://127.0.0.1:8000/DetailsAdminPanel/attendance-summary/';
+
+  constructor(private http: HttpClient) { }
+
+  ngOnInit() {
+    this.loadAttendanceData();
+  }
 
   ngAfterViewInit() {
     this.loadChart();
   }
 
+  loadAttendanceData() {
+    this.http.get<any>(this.apiUrl).subscribe(data => {
+      this.totalStudents = data.total_strength;
+      this.lateStudents = data.late_count;
+      this.presentStudents = data.on_time_count;
+      this.absentStudents = this.totalStudents - data.total_people_today;
+
+      this.loadChart(); // Reload chart after data load
+    });
+  }
+
   loadChart() {
-    new Chart(this.attendanceChart.nativeElement, {
-      type: "bar",
+    if (this.chart) {
+      this.chart.destroy(); // Destroy existing chart to avoid duplication
+    }
+
+    this.chart = new Chart(this.attendanceChart.nativeElement, {
+      type: 'bar',
       data: {
-        labels: ['present', 'absent', 'late'],
+        labels: ['Present', 'Absent', 'Late'],
         datasets: [{
           label: 'Attendance Chart',
           data: [this.presentStudents, this.absentStudents, this.lateStudents],
@@ -40,20 +57,4 @@ export class DashboardComponent {
       }
     });
   }
-  get totalStudents(): number {
-    return this.students.length;
-  }
-
-  get presentStudents(): number {
-    return this.students.filter(s => s.status === 'Present').length;
-  }
-
-  get absentStudents(): number {
-    return this.students.filter(s => s.status === 'Absent').length;
-  }
-
-  get lateStudents(): number {
-    return this.students.filter(s => s.status === 'Late').length;
-  }
-
 }
