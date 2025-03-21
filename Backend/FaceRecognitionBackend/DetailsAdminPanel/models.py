@@ -16,7 +16,7 @@ from Registration.models import User
 #         return self.id
 
 class UserAttendance(models.Model):
-    user = models.ForeignKey('User', on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
     time_in = models.TimeField()
     time_out = models.TimeField()
     date = models.DateField()
