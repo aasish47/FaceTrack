@@ -70,12 +70,14 @@
       <!-- User Photo -->
       <div class="form-group">
         <label for="userPhoto">Upload User Photo</label>
-        <input type="file" #userPhoto="ngModel" [(ngModel)]="userForm.userPhoto" name="userPhoto" class="form-control-file" id="userPhoto" accept="image/*" required><br>
-        <small class="form-text text-muted">Please upload a clear photo (JPEG, PNG).</small>
+        <!-- <input type="file" #userPhoto="ngModel" [(ngModel)]="userForm.userPhoto" name="userPhoto" class="form-control-file" id="userPhoto" accept="image/*" required><br> -->
+        <input type="file" class="form-control-file" id="userPhoto" accept="image/*" (change)="onFileChange($event)" required>
+        <!-- <small class="form-text text-muted">Please upload a clear photo (JPEG, PNG).</small>
         <div class="text-danger" *ngIf="userPhoto.invalid && isFormSubmitted">
           <span *ngIf="userPhoto.errors?.['required']">This field is mandatory</span> 
-        </div>
+        </div> -->
       </div>
+      
   
       <!-- Submit and Reset buttons -->
       <div class="d-flex justify-content-center">
