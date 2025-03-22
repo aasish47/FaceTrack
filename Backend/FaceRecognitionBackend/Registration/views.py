@@ -98,6 +98,7 @@ import string
 import random
 import base64
 import os
+import subprocess
 from django.conf import settings
 
 @csrf_exempt
@@ -117,7 +118,7 @@ def userApi(request, id=0):
             try:
                 format, imgstr = user_data['userPhoto'].split(';base64,')  # Extract format and base64
                 ext = format.split('/')[-1]  # Extract file extension (jpg, png, etc.)
-                file_name = f"user_{user_data['userId']}.{ext}"  # Unique filename
+                file_name = f"{user_data['userId']}.{ext}"  # Unique filename
 
                 image_path = os.path.join(settings.MEDIA_ROOT, 'user_images', file_name)  # Save in 'user_images' directory
                 os.makedirs(os.path.dirname(image_path), exist_ok=True)  # Ensure directory exists
@@ -161,6 +162,12 @@ def userApi(request, id=0):
             login_details = LoginDetails(user=user, hashed_password=hashed_password)
             login_details.save()
             
+            # Call embedding script after successful user registration
+            if image_path:
+                try:
+                    subprocess.run(["python3", "/Volumes/Keiko/FaceTrack/test4/FaceTrack/Backend/model/precomputeEmbeddings.py", image_path], check=True)
+                except subprocess.CalledProcessError as e:
+                    return JsonResponse(f"User added, but embedding generation failed: {str(e)}", safe=False)
 
             return JsonResponse("Added successfully!!", safe=False)
         return JsonResponse("Failed to add", safe=False)

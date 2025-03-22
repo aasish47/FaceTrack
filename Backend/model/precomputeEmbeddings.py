@@ -35,8 +35,11 @@ import pickle
 from deepface import DeepFace
 
 # Paths
-REGISTERED_FACES_DIR = "test4/FaceTrack/Backend/FaceRecognitionBackend/user_images"
-EMBEDDINGS_FILE = "test4/FaceTrack/Backend/model/embeddings.pkl"
+# REGISTERED_FACES_DIR = "test4/FaceTrack/Backend/FaceRecognitionBackend/user_images"
+# EMBEDDINGS_FILE = "test4/FaceTrack/Backend/model/embeddings.pkl"
+
+REGISTERED_FACES_DIR = "/Volumes/Keiko/FaceTrack/test4/FaceTrack/Backend/FaceRecognitionBackend/user_images"
+EMBEDDINGS_FILE = "/Volumes/Keiko/FaceTrack/test4/FaceTrack/Backend/model/embeddings.pkl"
 
 # Load existing embeddings if the file exists
 if os.path.exists(EMBEDDINGS_FILE):
