@@ -25,3 +25,7 @@ class RegistrationLoginDetails(models.Model):
     class Meta:
         managed = False
         db_table = "Registration_logindetails"
+
+    def check_password(self, raw_password):
+        from django.contrib.auth.hashers import check_password
+        return check_password(raw_password, self.hashed_password)

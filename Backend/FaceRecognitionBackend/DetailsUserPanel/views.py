@@ -3,6 +3,7 @@ from rest_framework.decorators import api_view
 from .models import UserDetails, UserAttendance
 from .serializers import UserDetailsSerializer, UserAttendanceSerializer
 
+
 @api_view(['GET'])
 def get_user_details(request, user_id):
     try:
