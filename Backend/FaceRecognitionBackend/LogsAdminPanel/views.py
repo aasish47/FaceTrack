@@ -1,3 +1,8 @@
-from django.shortcuts import render
+from django.http import JsonResponse
+from .models import UserAttendance
+from .serializer import AttendanceSerializer
 
-# Create your views here.
+def getAttendance(request):
+    attendance_records = UserAttendance.objects.all()
+    serializer = AttendanceSerializer(attendance_records, many=True)
+    return JsonResponse(serializer.data, safe=False)

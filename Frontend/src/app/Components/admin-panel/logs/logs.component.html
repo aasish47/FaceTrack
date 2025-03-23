@@ -6,36 +6,26 @@
                 <thead class="thead-dark">
                     <tr>
                         <th>ID</th>
-                        <th>Full Name</th>
-                        <th>Designation/Role</th>
-                        <th>Department</th>
-                        <th>Status</th>
-                        <th>Time</th>
-                        <th>Actions</th>
+                        <th>Time In</th>
+                        <th>Time Out</th>
+                        <th>Date</th>
                     </tr>
                 </thead>
                 <tbody
-                    *ngFor="let student of students | paginate: {itemsPerPage: itemsPerPage, currentPage: currentPage}">
+                    *ngFor="let student of attendanceData | paginate: {itemsPerPage: itemsPerPage, currentPage: currentPage}">
                     <tr>
-                        <td>{{ student.id }}</td>
+                        <td>{{ student.user_id }}</td>
+                        
                         <td>
-                            <span *ngIf="!student.isEditing">{{ student.fullName }}</span>
-                            <input *ngIf="student.isEditing" [(ngModel)]="student.fullName">
+                            <span *ngIf="!student.isEditing">{{ student.time_in }}</span>
+                            <input *ngIf="student.isEditing" [(ngModel)]="student.time_in">
                         </td>
                         <td>
-                            <span *ngIf="!student.isEditing">{{ student.designation }}</span>
-                            <input *ngIf="student.isEditing" [(ngModel)]="student.designation">
+                            <span *ngIf="!student.isEditing">{{ student.time_out }}</span>
+                            <input *ngIf="student.isEditing" [(ngModel)]="student.time_out">
                         </td>
-                        <td>
-                            <span *ngIf="!student.isEditing">{{ student.department }}</span>
-                            <input *ngIf="student.isEditing" [(ngModel)]="student.department">
-                        </td>
-                        <td>
-                            <span class="badge bg-success" *ngIf="student.status === 'Present'">Present</span>
-                            <span class="badge bg-danger" *ngIf="student.status === 'Absent'">Absent</span>
-                            <span class="badge bg-warning text-dark" *ngIf="student.status === 'Late'">Late</span>
-                        </td>
-                        <td>{{ student.time }}</td>
+                       
+                        <td>{{ student.date }}</td>
                         <td>
                             <button class="btn btn-primary btn-sm me-2" (click)="editStudent(student)">
                                 <i class="bi bi-pencil"></i>
@@ -46,9 +36,9 @@
                         </td>
                     </tr>
                 </tbody>
-
+  
             </table>
         </div>
     </div>
     <pagination-controls class="text-center" (pageChange)="currentPage = $event"></pagination-controls>
-</div>
+  </div>
