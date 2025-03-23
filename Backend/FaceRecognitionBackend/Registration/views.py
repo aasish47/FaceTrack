@@ -174,11 +174,11 @@ def userApi(request, id=0):
 
     # For PUT method
     elif request.method == 'PUT':
-        user_data = JSONParser().parse(request)
-        user = User.objects.get(userId=user_data['userId'])
-        user_serializer = UserSerializer(user, data=user_data)
+        user_data = JSONParser().parse(request)  # Parse the incoming data
+        user = User.objects.get(userId=user_data['userId'])  # Find the user by userId
+        user_serializer = UserSerializer(user, data=user_data)  # Update the user data
         if user_serializer.is_valid():
-            user_serializer.save()
+            user_serializer.save()  # Save the updated data
             return JsonResponse("Updated successfully!!", safe=False)
         return JsonResponse("Failed to update", safe=False)
 
