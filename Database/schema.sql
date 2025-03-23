@@ -1,13 +1,6 @@
 CREATE DATABASE FaceTrack;
 
 USE FaceTrack;
-CREATE TABLE user_details (
-	id INT PRIMARY KEY,
-    fullname VARCHAR(100) NOT NULL,
-    designation VARCHAR(50),
-    department VARCHAR(50),
-    image BLOB NOT NULL
-);
 
 CREATE TABLE Registration_user (
     userId VARCHAR(50) PRIMARY KEY,
@@ -30,12 +23,6 @@ CREATE TABLE user_attendance (
     time_in TIME NOT NULL,
     time_out TIME NOT NULL,
     date DATE NOT NULL,
-    FOREIGN KEY (user_id) REFERENCES user_details(id) ON DELETE CASCADE
-);
-
-CREATE TABLE login_details (
-	user_id INT PRIMARY KEY,
-	password_hash VARCHAR(255) NOT NULL,
     FOREIGN KEY (user_id) REFERENCES user_details(id) ON DELETE CASCADE
 );
 
