@@ -1,6 +1,7 @@
 import { Component, ElementRef, ViewChild } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Chart } from 'chart.js';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-dashboard',
@@ -19,9 +20,12 @@ export class DashboardComponent {
 
   private apiUrl = 'http://127.0.0.1:8000/DetailsAdminPanel/attendance-summary/';
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient, private router: Router) { }
 
   ngOnInit() {
+    if(!localStorage.getItem('adminLoggedIn')){
+      this.router.navigate(['/login']);
+    }
     this.loadAttendanceData();
   }
 

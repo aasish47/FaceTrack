@@ -22,5 +22,6 @@ urlpatterns = [
     path('Registration/', include('Registration.urls')),
     path('DetailsAdminPanel/', include('DetailsAdminPanel.urls')),
     path('api/', include('DetailsUserPanel.urls')),
-    path('api/', include('Login.urls'))
+    path('api/', include('Login.urls')),
+    path('logs/', include('LogsAdminPanel.urls'))
 ]

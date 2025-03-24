@@ -23,7 +23,7 @@ CREATE TABLE user_attendance (
     time_in TIME NOT NULL,
     time_out TIME NOT NULL,
     date DATE NOT NULL,
-    FOREIGN KEY (user_id) REFERENCES user_details(id) ON DELETE CASCADE
+    FOREIGN KEY (user_id) REFERENCES Registration_user(userId) ON DELETE CASCADE
 );
 
 CREATE TABLE camera (

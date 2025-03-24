@@ -18,9 +18,9 @@ def getAttendance(request):
         return JsonResponse(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 @api_view(['PUT', 'DELETE'])
-def editAttendance(request, pk):
+def editAttendance(request, user_id, date):
     try:
-        record = UserAttendance.objects.get(pk=pk)
+        record = UserAttendance.objects.get(user=user_id, date=date)
     except UserAttendance.DoesNotExist:
         return JsonResponse({'error': 'Record not found'}, status=status.HTTP_404_NOT_FOUND)
 

@@ -9,7 +9,7 @@ import { HttpClient } from '@angular/common/http';
 
 export class LogsComponent {
   constructor(private http: HttpClient) {}
-  private apiUrl = 'http://127.0.0.1:8000/userAttendance/'; 
+  private apiUrl = 'http://127.0.0.1:8000/logs/userAttendance/'; 
   attendanceData: any = [];
   ngOnInit(): void {
     this.http.get(this.apiUrl).subscribe(data => {
