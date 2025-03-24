@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from first_app.models import UserAttendance  # Import from the first app
+from DetailsAdminPanel.models import UserAttendance  # Import from the first app
 
 class AttendanceSerializer(serializers.ModelSerializer):
     user_id = serializers.IntegerField(source='user.id')  # Map user_id to the foreign key
