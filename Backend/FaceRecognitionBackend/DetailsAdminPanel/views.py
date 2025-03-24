@@ -1,9 +1,8 @@
 from django.db.models import Min
 from django.utils.timezone import now
-from django.shortcuts import render
 from rest_framework.decorators import api_view
-from .models import User, UserAttendance
 from rest_framework.response import Response
+from .models import User, UserAttendance
 from datetime import datetime
 
 @api_view(['GET'])
