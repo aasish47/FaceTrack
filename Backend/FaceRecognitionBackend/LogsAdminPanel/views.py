@@ -1,5 +1,5 @@
 from django.http import JsonResponse
-from first_app.models import UserAttendance  # Import from the first app
+from DetailsAdminPanel.models import UserAttendance  # Import from the first app
 from .serializer import AttendanceSerializer
 from rest_framework.decorators import api_view
 from rest_framework import status
