@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { UserService } from 'src/app/services/user.service';
+import { Router } from '@angular/router';
 
 interface User {
   userId: string;
@@ -37,7 +38,7 @@ export class UserDashboardComponent implements OnInit {
     'Holiday announced on Friday'
   ];
 
-  constructor(private fb: FormBuilder, private userService: UserService) {
+  constructor(private fb: FormBuilder, private userService: UserService, private router: Router) {
     this.editProfileForm = this.fb.group({
       userName: ['', Validators.required],
       userEmail: ['', [Validators.required, Validators.email]],
@@ -47,7 +48,10 @@ export class UserDashboardComponent implements OnInit {
   }
 
   ngOnInit() {
-    const userId = 1; // Replace with dynamic user ID
+    if(!localStorage.getItem('userLoggedIn')){
+      this.router.navigate(['/login']);
+    }
+    const userId = Number(sessionStorage.getItem('userId')); // Replace with dynamic user ID
 
     // Fetch User Details
     this.userService.getUserDetails(userId).subscribe((data: User) => {
