@@ -48,10 +48,11 @@ export class UserDashboardComponent implements OnInit {
   }
 
   ngOnInit() {
-    if(!localStorage.getItem('userLoggedIn')){
-      this.router.navigate(['/login']);
-    }
-    const userId = Number(sessionStorage.getItem('userId')); // Replace with dynamic user ID
+    // if(!localStorage.getItem('userLoggedIn')){
+    //   this.router.navigate(['/login']);
+    // }
+    //const userId = Number(sessionStorage.getItem('userId')); 
+    const userId = 1;
 
     // Fetch User Details
     this.userService.getUserDetails(userId).subscribe((data: User) => {
