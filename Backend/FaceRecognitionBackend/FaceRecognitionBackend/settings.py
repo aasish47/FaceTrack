@@ -96,7 +96,7 @@ DATABASES = {
 #     }
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'testDB2',
+        'NAME': 'facetrack',
         'USER': 'root',
         'PASSWORD': 'password',
         'PORT': '3306',

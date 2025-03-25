@@ -1,27 +1,26 @@
 .sidebar {
-    width: 250px;
-    min-height: 100vh;
-  }
-  
-  .dashboard-content {
-    flex-grow: 1;
-  }
-  
-  .card {
-    background: #fff;
-    border-radius: 8px;
-    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
-  }
-  
-  .card h5 {
-    font-weight: bold;
-  }
-  
-  .btn {
-    transition: 0.3s;
-  }
-  
-  .btn:hover {
-    opacity: 0.8;
-  }
-  
+  width: 250px;
+  min-height: 100vh;
+}
+
+.dashboard-content {
+  flex-grow: 1;
+}
+
+.card {
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.card h5 {
+  font-weight: bold;
+}
+
+.btn {
+  transition: 0.3s;
+}
+
+.btn:hover {
+  opacity: 0.8;
+}
