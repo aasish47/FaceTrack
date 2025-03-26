@@ -3,7 +3,7 @@ from DetailsAdminPanel.models import UserAttendance  # Import from the first app
 from Registration.models import User
 
 # class AttendanceSerializer(serializers.ModelSerializer):
-#     user_id = serializers.IntegerField(source='user.user')  # Map user_id to the foreign key
+#     user_id = serializers.IntegerField(source='user.id')  # Map user_id to the foreign key
 
 #     class Meta:
 #         model = UserAttendance

@@ -19,7 +19,8 @@ CREATE TABLE Registration_logindetails (
 );
 
 CREATE TABLE user_attendance (
-	user_id INT NOT NULL,
+    id INT AUTO_INCREMENT PRIMARY KEY,
+	user_id VARCHAR(50) NOT NULL,
     time_in TIME NOT NULL,
     time_out TIME NOT NULL,
     date DATE NOT NULL,

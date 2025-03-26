@@ -23,5 +23,6 @@ urlpatterns = [
     path('DetailsAdminPanel/', include('DetailsAdminPanel.urls')),
     path('api/', include('DetailsUserPanel.urls')),
     path('api/', include('Login.urls')),
-    path('logs/', include('LogsAdminPanel.urls'))
+    path('logs/', include('LogsAdminPanel.urls')),
+    path('attendance/', include('Attendance.urls'))
 ]

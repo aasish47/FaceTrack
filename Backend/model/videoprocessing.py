@@ -75,13 +75,26 @@ def capture_frames_with_ffmpeg(camera_url, output_dir, fps=1):
     timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
     output_pattern = os.path.join(output_dir, f"frame_{timestamp}_%04d.jpg")
 
-    # FFmpeg command to capture frames
+    # # FFmpeg command to capture frames
+    # ffmpeg_command = [
+    #     "ffmpeg", "-i", camera_url,    # Input camera feed
+    #     "-vf", f"fps={fps}",          # Frame rate filter
+    #     "-q:v", "2",                  # Image quality
+    #     output_pattern                # Output file pattern
+    # ]
+    
+    
     ffmpeg_command = [
-        "ffmpeg", "-i", camera_url,    # Input camera feed
-        "-vf", f"fps={fps}",          # Frame rate filter
-        "-q:v", "2",                  # Image quality
-        output_pattern                # Output file pattern
-    ]
+    "ffmpeg", "-timeout", "10000000", "-i", camera_url,   # 10s timeout
+    "-rtsp_transport", "tcp", "-vf", f"fps={fps}",
+    "-q:v", "2", output_pattern, "-loglevel", "error"
+]
+
+#     ffmpeg_command = [
+#     "ffmpeg", "-reconnect", "1", "-reconnect_streamed", "1", "-reconnect_delay_max", "2",
+#     "-i", camera_url, "-rtsp_transport", "tcp", "-vf", f"fps={fps}", "-q:v", "2",
+#     output_pattern, "-loglevel", "error"
+# ]
 
     try:
         print(f"Starting FFmpeg for {camera_url} at {fps} FPS...")
@@ -110,14 +123,15 @@ if __name__ == "__main__":
     # List of camera URLs
     camera_urls = [
         "http://192.168.29.154:8080/video",
-        "http://192.168.29.82:8080/video"
+        # "http://192.168.29.37:8080/video",
+        "http://192.168.29.82:8080/video",
     ]
     
     # Base directory to save the captured frames
     output_base_directory = "FaceTrack/Backend/model/captured_frames"
     
     # Set the desired frames per second (e.g., 1 frame per second)
-    capture_fps = 3
+    capture_fps = 1
 
     # Start capturing frames from multiple cameras
     process_multiple_cameras(camera_urls, output_base_directory, capture_fps)
