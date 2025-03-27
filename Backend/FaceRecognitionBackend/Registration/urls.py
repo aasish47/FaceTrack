@@ -1,4 +1,3 @@
-# from django.contrib import admin
 from django.urls import re_path
 from Registration import views
 

@@ -1,4 +1,4 @@
-
+<!-- New user registration Form -->
 <div class="container mt-5">
   <h2 class="text-center">New  User  Registration</h2>
   <form class="row g-3 needs-validation" novalidate #form="ngForm">
@@ -70,12 +70,7 @@
       <!-- User Photo -->
       <div class="form-group">
         <label for="userPhoto">Upload User Photo</label>
-        <!-- <input type="file" #userPhoto="ngModel" [(ngModel)]="userForm.userPhoto" name="userPhoto" class="form-control-file" id="userPhoto" accept="image/*" required><br> -->
         <input type="file" class="form-control-file" id="userPhoto" accept="image/*" (change)="onFileChange($event)" required>
-        <!-- <small class="form-text text-muted">Please upload a clear photo (JPEG, PNG).</small>
-        <div class="text-danger" *ngIf="userPhoto.invalid && isFormSubmitted">
-          <span *ngIf="userPhoto.errors?.['required']">This field is mandatory</span> 
-        </div> -->
       </div>
       
   

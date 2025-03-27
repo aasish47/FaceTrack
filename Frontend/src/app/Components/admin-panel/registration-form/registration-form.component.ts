@@ -30,27 +30,8 @@ export class RegistrationFormComponent {
       userPhoto: null,
     }
 
+    
   //Submit function
-
-  // onSubmit(form: NgForm){
-
-  //   this.isFormSubmitted = true;
-  //   if(form.form.invalid){
-  //     return;
-  //   }
-  //   console.log("data : ",this.userForm.userPhoto);
-  //   const formValue = this.userForm;
-  //   debugger;
-  //   this.http.post("http://127.0.0.1:8000/Registration/user/", formValue).subscribe(response => {
-  //       console.log('User  registered successfully', response);
-  //       window.alert("Registration Successful");
-  //     }, error => {
-  //       console.error('Error registering user', error);
-  //     });
-  //   this.onReset();
-  //   this.isFormSubmitted = false;
-  // }
-
 
   onSubmit(form: NgForm) {
     this.isFormSubmitted = true;
@@ -77,7 +58,9 @@ export class RegistrationFormComponent {
     this.isFormSubmitted = false;
   }
 
+
   //Reset function
+
   onReset() {
     this.userForm.userName = '';
     this.userForm.userId = '';
@@ -92,6 +75,9 @@ export class RegistrationFormComponent {
       fileInput.value = "";
     }
   }
+
+
+  // File Change event of user photo field
 
   onFileChange(event: any) {
     const file = event.target.files[0];

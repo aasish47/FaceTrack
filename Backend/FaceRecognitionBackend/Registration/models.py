@@ -15,7 +15,7 @@ class User(models.Model):
 # Log in details for user
 class LoginDetails(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)  # Assuming User is your user model
-    hashed_password = models.CharField(max_length=128, default= "default_password")  # Adjust the length as needed
+    hashed_password = models.CharField(max_length=128, default= "default_password")
 
     def __str__(self):
         return f"{self.user.userName}'s login details"
