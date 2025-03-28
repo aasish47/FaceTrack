@@ -40,6 +40,12 @@
                   <span *ngIf="isSidebarOpen">Attendance Log</span>
               </button>
           </li>
+          <button class="btn btn-dark w-100 d-flex align-items-center sidebar-btn" (click)="showSection('wfh-request')"
+                  [attr.title]="isSidebarOpen ? '' : 'Request Form'">
+                  <i class="bi bi-journal-text"></i>
+                  <span *ngIf="isSidebarOpen">Request Form</span>
+              </button>
+          
       </ul>
   </div>
 

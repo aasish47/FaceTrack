@@ -1,0 +1,55 @@
+<div class="container mt-4">
+    <h3 class="mb-4">Request Form</h3>
+  
+    <form [formGroup]="wfhForm" (ngSubmit)="onSubmit()">
+      <!-- Type of Request -->
+      <div class="mb-3">
+        <label for="requestType" class="form-label">Request Type</label>
+        <select
+          id="requestType"
+          class="form-select"
+          formControlName="type"
+          required
+        >
+          <option value="" disabled>Select a request type</option>
+          <option value="WFH">Work From Home</option>
+          <option value="Corporate Visit">Corporate Visit</option>
+        </select>
+      </div>
+  
+      <!-- Date -->
+      <div class="mb-3">
+        <label for="date" class="form-label">Date</label>
+        <input
+          type="date"
+          class="form-control"
+          id="date"
+          formControlName="date"
+          required
+        />
+      </div>
+  
+      <!-- Reason -->
+      <div class="mb-3">
+        <label for="reason" class="form-label">Reason</label>
+        <textarea
+          id="reason"
+          class="form-control"
+          rows="4"
+          formControlName="reason"
+          required
+          placeholder="Explain your reason for the request"
+        ></textarea>
+      </div>
+  
+      <!-- Submit Button -->
+      <button
+        type="submit"
+        class="btn btn-primary"
+        [disabled]="wfhForm.invalid"
+      >
+        Submit Request
+      </button>
+    </form>
+  </div>
+  

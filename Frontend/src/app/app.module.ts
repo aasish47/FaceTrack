@@ -23,6 +23,7 @@ import { RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { UserService } from './services/user.service';
 import {HttpClientModule} from '@angular/common/http';
+import { WfhRequestComponent } from './Components/user-panel/wfh-request/wfh-request.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -39,7 +40,8 @@ import {HttpClientModule} from '@angular/common/http';
     AddCameraComponent,
     CustomizableErrorComponent,
     NotificationComponent,
-    UserLogsComponent
+    UserLogsComponent,
+    WfhRequestComponent,
   ],
   imports: [
     BrowserModule,

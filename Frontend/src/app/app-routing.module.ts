@@ -15,7 +15,7 @@ import { UserDashboardComponent } from './Components/user-panel/user-dashboard/u
 import { UserLogsComponent } from './Components/user-panel/user-logs/user-logs.component';
 import { AddCameraComponent } from './Components/admin-panel/add-camera/add-camera.component';
 import { AttendanceComponent } from './Components/attendance/attendance.component';
-
+import { WfhRequestComponent } from './Components/user-panel/wfh-request/wfh-request.component';
 // These are previous Routes.
 // const routes: Routes = [
 //   { path: '', component: HomeComponent},
@@ -51,6 +51,7 @@ const routes: Routes = [
       { path: 'dashboard', component: UserDashboardComponent },
       { path: 'user-log', component: UserLogsComponent },
       { path: 'notification', component: NotificationComponent },
+      { path: 'wfh-request', component: WfhRequestComponent },
     ]
   },
 ];

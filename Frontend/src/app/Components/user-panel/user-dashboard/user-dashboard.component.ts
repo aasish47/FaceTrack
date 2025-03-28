@@ -48,10 +48,11 @@ export class UserDashboardComponent implements OnInit {
   }
 
   ngOnInit() {
-    if(!localStorage.getItem('userLoggedIn')){
+    if (!localStorage.getItem('userLoggedIn')) {
       this.router.navigate(['/login']);
     }
-    const userId = Number(sessionStorage.getItem('userId')); 
+
+    const userId = Number(sessionStorage.getItem('userId'));
 
     // Fetch User Details
     this.userService.getUserDetails(userId).subscribe((data: User) => {
@@ -72,26 +73,41 @@ export class UserDashboardComponent implements OnInit {
 
     // Fetch Attendance Data
     this.userService.getUserAttendance(userId).subscribe((data: AttendanceRecord[]) => {
-      const recentData = data.slice(-5); // Get last 5 records
-
+      const lastFive = data.slice(-5); // Get last 5 records (including partial)
+  
       this.attendanceData = [
-        { 
-          data: recentData.map((item) => this.calculateAttendancePercentage(item)), 
-          label: 'Attendance' 
+        {
+          data: lastFive.map(item => this.calculateLoggedHours(item)),
+          label: 'Logged Hours'
         }
       ];
-      this.attendanceLabels = recentData.map((item) => item.date);
-
-      this.recentLogs = recentData.map(
-        (item) => `Date: ${item.date} | Logged in at ${item.time_in}, Logged out at ${item.time_out}`
-      );
+  
+      this.attendanceLabels = lastFive.map(item => item.date);
+  
+      this.recentLogs = lastFive.map(item => {
+        if (item.time_in !== '00:00:00' && item.time_out === '00:00:00') {
+          return `Date: ${item.date} | Logged in at ${item.time_in}`;
+        } else if (item.time_in === '00:00:00' && item.time_out !== '00:00:00') {
+          return `Date: ${item.date} | Logged out at ${item.time_out}`;
+        } else if (item.time_in !== '00:00:00' && item.time_out !== '00:00:00') {
+          return `Date: ${item.date} | Logged in at ${item.time_in}, Logged out at ${item.time_out}`;
+        } else {
+          return `Date: ${item.date} | No login or logout data`;
+        }
+      });
     });
   }
 
-  calculateAttendancePercentage(attendance: AttendanceRecord): number {
-    return 100;
+  calculateLoggedHours(item: AttendanceRecord): number {
+    if (item.time_in === '00:00:00' || item.time_out === '00:00:00') {
+      return 0; // Don't calculate if incomplete data
+    }
+    const timeIn = new Date(`1970-01-01T${item.time_in}`);
+    const timeOut = new Date(`1970-01-01T${item.time_out}`);
+    const diffInMs = timeOut.getTime() - timeIn.getTime();
+    return diffInMs / (1000 * 60 * 60); // Convert milliseconds to hours
   }
-
+  
   toggleEdit() {
     this.isEditing = !this.isEditing;
     if (this.isEditing) {
@@ -116,6 +132,7 @@ export class UserDashboardComponent implements OnInit {
     this.isEditing = false;
   }
 
-  updateProfile() {}
-  changePassword() {}
+  updateProfile() { }
+
+  changePassword() { }
 }
