@@ -34,6 +34,14 @@ export class AdminPanelComponent {
       this.currentRoute = this.router.url;
     });
    }
+   ngOnInit(){
+    // Check if admin is logged in
+    const isAdminLoggedIn = localStorage.getItem('adminLoggedIn');
+
+    if (!isAdminLoggedIn) {
+      this.router.navigate(['/login']); // Redirect to login if not logged in
+    }
+   }
 
   toggleSidebar() {
     this.isSidebarOpen = !this.isSidebarOpen;

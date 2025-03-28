@@ -27,6 +27,15 @@ export class UserPanelComponent {
     });
   }
 
+  ngOnInit(){
+    // Check if user is logged in
+    const isUserLoggedIn = localStorage.getItem('userLoggedIn');
+
+    if (!isUserLoggedIn) {
+      this.router.navigate(['/login']); // Redirect to login if not logged in
+    }
+  }
+
   toggleSidebar() {
     this.isSidebarOpen = !this.isSidebarOpen;
   }
@@ -41,6 +50,7 @@ export class UserPanelComponent {
 
   logout() {
     localStorage.removeItem('userLoggedIn');
+    sessionStorage.removeItem('userId')
     this.router.navigate(['/login']);
   }
 }

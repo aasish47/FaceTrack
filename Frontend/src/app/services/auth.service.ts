@@ -17,7 +17,8 @@ export class AuthService {
     return this.http.post(this.apiUrl, credentials).pipe(
       tap((res: any) => {
         if (res.redirect_url) {
-          // Redirect to user page upon successful login
+          sessionStorage.setItem('userId', credentials.userId);
+          localStorage.setItem('userLoggedIn', 'true');
           this.router.navigateByUrl("user-panel");
         }
       }),
@@ -28,3 +29,4 @@ export class AuthService {
     );
   }
 }
+
