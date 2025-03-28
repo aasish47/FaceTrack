@@ -95,12 +95,17 @@ def userApi(request, id=0):
 
     # For DELETE method
     elif request.method == 'DELETE':
-        user = User.objects.get(userId=id)
-        
-        # Delete the login details
-        login_details = LoginDetails.objects.get(user=user)
-        login_details.delete()  
+        try:
+            user = User.objects.get(userId=id)  # Ensure the user exists
+        except User.DoesNotExist:
+            return JsonResponse("User not found", safe=False, status=404)
 
-        # Delete user
+    # Check if LoginDetails exists before deleting
+        login_details = LoginDetails.objects.filter(user=user).first()
+        if login_details:
+            login_details.delete()  # Delete login details only if they exist
+
+    # Delete user
         user.delete()
         return JsonResponse("Deleted Successfully!!", safe=False)
+

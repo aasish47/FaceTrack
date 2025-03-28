@@ -14,4 +14,4 @@ class AttendanceSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = UserAttendance
-        fields = ('user_id', 'time_in', 'time_out', 'date')
+        fields = ('id','user_id', 'time_in', 'time_out', 'date')
