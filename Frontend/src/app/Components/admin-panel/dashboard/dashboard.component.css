@@ -1,0 +1,38 @@
+.floating-card {
+    position: absolute;
+    z-index: 9999;
+    background-color: white;
+    padding: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    width: 300px;
+    max-height: 400px;
+    overflow-y: auto;
+    transition: transform 0.3s ease-in-out;
+}
+.floating-card .btn-close {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: transparent;
+    border: none;
+    font-size: 1.5rem;
+    cursor: pointer;
+}
+
+.floating-card .card-header {
+    padding: 0.75rem 1rem; /* Adjust padding inside the card header */
+}
+
+.floating-card .btn-close i {
+    font-size: 1.5rem; /* Set icon size for consistency */
+    padding: 0; /* No padding around the icon */
+    margin: 0; /* Remove any default margin */
+}
+
+
+/* Remove focus outline on close button */
+.floating-card .btn-close:focus {
+    outline: none;
+    box-shadow: none; /* Remove any box-shadow */
+}
