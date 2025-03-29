@@ -1,4 +1,4 @@
-CREATE DATABASE FaceTrack;
+CREATE DATABASE testDB2;
 
 USE FaceTrack;
 
