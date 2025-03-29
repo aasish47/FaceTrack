@@ -99,9 +99,9 @@ DATABASES = {
 #     }
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'testDB3',
+        'NAME': 'testDB2',
         'USER': 'root',
-        'PASSWORD': 'piyush@2021',
+        'PASSWORD': 'password',
         'PORT': '3306',
         'HOST': '127.0.0.1'
 
