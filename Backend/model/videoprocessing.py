@@ -128,7 +128,7 @@ if __name__ == "__main__":
     ]
     
     # Base directory to save the captured frames
-    output_base_directory = "FaceTrack/Backend/model/captured_frames"
+    output_base_directory = "FaceTrack1/FaceTrack/Backend/model/captured_frames"
     
     # Set the desired frames per second (e.g., 1 frame per second)
     capture_fps = 1

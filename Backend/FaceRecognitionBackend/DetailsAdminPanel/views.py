@@ -56,38 +56,6 @@ def get_users(request):
     total_users = User.objects.count()
     return Response({'total_users': total_users})
 
-# @api_view(['GET'])
-# def attendance_summary(request):
-#     date_param = request.GET.get('date', None)
-#     today = datetime.strptime(date_param, '%Y-%m-%d').date() if date_param else now().date()
-
-#     # Get first entry for each user
-#     first_entries = UserAttendance.objects.filter(date=today).values('user_id').annotate(first_entry=Min('time_in'))
-
-#     late_users = []
-#     on_time_users = []
-#     all_attending_users = set()
-
-#     for entry in first_entries:
-#         user_id = entry['user_id']
-#         all_attending_users.add(user_id)
-
-#         if entry['first_entry'] and entry['first_entry'] > datetime.strptime('09:30:00', '%H:%M:%S').time():
-#             late_users.append(user_id)
-#         else:
-#             on_time_users.append(user_id)
-
-#     total_users = set(User.objects.values_list('userId', flat=True))  # Use 'userId' as primary key
-#     absent_users = list(total_users - all_attending_users)
-
-#     return Response({
-#         'total_strength': len(total_users),
-#         'total_people_today': len(all_attending_users),
-#         'late_users': UserSerializer(User.objects.filter(userId__in=late_users), many=True).data,
-#         'on_time_users': UserSerializer(User.objects.filter(userId__in=on_time_users), many=True).data,
-#         'absent_users': UserSerializer(User.objects.filter(userId__in=absent_users), many=True).data
-#     })
-
 
 @api_view(['GET'])
 def attendance_summary(request):

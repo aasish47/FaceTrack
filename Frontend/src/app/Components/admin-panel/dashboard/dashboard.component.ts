@@ -441,7 +441,9 @@ export class DashboardComponent {
       } else if (category === 'absent') {
         this.filteredUsers = response.absent_users;
       } else if (category === 'present') {
-        this.filteredUsers = [...response.on_time_users, ...response.late_users]; // Fetch both present and late users
+        this.filteredUsers = [...response.on_time_users, ...response.late_users];
+      } else if (category === 'wfhCorporateVisit') {
+        this.filteredUsers = [];
       } else {
         this.filteredUsers = [];
       }
