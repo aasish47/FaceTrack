@@ -1,7 +1,22 @@
 <div class="flex-grow-1  ">
-    <h3 class="p-3">Attendace Logs</h3>
+    <div class="d-flex justify-content-between align-items-center p-3">
+        <h3>Attendance Logs</h3>
+        <button class="btn btn-dark nav-icon-btn" type="button" (click)="showSection()" title="Add Attendance">
+            <i class="bi bi-person-plus"></i>
+        </button>
+    </div>
+    
     <div>
-        <div class="table-responsive">
+        <form #form="ngForm" (ngSubmit)="onSubmit(form)"  *ngIf="showNewAttendanceForm">
+            <tr>
+                <td>UserID: <input type="text" class="form-control" [(ngModel)]="newUserAttendance.user_id" name="user_id" required></td>
+                <td>In Time: <input type="text" class="form-control" [(ngModel)]="newUserAttendance.time_in" name="time_in" required></td>
+                <td>Out Time: <input type="text" class="form-control" [(ngModel)]="newUserAttendance.time_out" name="time_out" required></td>
+                <td> Date: <input type="date" class="form-control" [(ngModel)]="newUserAttendance.date" name="date" required></td>
+                <td> <button type="submit" class="btn btn-primary">Add</button></td>
+            </tr>
+        </form>
+        <div class="table-responsive mt-3">
             <table class="table table-striped table-bordered text-center">
                 <thead class="thead-dark">
                     <tr>
@@ -11,30 +26,41 @@
                         <th>Date</th>
                         <th>Actions</th>
                     </tr>
+                    
                 </thead>
+            
+
+                
+
+                
+               
+                
+                
+                
                 <tbody
-                    *ngFor="let student of attendanceData | paginate: {itemsPerPage: itemsPerPage, currentPage: currentPage}">
+                    *ngFor="let user of attendanceData | paginate: {itemsPerPage: itemsPerPage, currentPage: currentPage}">
+                    
                     <tr>
-                        <td>{{ student.user_id }}</td>
+                        <td>{{ user.user_id }}</td>
                         
                         <td>
-                            <span *ngIf="!student.isEditing">{{ student.time_in }}</span>
-                            <input *ngIf="student.isEditing" [(ngModel)]="student.time_in">
+                            <span *ngIf="!user.isEditing">{{ user.time_in }}</span>
+                            <input *ngIf="user.isEditing" [(ngModel)]="user.time_in">
                         </td>
                         <td>
-                            <span *ngIf="!student.isEditing">{{ student.time_out }}</span>
-                            <input *ngIf="student.isEditing" [(ngModel)]="student.time_out">
+                            <span *ngIf="!user.isEditing">{{ user.time_out }}</span>
+                            <input *ngIf="user.isEditing" [(ngModel)]="user.time_out">
                         </td>
                        
-                        <td>{{ student.date }}</td>
+                        <td>{{ user.date }}</td>
                         <td>
-                            <button class="btn btn-primary btn-sm me-2" (click)="editStudent(student)">
+                            <button class="btn btn-primary btn-sm me-2" (click)="editUser(user)">
                                 <i class="bi bi-pencil"></i>
                             </button>
-                            <button class="btn btn-success btn-sm me-2" (click)="saveStudent(student)">
+                            <button class="btn btn-success btn-sm me-2" (click)="saveUser(user)">
                                 <i class="bi bi-cloud-check"></i>
                             </button>
-                            <button class="btn btn-danger btn-sm" (click)="deleteUser(student)">
+                            <button class="btn btn-danger btn-sm" (click)="deleteUser(user)">
                                 <i class="bi bi-trash"></i>
                             </button>
                         </td>

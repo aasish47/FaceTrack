@@ -109,3 +109,7 @@ def userApi(request, id=0):
         user.delete()
         return JsonResponse("Deleted Successfully!!", safe=False)
 
+@csrf_exempt
+def check_user_exists(request, user_id):
+    exists = User.objects.filter(userId=user_id).exists()
+    return JsonResponse({'exists': exists})
