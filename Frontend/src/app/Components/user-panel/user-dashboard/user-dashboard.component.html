@@ -5,29 +5,44 @@
     <div class="row">
       <!-- User Profile Card -->
       <div class="col-lg-6 col-md-12">
-        <div class="card p-4 mb-4 shadow-lg text-center align-items-center" 
-             style="border: none; color: rgb(0, 0, 0); border-radius: 12px;">
-          
-          <img 
-            [src]="user.userPhoto" 
-            alt="User Photo" 
-            class="img-thumbnail rounded-circle mb-3 border border-light shadow-lg" 
-            style="width: 120px; height: 120px;"
+        <div
+          class="card p-4 mb-4 shadow-lg text-center align-items-center"
+          style="border: none; color: rgb(0, 0, 0); border-radius: 12px"
+        >
+          <img
+            [src]="user.userPhoto"
+            alt="User Photo"
+            class="img-thumbnail rounded-circle mb-3 border border-light shadow-lg"
+            style="width: 120px; height: 120px"
           />
 
           <h3 class="mb-1">{{ user.userName }}</h3>
-          <p class="mb-1"><i class="fas fa-envelope"></i> {{ user.userEmail }}</p>
-          <p class="mb-1"><i class="fas fa-briefcase"></i> {{ user.userDesignation }}</p>
-          <p class="mb-0"><i class="fas fa-building"></i> {{ user.userDepartment }}</p>
+          <p class="mb-1">
+            <i class="fas fa-envelope"></i> {{ user.userEmail }}
+          </p>
+          <p class="mb-1">
+            <i class="fas fa-briefcase"></i> {{ user.userDesignation }}
+          </p>
+          <p class="mb-0">
+            <i class="fas fa-building"></i> {{ user.userDepartment }}
+          </p>
         </div>
       </div>
 
       <!-- Attendance Overview -->
       <div class="col-lg-6 col-md-12">
-        <div class="card p-4 mb-4 shadow-lg text-center" 
-             style="border-radius: 12px; background: #ffffff;">
-          <h5 class="text-primary"><i class="fas fa-chart-line"></i> Attendance Overview</h5>
-          <canvas baseChart [datasets]="attendanceData" [labels]="attendanceLabels"></canvas>
+        <div
+          class="card p-4 mb-4 shadow-lg text-center"
+          style="border-radius: 12px; background: #ffffff"
+        >
+          <h5 class="text-primary">
+            <i class="fas fa-chart-line"></i> Attendance Overview
+          </h5>
+          <canvas
+            baseChart
+            [datasets]="attendanceData"
+            [labels]="attendanceLabels"
+          ></canvas>
         </div>
       </div>
     </div>
@@ -35,9 +50,13 @@
     <div class="row">
       <!-- Recent Logs -->
       <div class="col-md-6">
-        <div class="card p-4 mb-4 shadow-lg" 
-             style="border-radius: 12px; background: #f8f9fa;">
-          <h5 class="text-secondary"><i class="fas fa-history"></i> Recent Logs</h5>
+        <div
+          class="card p-4 mb-4 shadow-lg"
+          style="border-radius: 12px; background: #f8f9fa"
+        >
+          <h5 class="text-secondary">
+            <i class="fas fa-history"></i> Recent Logs
+          </h5>
           <ul class="list-unstyled">
             <li *ngFor="let log of recentLogs.slice(0, 3)">
               <i class="fas fa-clock text-primary"></i> {{ log }}
@@ -48,9 +67,13 @@
 
       <!-- Notifications -->
       <div class="col-md-6">
-        <div class="card p-4 mb-4 shadow-lg" 
-             style="border-radius: 12px; background: #f8f9fa;">
-          <h5 class="text-secondary"><i class="fas fa-bell"></i> Notifications</h5>
+        <div
+          class="card p-4 mb-4 shadow-lg"
+          style="border-radius: 12px; background: #f8f9fa"
+        >
+          <h5 class="text-secondary">
+            <i class="fas fa-bell"></i> Notifications
+          </h5>
           <ul class="list-unstyled">
             <li *ngFor="let notification of notifications">
               <i class="fas fa-bell text-warning"></i> {{ notification }}
@@ -58,20 +81,45 @@
           </ul>
         </div>
       </div>
-    </div>
 
-    <!-- Quick Actions -->
-    <div class="row">
-      <div class="col-12">
-        <div class="card p-4 mb-4 shadow-lg text-center" 
-             style="border-radius: 12px; background: #ffffff;">
-          <h5 class="text-secondary"><i class="fas fa-cogs"></i> Quick Actions</h5>
-          <button class="btn btn-primary mx-2 shadow-sm" (click)="updateProfile()">
-            <i class="fas fa-user-edit"></i> Update Profile
-          </button>
-          <button class="btn btn-warning mx-2 shadow-sm" (click)="changePassword()">
-            <i class="fas fa-key"></i> Change Password
-          </button>
+      <!-- Weekly Chart -->
+      <div class="col-md-6">
+        <app-weekly-chart></app-weekly-chart>
+      </div>
+      
+      <!-- Monthly Chart -->
+      <div class="col-md-6">
+        <app-monthly-chart></app-monthly-chart>
+      </div>
+
+      <!-- Check Attendance -->
+      <div class="col-md-6">
+        <app-check-attendance></app-check-attendance>
+      </div>
+
+      <!-- Quick Actions -->
+      <div class="row">
+        <div class="col-12">
+          <div
+            class="card p-4 mb-4 shadow-lg text-center"
+            style="border-radius: 12px; background: #ffffff"
+          >
+            <h5 class="text-secondary">
+              <i class="fas fa-cogs"></i> Quick Actions
+            </h5>
+            <button
+              class="btn btn-primary mx-2 shadow-sm"
+              (click)="updateProfile()"
+            >
+              <i class="fas fa-user-edit"></i> Update Profile
+            </button>
+            <button
+              class="btn btn-warning mx-2 shadow-sm"
+              (click)="changePassword()"
+            >
+              <i class="fas fa-key"></i> Change Password
+            </button>
+          </div>
         </div>
       </div>
     </div>
