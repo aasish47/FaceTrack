@@ -17,7 +17,9 @@
           <tr>
             <td>{{ user.userId }}</td>
             <td>
-              <span *ngIf="!user.isEditing">{{ user.userName }}</span>
+              <span *ngIf="!user.isEditing" (click)="viewUserDetails(user)" style="cursor: pointer;">
+                {{ user.userName }}
+              </span>
               <input *ngIf="user.isEditing" [(ngModel)]="user.userName">
             </td>
             <td>
@@ -49,4 +51,51 @@
     </div>
   </div>
   <pagination-controls class="text-center" (pageChange)="currentPage = $event"></pagination-controls>
+</div>
+
+<!-- Modal for Attendance Overview and Recent Logs -->
+<div class="modal fade" id="userDetailsModal" tabindex="-1" aria-labelledby="userDetailsModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="userDetailsModalLabel">User Details</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div class="row">
+          <!-- User Photo -->
+          <div class="col-md-12 text-center mb-4">
+            <img
+              [src]="selectedUserPhoto"
+              alt="User Photo"
+              class="img-thumbnail rounded-circle shadow-lg"
+              style="width: 120px; height: 120px;"
+            />
+            <h3 class="mb-1">{{ selecteduserName }}</h3>
+          </div>
+          <!-- Attendance Overview -->
+          <div class="col-md-6">
+            <div class="card p-4 shadow-lg text-center" style="border-radius: 12px; background: #ffffff;">
+              <h5 class="text-primary"><i class="fas fa-chart-line"></i> Attendance Overview</h5>
+              <canvas baseChart [datasets]="attendanceData" [labels]="attendanceLabels"></canvas>
+            </div>
+          </div>
+          <!-- Recent Logs -->
+          <div class="col-md-6">
+            <div class="card p-4 shadow-lg" style="border-radius: 12px; background: #f8f9fa;">
+              <h5 class="text-secondary"><i class="fas fa-history"></i> Recent Logs</h5>
+              <ul class="list-unstyled">
+                <li *ngFor="let log of recentLogs">
+                  <i class="fas fa-clock text-primary"></i> {{ log }}
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
 </div>
