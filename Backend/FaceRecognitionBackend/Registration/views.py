@@ -76,7 +76,7 @@ def userApi(request, id=0):
             # Call embedding script after successful user registration
             if image_path:
                 try:
-                    subprocess.run(["python3", "/Volumes/Keiko/FaceTrack/test4/FaceTrack/Backend/model/precomputeEmbeddings.py", image_path], check=True)
+                    subprocess.run(["python3", "/Volumes/Keiko/FaceTrack/FaceTrack1/FaceTrack/Backend/model/precomputeEmbeddings.py", image_path], check=True)
                 except subprocess.CalledProcessError as e:
                     return JsonResponse(f"User added, but embedding generation failed: {str(e)}", safe=False)
 
