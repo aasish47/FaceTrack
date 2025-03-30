@@ -24,11 +24,14 @@ export class CheckAttendanceComponent {
           );
 
           if (records.length > 0) {
-            const minTimeIn = this.getMinTime(records.map((r: any) => r.time_in));
-            const maxTimeOut = this.getMaxTime(records.map((r: any) => r.time_out));
+            const timeIns = records.map((r: any) => r.time_in);
+            const timeOuts = records.map((r: any) => r.time_out);
+            
+            const minTimeIn = this.getMinTime(timeIns);
+            const maxTimeOut = this.getMaxTime(timeOuts);
 
             this.status = this.calculateStatus(minTimeIn);
-            this.hoursWorked = this.calculateHours(minTimeIn, maxTimeOut);
+            this.hoursWorked = this.calculateTotalWorkedHours(timeIns, timeOuts);
             this.attendanceRecord = { time_in: minTimeIn, time_out: maxTimeOut };
           } else {
             this.status = 'Absent';
@@ -58,21 +61,13 @@ export class CheckAttendanceComponent {
     return loginTime > lateThreshold ? 'Late' : 'Present';
   }
 
-  calculateHours(timeIn: string, timeOut: string): string {
-    if (
-      !timeIn ||
-      !timeOut ||
-      timeIn === '00:00:00' ||
-      timeOut === '00:00:00'
-    ) {
-      return '-'; // Absent or invalid time
-    }
-
-    const inTime = new Date(`1970-01-01T${timeIn}Z`);
-    const outTime = new Date(`1970-01-01T${timeOut}Z`);
-    const hours = (outTime.getTime() - inTime.getTime()) / (1000 * 60 * 60); // Convert to hours
-
-    return hours.toFixed(2); // Display as "X.XX" hours
+  calculateTotalWorkedHours(timeIns: string[], timeOuts: string[]): string {
+    if (timeIns.length === 0 || timeOuts.length === 0) return '-';
+    
+    const totalTimeIn = timeIns.reduce((sum, t) => sum + new Date(`1970-01-01T${t}Z`).getTime(), 0);
+    const totalTimeOut = timeOuts.reduce((sum, t) => sum + new Date(`1970-01-01T${t}Z`).getTime(), 0);
+    
+    return ((totalTimeOut - totalTimeIn) / (1000 * 60 * 60)).toFixed(2); // Convert to hours
   }
   
   getStatusClass(): string {

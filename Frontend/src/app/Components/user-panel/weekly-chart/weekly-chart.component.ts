@@ -10,15 +10,15 @@ Chart.register(...registerables);
   templateUrl: './weekly-chart.component.html',
   styleUrls: ['./weekly-chart.component.css']
 })
-export class WeeklyChartComponent {
+export class WeeklyChartComponent implements OnInit {
   userId = Number(sessionStorage.getItem('userId'));
-  weeks: { start: string; end: string }[] = [];
+  weeks: { start: string; end: string; startDate: Date; endDate: Date }[] = [];
 
   constructor(private http: HttpClient, private userService: UserService) {}
 
   ngOnInit() {
-    this.setupWeeks(); // Initialize the weeks for display
-    this.fetchAttendanceData(); // Fetch weekly attendance data
+    this.setupWeeks();
+    this.fetchAttendanceData();
   }
 
   setupWeeks() {
@@ -26,12 +26,17 @@ export class WeeklyChartComponent {
     for (let i = 0; i < 4; i++) {
       const start = new Date();
       start.setDate(today.getDate() - (i * 7) - 6);
+      start.setHours(0, 0, 0, 0);
+      
       const end = new Date();
       end.setDate(today.getDate() - (i * 7));
-
-      this.weeks.unshift({ 
+      end.setHours(23, 59, 59, 999);
+      
+      this.weeks.unshift({
         start: start.toLocaleDateString('en-US', { month: 'short', day: 'numeric' }),
-        end: end.toLocaleDateString('en-US', { month: 'short', day: 'numeric' })
+        end: end.toLocaleDateString('en-US', { month: 'short', day: 'numeric' }),
+        startDate: start,
+        endDate: end
       });
     }
   }
@@ -39,8 +44,8 @@ export class WeeklyChartComponent {
   fetchAttendanceData() {
     this.userService.getUserAttendance(this.userId).subscribe({
       next: (data) => {
-        const weeklyHours = this.calculateWeeklyHours(data); // Process weekly attendance data
-        this.renderChart(weeklyHours); // Render chart with computed data
+        const weeklyHours = this.calculateWeeklyHours(data);
+        this.renderChart(weeklyHours);
       },
       error: (error) => {
         console.error('Error fetching attendance data', error);
@@ -50,10 +55,8 @@ export class WeeklyChartComponent {
 
   calculateWeeklyHours(data: any[]): number[] {
     const weeklyHours: number[] = [0, 0, 0, 0];
-    const today = new Date();
     const groupedByDate: { [key: string]: { time_in: string[], time_out: string[] } } = {};
 
-    // Group attendance records by date to consolidate multiple logs
     data.forEach(record => {
       if (!groupedByDate[record.date]) {
         groupedByDate[record.date] = { time_in: [], time_out: [] };
@@ -62,44 +65,36 @@ export class WeeklyChartComponent {
       groupedByDate[record.date].time_out.push(record.time_out);
     });
 
-    for (let i = 0; i < 4; i++) {
-      const start = new Date();
-      start.setDate(today.getDate() - (i * 7) - 6);
-      const end = new Date();
-      end.setDate(today.getDate() - (i * 7));
+    Object.keys(groupedByDate).forEach(dateStr => {
+      const recordDate = new Date(dateStr);
+      recordDate.setHours(0, 0, 0, 0); // Normalize time
       
-      Object.keys(groupedByDate).forEach(dateStr => {
-        const recordDate = new Date(dateStr);
-        if (recordDate >= start && recordDate <= end) {
-          const timeIns = groupedByDate[dateStr].time_in;
-          const timeOuts = groupedByDate[dateStr].time_out;
-          const totalHours = this.calculateTotalHours(timeIns, timeOuts);
-          weeklyHours[i] += totalHours;
+      this.weeks.forEach((week, index) => {
+        if (recordDate >= week.startDate && recordDate <= week.endDate) {
+          const totalHours = this.calculateTotalHours(groupedByDate[dateStr].time_in, groupedByDate[dateStr].time_out);
+          weeklyHours[index] += totalHours;
         }
       });
-    }
+    });
 
     return weeklyHours;
   }
 
   calculateTotalHours(timeIns: string[], timeOuts: string[]): number {
     if (timeIns.length === 0 || timeOuts.length === 0) return 0;
-    // Sum all time-in timestamps to compute total working hours
     const totalTimeIn = timeIns.reduce((sum, t) => sum + new Date(`1970-01-01T${t}Z`).getTime(), 0);
     const totalTimeOut = timeOuts.reduce((sum, t) => sum + new Date(`1970-01-01T${t}Z`).getTime(), 0);
-    return (totalTimeOut - totalTimeIn) / (1000 * 60 * 60); // Convert milliseconds to hours
+    return (totalTimeOut - totalTimeIn) / (1000 * 60 * 60);
   }
 
   renderChart(hoursWorked: number[]) {
     const ctx = document.getElementById('weeklyHoursChart') as HTMLCanvasElement;
-    
     const colors = {
-      low: '#E03C32',  // Red (< 36 hrs) - Below Standard
-      mid: '#FFD301',  // Yellow (36-40 hrs) - Meeting Target
-      high: '#639754'  // Green (> 40 hrs) - Exceeding Target
+      low: '#E03C32',
+      mid: '#FFD301',
+      high: '#639754'
     };
 
-    // Assign colors based on the total hours worked
     const backgroundColors = hoursWorked.map(hours => {
       if (hours < 36) return colors.low;
       if (hours < 40) return colors.mid;
@@ -109,7 +104,7 @@ export class WeeklyChartComponent {
     new Chart(ctx, {
       type: 'bar' as ChartType,
       data: {
-        labels: this.weeks.map(week => `${week.start} - ${week.end}`), // Assign weeks to the X-axis
+        labels: this.weeks.map(week => `${week.start} - ${week.end}`),
         datasets: [{
           label: 'Total Hours Worked',
           data: hoursWorked,
@@ -140,13 +135,9 @@ export class WeeklyChartComponent {
           y: {
             beginAtZero: true,
             title: { display: true, text: 'Hours Worked' },
-            ticks: {
-              stepSize: 10
-            }
+            ticks: { stepSize: 10 }
           },
-          x: {
-            title: { display: true, text: 'Weeks' }
-          }
+          x: { title: { display: true, text: 'Weeks' } }
         }
       }
     });
