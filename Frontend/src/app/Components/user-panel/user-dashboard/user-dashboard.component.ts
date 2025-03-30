@@ -73,41 +73,40 @@ export class UserDashboardComponent implements OnInit {
 
     // Fetch Attendance Data
     this.userService.getUserAttendance(userId).subscribe((data: AttendanceRecord[]) => {
-      const lastFive = data.slice(-5); // Get last 5 records (including partial)
-  
+      const groupedByDate: { [key: string]: { time_in: string[]; time_out: string[] } } = {};
+
+      data.forEach(record => {
+        if (!groupedByDate[record.date]) {
+          groupedByDate[record.date] = { time_in: [], time_out: [] };
+        }
+        groupedByDate[record.date].time_in.push(record.time_in);
+        groupedByDate[record.date].time_out.push(record.time_out);
+      });
+
+      const lastFiveDays = Object.keys(groupedByDate).slice(-5);
       this.attendanceData = [
         {
-          data: lastFive.map(item => this.calculateLoggedHours(item)),
-          label: 'Logged Hours'
+          data: lastFiveDays.map(date => this.calculateTotalHours(groupedByDate[date].time_in, groupedByDate[date].time_out)),
+          label: 'Hours Worked'
         }
       ];
-  
-      this.attendanceLabels = lastFive.map(item => item.date);
-  
-      this.recentLogs = lastFive.map(item => {
-        if (item.time_in !== '00:00:00' && item.time_out === '00:00:00') {
-          return `Date: ${item.date} | Logged in at ${item.time_in}`;
-        } else if (item.time_in === '00:00:00' && item.time_out !== '00:00:00') {
-          return `Date: ${item.date} | Logged out at ${item.time_out}`;
-        } else if (item.time_in !== '00:00:00' && item.time_out !== '00:00:00') {
-          return `Date: ${item.date} | Logged in at ${item.time_in}, Logged out at ${item.time_out}`;
-        } else {
-          return `Date: ${item.date} | No login or logout data`;
-        }
+      this.attendanceLabels = lastFiveDays;
+
+      const lastThreeLogs = data.slice(-3).map(item => {
+        return `Date: ${item.date} | Logged in at ${item.time_in}, Logged out at ${item.time_out}`;
       });
+
+      this.recentLogs = lastThreeLogs;
     });
   }
 
-  calculateLoggedHours(item: AttendanceRecord): number {
-    if (item.time_in === '00:00:00' || item.time_out === '00:00:00') {
-      return 0; // Don't calculate if incomplete data
-    }
-    const timeIn = new Date(`1970-01-01T${item.time_in}`);
-    const timeOut = new Date(`1970-01-01T${item.time_out}`);
-    const diffInMs = timeOut.getTime() - timeIn.getTime();
-    return diffInMs / (1000 * 60 * 60); // Convert milliseconds to hours
+  calculateTotalHours(timeIns: string[], timeOuts: string[]): number {
+    if (timeIns.length === 0 || timeOuts.length === 0) return 0;
+    const totalTimeIn = timeIns.reduce((sum, t) => sum + new Date(`1970-01-01T${t}Z`).getTime(), 0);
+    const totalTimeOut = timeOuts.reduce((sum, t) => sum + new Date(`1970-01-01T${t}Z`).getTime(), 0);
+    return (totalTimeOut - totalTimeIn) / (1000 * 60 * 60);
   }
-  
+
   toggleEdit() {
     this.isEditing = !this.isEditing;
     if (this.isEditing) {
@@ -131,7 +130,6 @@ export class UserDashboardComponent implements OnInit {
   cancelEdit() {
     this.isEditing = false;
   }
-
   updateProfile() { }
 
   changePassword() { }
