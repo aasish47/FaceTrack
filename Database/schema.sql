@@ -1,6 +1,6 @@
-CREATE DATABASE FaceTrack;
+CREATE DATABASE testDB2;
 
-USE FaceTrack;
+USE testDB2;
 
 CREATE TABLE Registration_user (
     userId VARCHAR(50) PRIMARY KEY,
