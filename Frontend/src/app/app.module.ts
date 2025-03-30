@@ -24,6 +24,9 @@ import { CommonModule } from '@angular/common';
 import { UserService } from './services/user.service';
 import {HttpClientModule} from '@angular/common/http';
 import { WfhRequestComponent } from './Components/user-panel/wfh-request/wfh-request.component';
+import { WeeklyChartComponent } from './Components/user-panel/weekly-chart/weekly-chart.component';
+import { MonthlyChartComponent } from './Components/user-panel/monthly-chart/monthly-chart.component';
+import { CheckAttendanceComponent } from './Components/user-panel/check-attendance/check-attendance.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -42,6 +45,9 @@ import { WfhRequestComponent } from './Components/user-panel/wfh-request/wfh-req
     NotificationComponent,
     UserLogsComponent,
     WfhRequestComponent,
+    WeeklyChartComponent,
+    MonthlyChartComponent,
+    CheckAttendanceComponent,
   ],
   imports: [
     BrowserModule,
