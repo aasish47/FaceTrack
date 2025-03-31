@@ -24,5 +24,6 @@ urlpatterns = [
     path('api/', include('DetailsUserPanel.urls')),
     path('api/', include('Login.urls')),
     path('logs/', include('LogsAdminPanel.urls')),
-    path('attendance/', include('Attendance.urls'))
+    path('attendance/', include('Attendance.urls')),
+    path('api/', include('Camera.urls')),
 ]

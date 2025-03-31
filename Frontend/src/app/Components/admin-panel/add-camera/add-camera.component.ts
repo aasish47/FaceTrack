@@ -1,10 +1,14 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { CameraService } from 'src/app/services/camera.service';
+
 interface Camera {
-  name: string; 
+  id?: number;
+  name: string;
   type: 'entry' | 'exit';
   fps: number;
   url: string;
   operational: boolean;
+  created_at?: string;
 }
 
 @Component({
@@ -12,34 +16,61 @@ interface Camera {
   templateUrl: './add-camera.component.html',
   styleUrls: ['./add-camera.component.css']
 })
-export class AddCameraComponent {
-  cameras: Camera[] = [];
+export class AddCameraComponent implements OnInit {
+  cameras: any[] = [];
   newCamera = {
-    name: '', 
+    name: '',
     type: 'entry' as 'entry' | 'exit',
     fps: 30,
     url: '',
     operational: false,
   };
 
-  addCamera() {
-    // Simulate camera operational status
-    const camera: Camera = {
-      name: this.newCamera.name, 
-      type: this.newCamera.type,
-      fps: this.newCamera.fps,
-      url: this.newCamera.url,
-      operational: true, // Assume the camera is operational after adding
-    };
-    this.cameras.push(camera);
+  constructor(private cameraService: CameraService) {}
 
-    // Reset the form
+  ngOnInit() {
+    this.loadCameras();
+  }
+
+  loadCameras() {
+    this.cameraService.getCameras().subscribe(
+      (cameras) => this.cameras = cameras,
+      (error) => console.error('Error loading cameras:', error)
+    );
+  }
+
+  addCamera() {
+    this.cameraService.addCamera(this.newCamera).subscribe(
+      (response) => {
+
+        this.cameras.push(response.camera);
+        this.resetForm();
+      },
+      (error) => console.error('Error adding camera:', error)
+    );
+  }
+
+  resetForm() {
     this.newCamera = {
-      name: '', 
+      name: '',
       type: 'entry',
       fps: 30,
       url: '',
       operational: false,
     };
+  }
+
+  deleteCamera(id: number) {
+    if (confirm('Are you sure you want to delete this camera?')) {
+      this.cameraService.deleteCamera(id).subscribe(
+        (response) => {
+          this.cameras = this.cameras.filter(camera => camera.id !== id);
+        },
+        (error) => {
+          console.error('Error deleting camera:', error);
+          
+        }
+      );
+    }
   }
 }

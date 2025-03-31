@@ -1,24 +1,23 @@
-<div class="container mt-5">
-    <h2>Add Camera</h2>
-    <form (ngSubmit)="addCamera()" class="mb-4">
-      <!-- Camera Name Field -->
-      <div class="form-group">
-        <label for="cameraName">Camera Name</label>
+<div class="container mt-5 w-75">
+  <div class="card shadow-lg p-4">
+    <h2 class="mb-4 text-center">Add Camera</h2>
+    <form (ngSubmit)="addCamera()">
+      <div class="mb-3">
+        <label for="cameraName" class="form-label">Camera Name</label>
         <input
           type="text"
-          class="form-control"
+          class="form-control border-primary"
           id="cameraName"
           [(ngModel)]="newCamera.name"
           name="name"
           required
         />
       </div>
-  
-      <!-- Camera Type Field -->
-      <div class="form-group">
-        <label for="cameraType">Camera Type</label>
+
+      <div class="mb-3">
+        <label for="cameraType" class="form-label">Camera Type</label>
         <select
-          class="form-control"
+          class="form-select border-primary"
           id="cameraType"
           [(ngModel)]="newCamera.type"
           name="type"
@@ -28,53 +27,80 @@
           <option value="exit">Exit</option>
         </select>
       </div>
-  
-      <!-- FPS Field -->
-      <div class="form-group">
-        <label for="fps">FPS</label>
+
+      <div class="mb-3">
+        <label for="fps" class="form-label">FPS</label>
         <input
           type="number"
-          class="form-control"
+          class="form-control border-primary"
           id="fps"
           [(ngModel)]="newCamera.fps"
           name="fps"
+          min="1"
+          max="60"
           required
         />
       </div>
-  
-      <!-- URL Field -->
-      <div class="form-group mb-4"> 
-        <label for="url">URL</label>
+
+      <div class="mb-3">
+        <label for="url" class="form-label">URL</label>
         <input
-          type="text"
-          class="form-control"
+          type="url"
+          class="form-control border-primary"
           id="url"
           [(ngModel)]="newCamera.url"
           name="url"
           required
+          placeholder="https://example.com/stream"
         />
       </div>
-  
-      <!-- Submit Button -->
-      <button type="submit" class="btn btn-primary">Add Camera</button>
-    </form>
-  
-    <!-- Display Added Cameras -->
-    <h3>Cameras</h3>
-    <div *ngFor="let camera of cameras" class="card mb-3" [ngClass]="{'border-success': camera.operational}">
-      <div class="card-body">
-        <h5 class="card-title">{{ camera.name }}</h5> 
-        <p class="card-text">Type: {{ camera.type === 'entry' ? 'Entry Camera' : 'Exit Camera' }}</p>
-        <p class="card-text">FPS: {{ camera.fps }}</p>
-        <p class="card-text">URL: {{ camera.url }}</p>
-        <p class="card-text">
-          Status:
-          <span [ngClass]="{'text-success': camera.operational, 'text-danger': !camera.operational}">
-            {{ camera.operational ? 'Operational' : 'Not Operational' }}
-          </span>
-        </p>
+
+      <div class="form-check mb-3">
+        <input
+          type="checkbox"
+          class="form-check-input"
+          id="operational"
+          [(ngModel)]="newCamera.operational"
+          name="operational"
+        />
+        <label class="form-check-label" for="operational">Operational</label>
       </div>
-    </div>
+
+      <button type="submit" class="btn btn-primary w-100">Add Camera</button>
+    </form>
   </div>
 
-  
+  <h3 class="mt-5">Cameras</h3>
+  <div *ngIf="cameras.length === 0" class="alert alert-info">
+    No cameras added yet.
+  </div>
+
+  <div *ngFor="let camera of cameras" class="card border-2 mt-3 shadow-sm" 
+       [ngClass]="{'border-success': camera.operational, 'border-danger': !camera.operational}">
+    <div class="card-body">
+      <div class="d-flex justify-content-between align-items-start">
+        <h5 class="card-title">{{ camera.name }}</h5>
+        <button class="btn btn-sm btn-outline-danger" (click)="deleteCamera(camera.id)">
+          Delete
+        </button>
+      </div>
+      <div class="d-flex justify-content-between mt-2">
+        <p class="card-text"><strong>Type:</strong> {{ camera.type === 'entry' ? 'Entry' : 'Exit' }}</p>
+        <p class="card-text"><strong>FPS:</strong> {{ camera.fps }}</p>
+      </div>
+      <p class="card-text"><strong>URL:</strong> 
+        <a href="{{ camera.url }}" target="_blank">{{ camera.url }}</a>
+      </p>
+      <p class="card-text">
+        <strong>Status:</strong>
+        <span class="badge ms-2" 
+              [ngClass]="{'bg-success': camera.operational, 'bg-danger': !camera.operational}">
+          {{ camera.operational ? 'Operational' : 'Not Operational' }}
+        </span>
+      </p>
+      <p class="card-text text-muted" *ngIf="camera.created_at">
+        <small>Added on {{ camera.created_at | date:'medium' }}</small>
+      </p>
+    </div>
+  </div>
+</div>
