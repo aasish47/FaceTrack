@@ -1,0 +1,123 @@
+/* Main Container */
+.camera-management-container {
+    padding: 2rem;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+  
+  /* Header Styles */
+  .bg-gradient-primary {
+    background: linear-gradient(135deg, #3f80ff 0%, #1a56ff 100%);
+  }
+  
+  /* Form Styles */
+  .needs-validation .form-control,
+  .needs-validation .form-select {
+    border-radius: 0.375rem;
+    border: 1px solid #dee2e6;
+    transition: all 0.2s;
+  }
+  
+  .needs-validation .form-control:focus,
+  .needs-validation .form-select:focus {
+    border-color: #3f80ff;
+    box-shadow: 0 0 0 0.25rem rgba(63, 128, 255, 0.25);
+  }
+  
+  .input-group-text {
+    background-color: #f8f9fa;
+    color: #3f80ff;
+  }
+  
+  .form-switch .form-check-input {
+    width: 2.5em;
+    height: 1.5em;
+    cursor: pointer;
+  }
+  
+  /* Camera Card Styles */
+  .camera-card {
+    border-radius: 0.5rem;
+    border-left-width: 4px;
+    transition: transform 0.2s, box-shadow 0.2s;
+    box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+  }
+  
+  .camera-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.1);
+  }
+  
+  .border-start-success {
+    border-left-color: #28a745 !important;
+  }
+  
+  .border-start-warning {
+    border-left-color: #ffc107 !important;
+  }
+  
+  /* Detail Items */
+  .camera-details {
+    margin-top: 1rem;
+  }
+  
+  .detail-item {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 0.75rem;
+    padding-bottom: 0.75rem;
+    border-bottom: 1px solid #f1f1f1;
+  }
+  
+  .detail-item:last-child {
+    border-bottom: none;
+    margin-bottom: 0;
+    padding-bottom: 0;
+  }
+  
+  .detail-label {
+    font-weight: 500;
+    color: #6c757d;
+  }
+  
+  .detail-value {
+    color: #495057;
+    text-align: right;
+  }
+  
+  /* Button Styles */
+  .btn-primary {
+    background-color: #3f80ff;
+    border-color: #3f80ff;
+    transition: all 0.2s;
+  }
+  
+  .btn-primary:hover {
+    background-color: #1a56ff;
+    border-color: #1a56ff;
+  }
+  
+  .btn-outline-danger {
+    transition: all 0.2s;
+  }
+  
+  /* Responsive Adjustments */
+  @media (max-width: 768px) {
+    .camera-management-container {
+      padding: 1rem;
+    }
+    
+    .camera-card {
+      margin-bottom: 1rem;
+    }
+  }
+  
+  /* Animation for form */
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  
+  .add-camera-section {
+    animation: fadeIn 0.3s ease-out;
+  }

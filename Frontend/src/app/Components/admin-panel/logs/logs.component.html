@@ -1,74 +1,116 @@
-<div class="flex-grow-1  ">
-    <div class="d-flex justify-content-between align-items-center p-3">
-        <h3>Attendance Logs</h3>
-        <button class="btn btn-dark nav-icon-btn" type="button" (click)="showSection()" title="Add Attendance">
-            <i class="bi bi-person-plus"></i>
+<div class="attendance-container">
+    <!-- Header Section -->
+    <div class="attendance-header">
+      <div class="d-flex justify-content-between align-items-center">
+        <h2 class="mb-0">
+          <i class="bi bi-clock-history me-2"></i>Attendance Logs
+        </h2>
+        <button class="btn btn-primary" type="button" (click)="showSection()" title="Add Attendance">
+          <i class="bi bi-plus-lg me-1"></i> Add Record
         </button>
+      </div>
     </div>
-    
-    <div>
-        <form #form="ngForm" (ngSubmit)="onSubmit(form)"  *ngIf="showNewAttendanceForm">
-            <tr>
-                <td>UserID: <input type="text" class="form-control" [(ngModel)]="newUserAttendance.user_id" name="user_id" required></td>
-                <td>In Time: <input type="text" class="form-control" [(ngModel)]="newUserAttendance.time_in" name="time_in" required></td>
-                <td>Out Time: <input type="text" class="form-control" [(ngModel)]="newUserAttendance.time_out" name="time_out" required></td>
-                <td> Date: <input type="date" class="form-control" [(ngModel)]="newUserAttendance.date" name="date" required></td>
-                <td> <button type="submit" class="btn btn-primary">Add</button></td>
-            </tr>
-        </form>
-        <div class="table-responsive mt-3">
-            <table class="table table-striped table-bordered text-center">
-                <thead class="thead-dark">
-                    <tr>
-                        <th>ID</th>
-                        <th>Time In</th>
-                        <th>Time Out</th>
-                        <th>Date</th>
-                        <th>Actions</th>
-                    </tr>
-                    
-                </thead>
-            
-
-                
-
-                
-               
-                
-                
-                
-                <tbody
-                    *ngFor="let user of attendanceData | paginate: {itemsPerPage: itemsPerPage, currentPage: currentPage}">
-                    
-                    <tr>
-                        <td>{{ user.user_id }}</td>
-                        
-                        <td>
-                            <span *ngIf="!user.isEditing">{{ user.time_in }}</span>
-                            <input *ngIf="user.isEditing" [(ngModel)]="user.time_in">
-                        </td>
-                        <td>
-                            <span *ngIf="!user.isEditing">{{ user.time_out }}</span>
-                            <input *ngIf="user.isEditing" [(ngModel)]="user.time_out">
-                        </td>
-                       
-                        <td>{{ user.date }}</td>
-                        <td>
-                            <button class="btn btn-primary btn-sm me-2" (click)="editUser(user)">
-                                <i class="bi bi-pencil"></i>
-                            </button>
-                            <button class="btn btn-success btn-sm me-2" (click)="saveUser(user)">
-                                <i class="bi bi-cloud-check"></i>
-                            </button>
-                            <button class="btn btn-danger btn-sm" (click)="deleteUser(user)">
-                                <i class="bi bi-trash"></i>
-                            </button>
-                        </td>
-                    </tr>
-                </tbody>
   
-            </table>
-        </div>
+    <!-- Add New Attendance Form -->
+    <div class="card mb-4 slide-down" *ngIf="showNewAttendanceForm">
+      <div class="card-body">
+        <form #form="ngForm" (ngSubmit)="onSubmit(form)">
+          <div class="row g-3">
+            <div class="col-md-3">
+              <label class="form-label">User ID</label>
+              <input type="text" class="form-control" [(ngModel)]="newUserAttendance.user_id" 
+                     name="user_id" required placeholder="Enter User ID">
+            </div>
+            <div class="col-md-2">
+              <label class="form-label">Time In</label>
+              <input type="time" class="form-control" [(ngModel)]="newUserAttendance.time_in" 
+                     name="time_in" required>
+            </div>
+            <div class="col-md-2">
+              <label class="form-label">Time Out</label>
+              <input type="time" class="form-control" [(ngModel)]="newUserAttendance.time_out" 
+                     name="time_out" required>
+            </div>
+            <div class="col-md-2">
+              <label class="form-label">Date</label>
+              <input type="date" class="form-control" [(ngModel)]="newUserAttendance.date" 
+                     name="date" required>
+            </div>
+            <div class="col-md-3 d-flex align-items-end">
+              <button type="submit" class="btn btn-success me-2">
+                <i class="bi bi-check-lg me-1"></i> Save
+              </button>
+              <button type="button" class="btn btn-outline-secondary" (click)="onReset()">
+                <i class="bi bi-x-lg me-1"></i> Cancel
+              </button>
+            </div>
+          </div>
+        </form>
+      </div>
     </div>
-    <pagination-controls class="text-center" (pageChange)="currentPage = $event"></pagination-controls>
+  
+    <!-- Attendance Logs Table -->
+    <div class="card shadow-sm">
+      <div class="card-body p-0">
+        <div class="table-responsive">
+          <table class="table table-hover align-middle mb-0">
+            <thead class="table-primary">
+              <tr>
+                <th>ID</th>
+                <th>Time In</th>
+                <th>Time Out</th>
+                <th>Date</th>
+                <th>Duration</th>
+                <th class="text-end">Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let user of attendanceData | paginate: {itemsPerPage: itemsPerPage, currentPage: currentPage}">
+                <td class="fw-semibold">{{ user.user_id }}</td>
+                <td>
+                  <span *ngIf="!user.isEditing" class="badge bg-info text-dark">{{ user.time_in || '--:--' }}</span>
+                  <input *ngIf="user.isEditing" type="time" class="form-control form-control-sm" [(ngModel)]="user.time_in">
+                </td>
+                <td>
+                  <span *ngIf="!user.isEditing" class="badge bg-warning text-dark">{{ user.time_out || '--:--' }}</span>
+                  <input *ngIf="user.isEditing" type="time" class="form-control form-control-sm" [(ngModel)]="user.time_out">
+                </td>
+                <td>{{ user.date | date:'mediumDate' }}</td>
+                <td>
+                  <span class="badge bg-light text-dark">
+                    {{ calculateDuration(user.time_in, user.time_out) }}
+                  </span>
+                </td>
+                <td class="text-end">
+                  <div class="btn-group btn-group-sm" role="group">
+                    <button class="btn btn-outline-primary" (click)="editUser(user)" [disabled]="user.isEditing">
+                      <i class="bi bi-pencil"></i>
+                    </button>
+                    <button class="btn btn-outline-success" (click)="saveUser(user)" *ngIf="user.isEditing">
+                      <i class="bi bi-check-lg"></i>
+                    </button>
+                    <button class="btn btn-outline-danger" (click)="deleteUser(user)">
+                      <i class="bi bi-trash"></i>
+                    </button>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  
+    <!-- Pagination -->
+    <div class="d-flex justify-content-between align-items-center mt-3">
+        <div class="text-muted">
+            Showing {{ getDisplayedRange() }}
+          </div>
+          <pagination-controls 
+          class="custom-pagination" 
+          (pageChange)="currentPage = $event"
+          [previousLabel]="'<'"
+          [nextLabel]="'>'">
+        </pagination-controls>
+    </div>
   </div>

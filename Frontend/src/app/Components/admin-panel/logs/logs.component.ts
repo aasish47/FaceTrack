@@ -1,138 +1,166 @@
-import { Component } from '@angular/core';
-import { Student } from 'src/app/models/student.model';
+import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
-import { Form, FormsModule, NgForm } from '@angular/forms';
+import { NgForm } from '@angular/forms';
+
 @Component({
   selector: 'app-logs',
   templateUrl: './logs.component.html',
   styleUrls: ['./logs.component.css']
 })
-
-export class LogsComponent {
-  constructor(private http: HttpClient, private router: Router) { }
+export class LogsComponent implements OnInit {
   private apiUrl = 'http://127.0.0.1:8000/logs/userAttendance/';
-  attendanceData: any = [];
-  activeSection = "attendance-log"
-  isFormSubmitted: boolean = false;
+  attendanceData: any[] = [];
   showNewAttendanceForm: boolean = false;
-  newUserAttendance: any = {
+  isFormSubmitted: boolean = false;
+  itemsPerPage: number = 10;
+  currentPage: number = 1;
+
+  newUserAttendance = {
     user_id: '',
     time_in: '',
     time_out: '',
     date: ''
   };
 
+  constructor(private http: HttpClient, private router: Router) { }
+
   ngOnInit(): void {
-    this.http.get(this.apiUrl).subscribe(data => {
-      this.attendanceData = data;
+    this.fetchAttendanceData();
+  }
+
+  fetchAttendanceData(): void {
+    this.http.get<any[]>(this.apiUrl).subscribe({
+      next: (data) => {
+        this.attendanceData = data;
+      },
+      error: (error) => {
+        console.error('Error fetching attendance data:', error);
+      }
     });
   }
 
-  itemsPerPage: number = 10;
-  currentPage: number = 1;
+  calculateDuration(timeIn: string, timeOut: string): string {
+    if (!timeIn || !timeOut || timeIn === '00:00:00' || timeOut === '00:00:00') {
+      return 'N/A';
+    }
 
-  editUser(attendanceData: any) {
-    console.log('Editing student:', attendanceData);
-    attendanceData.isEditing = true;
+    const [inHours, inMinutes] = timeIn.split(':').map(Number);
+    const [outHours, outMinutes] = timeOut.split(':').map(Number);
+    
+    let hours = outHours - inHours;
+    let minutes = outMinutes - inMinutes;
+
+    if (minutes < 0) {
+      hours--;
+      minutes += 60;
+    }
+
+    return `${hours}h ${minutes}m`;
   }
 
-  saveUser(attendanceData: any) {
-    console.log('Saving student:', attendanceData);
+  editUser(attendance: any): void {
+    this.attendanceData.forEach(a => a.isEditing = false);
+    attendance.isEditing = true;
+  }
 
-    if (!attendanceData.id) {
-      console.error('Error: Student ID is missing.');
+  saveUser(attendance: any): void {
+    if (!attendance.id) {
+      console.error('Error: Attendance ID is missing.');
       return;
     }
 
-    const updateUrl = `${this.apiUrl}${attendanceData.id}/`; // Correct API endpoint
-
+    const updateUrl = `${this.apiUrl}${attendance.id}/`;
+    
     this.http.put(updateUrl, {
-      time_in: attendanceData.time_in,
-      time_out: attendanceData.time_out,
-      date: attendanceData.date
-    }).subscribe(
-      response => {
-        console.log('Attendance updated:', response);
-        attendanceData.isEditing = false;
+      time_in: attendance.time_in,
+      time_out: attendance.time_out,
+      date: attendance.date
+    }).subscribe({
+      next: () => {
+        attendance.isEditing = false;
+        this.fetchAttendanceData();
       },
-      error => {
+      error: (error) => {
         console.error('Error updating attendance:', error);
       }
-    );
+    });
   }
-  deleteUser(attendanceData: any): void {
-    if (!attendanceData.id) {
-      console.error("Error: Attendance ID is missing.");
+
+  deleteUser(attendance: any): void {
+    if (!confirm('Are you sure you want to delete this attendance record?')) {
       return;
     }
 
-    const deleteUrl = `${this.apiUrl}${attendanceData.id}/`;
-
-    if (confirm('Are you sure you want to delete this record?')) {
-      this.http.delete(deleteUrl).subscribe({
-        next: () => {
-          this.attendanceData = this.attendanceData.filter(
-            (record: any) => record.id !== attendanceData.id
-          );
-
-          console.log('Attendance record deleted successfully');
-        },
-        error: (error) => {
-          console.error('Error deleting attendance record:', error);
-        }
-      });
+    if (!attendance.id) {
+      console.error('Error: Attendance ID is missing.');
+      return;
     }
+
+    const deleteUrl = `${this.apiUrl}${attendance.id}/`;
+
+    this.http.delete(deleteUrl).subscribe({
+      next: () => {
+        this.attendanceData = this.attendanceData.filter(a => a.id !== attendance.id);
+      },
+      error: (error) => {
+        console.error('Error deleting attendance:', error);
+      }
+    });
   }
-  onSubmit(form: NgForm) {
+
+  onSubmit(form: NgForm): void {
     this.isFormSubmitted = true;
-  
-    if (!this.newUserAttendance.user_id || this.newUserAttendance.user_id.trim() === '') {
-      window.alert(" Error: User ID is required!");
-      return; 
+
+    if (!this.newUserAttendance.user_id?.trim()) {
+      alert('Error: User ID is required!');
+      return;
     }
-  
-    // Check if user_id exists in the database before submitting
+
     const checkUserUrl = `http://127.0.0.1:8000/Registration/user/${this.newUserAttendance.user_id}/exists/`;
-  
-    this.http.get(checkUserUrl).subscribe(
-      (response: any) => {
+
+    this.http.get(checkUserUrl).subscribe({
+      next: (response: any) => {
         if (response.exists) {
-          this.http.post("http://127.0.0.1:8000/logs/userAttendance/", this.newUserAttendance)
-            .subscribe(response => {
-              window.alert("Attendance Marked Successfully!");
+          this.http.post(this.apiUrl, this.newUserAttendance).subscribe({
+            next: () => {
+              alert('Attendance recorded successfully!');
               this.onReset();
-            }, error => {
-              console.error('Error  Marking attendance', error);
-            });
+              this.fetchAttendanceData();
+            },
+            error: (error) => {
+              console.error('Error recording attendance:', error);
+              alert('Error recording attendance. Please try again.');
+            }
+          });
         } else {
-          window.alert("Error: User ID does not exist in the database!");
+          alert('Error: User ID does not exist!');
         }
       },
-      error => {
-        console.error('Error checking user existence', error);
-        window.alert("Error: Unable to verify User ID. Please try again.");
+      error: (error) => {
+        console.error('Error checking user:', error);
+        alert('Error verifying user. Please try again.');
       }
-    );
-  
-    this.isFormSubmitted = false;
+    });
   }
-  
 
-
-  onReset() {
-    this.newUserAttendance.user_id= '';
-    this.newUserAttendance.time_in= '';
-    this.newUserAttendance.time_out = '';
-    this.newUserAttendance.date= '';
-    
+  onReset(): void {
+    this.newUserAttendance = {
+      user_id: '',
+      time_in: '',
+      time_out: '',
+      date: ''
+    };
     this.isFormSubmitted = false;
     this.showNewAttendanceForm = false;
   }
 
-  showSection() {
+  showSection(): void {
     this.showNewAttendanceForm = !this.showNewAttendanceForm;
   }
-
-
+  getDisplayedRange(): string {
+    const start = (this.currentPage - 1) * this.itemsPerPage + 1;
+    const end = Math.min(this.currentPage * this.itemsPerPage, this.attendanceData.length);
+    return `${start} to ${end} of ${this.attendanceData.length} entries`;
+  }
 }

@@ -1,106 +1,149 @@
-<div class="container mt-5 w-75">
-  <div class="card shadow-lg p-4">
-    <h2 class="mb-4 text-center">Add Camera</h2>
-    <form (ngSubmit)="addCamera()">
-      <div class="mb-3">
-        <label for="cameraName" class="form-label">Camera Name</label>
-        <input
-          type="text"
-          class="form-control border-primary"
-          id="cameraName"
-          [(ngModel)]="newCamera.name"
-          name="name"
-          required
-        />
+<div class="camera-management-container">
+  <!-- Add Camera Section -->
+  <div class="add-camera-section">
+    <div class="card shadow-lg">
+      <div class="card-header bg-gradient-primary text-white">
+        <h2 class="mb-0 text-center">
+          <i class="bi bi-camera-video me-2"></i>Add New Camera
+        </h2>
       </div>
+      <div class="card-body">
+        <form (ngSubmit)="addCamera()" class="needs-validation" novalidate>
+          <div class="row g-3">
+            <div class="col-md-6">
+              <label for="cameraName" class="form-label">Camera Name</label>
+              <div class="input-group">
+                <span class="input-group-text"><i class="bi bi-card-heading"></i></span>
+                <input type="text" class="form-control" id="cameraName" 
+                       [(ngModel)]="newCamera.name" name="name" required
+                       placeholder="e.g., Main Entrance Camera">
+              </div>
+            </div>
 
-      <div class="mb-3">
-        <label for="cameraType" class="form-label">Camera Type</label>
-        <select
-          class="form-select border-primary"
-          id="cameraType"
-          [(ngModel)]="newCamera.type"
-          name="type"
-          required
-        >
-          <option value="entry">Entry</option>
-          <option value="exit">Exit</option>
-        </select>
+            <div class="col-md-6">
+              <label for="cameraType" class="form-label">Camera Type</label>
+              <div class="input-group">
+                <span class="input-group-text"><i class="bi bi-diagram-3"></i></span>
+                <select class="form-select" id="cameraType" 
+                        [(ngModel)]="newCamera.type" name="type" required>
+                  <option value="entry">Entry</option>
+                  <option value="exit">Exit</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="col-md-6">
+              <label for="fps" class="form-label">Frames Per Second (FPS)</label>
+              <div class="input-group">
+                <span class="input-group-text"><i class="bi bi-speedometer2"></i></span>
+                <input type="number" class="form-control" id="fps" 
+                       [(ngModel)]="newCamera.fps" name="fps" min="1" max="60" required>
+                <span class="input-group-text">fps</span>
+              </div>
+            </div>
+
+            <div class="col-md-6">
+              <label for="url" class="form-label">Stream URL</label>
+              <div class="input-group">
+                <span class="input-group-text"><i class="bi bi-link-45deg"></i></span>
+                <input type="url" class="form-control" id="url" 
+                       [(ngModel)]="newCamera.url" name="url" required
+                       placeholder="rtsp://example.com/stream">
+              </div>
+            </div>
+
+            <div class="col-12">
+              <div class="form-check form-switch">
+                <input class="form-check-input" type="checkbox" id="operational" 
+                       [(ngModel)]="newCamera.operational" name="operational">
+                <label class="form-check-label" for="operational">Operational Status</label>
+              </div>
+            </div>
+
+            <div class="col-12 mt-3">
+              <button type="submit" class="btn btn-primary w-100 py-2">
+                <i class="bi bi-plus-circle me-2"></i>Add Camera
+              </button>
+            </div>
+          </div>
+        </form>
       </div>
-
-      <div class="mb-3">
-        <label for="fps" class="form-label">FPS</label>
-        <input
-          type="number"
-          class="form-control border-primary"
-          id="fps"
-          [(ngModel)]="newCamera.fps"
-          name="fps"
-          min="1"
-          max="60"
-          required
-        />
-      </div>
-
-      <div class="mb-3">
-        <label for="url" class="form-label">URL</label>
-        <input
-          type="url"
-          class="form-control border-primary"
-          id="url"
-          [(ngModel)]="newCamera.url"
-          name="url"
-          required
-          placeholder="https://example.com/stream"
-        />
-      </div>
-
-      <div class="form-check mb-3">
-        <input
-          type="checkbox"
-          class="form-check-input"
-          id="operational"
-          [(ngModel)]="newCamera.operational"
-          name="operational"
-        />
-        <label class="form-check-label" for="operational">Operational</label>
-      </div>
-
-      <button type="submit" class="btn btn-primary w-100">Add Camera</button>
-    </form>
+    </div>
   </div>
 
-  <h3 class="mt-5">Cameras</h3>
-  <div *ngIf="cameras.length === 0" class="alert alert-info">
-    No cameras added yet.
-  </div>
+  <!-- Camera List Section -->
+  <div class="camera-list-section mt-5">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+      <h3 class="mb-0">
+        <i class="bi bi-collection me-2"></i>Camera Inventory
+      </h3>
+      <span class="badge bg-primary rounded-pill">{{ cameras.length }} cameras</span>
+    </div>
 
-  <div *ngFor="let camera of cameras" class="card border-2 mt-3 shadow-sm mb-5" 
-       [ngClass]="{'border-success': camera.operational, 'border-danger': !camera.operational}">
-    <div class="card-body">
-      <div class="d-flex justify-content-between align-items-start">
-        <h5 class="card-title">{{ camera.name }}</h5>
-        <button class="btn btn-sm btn-outline-danger" (click)="deleteCamera(camera.id)">
-          Delete
-        </button>
+    <div *ngIf="cameras.length === 0" class="alert alert-info">
+      <i class="bi bi-info-circle me-2"></i>No cameras configured yet. Add your first camera above.
+    </div>
+
+    <div class="row g-4">
+      <div *ngFor="let camera of cameras" class="col-md-6 col-lg-4">
+        <div class="card camera-card h-100" 
+             [ngClass]="{'border-start-success': camera.operational, 'border-start-warning': !camera.operational}">
+          <div class="card-body">
+            <div class="d-flex justify-content-between align-items-start mb-3">
+              <h5 class="card-title mb-0">
+                <i class="bi bi-camera2 me-2"></i>{{ camera.name }}
+              </h5>
+              <button class="btn btn-sm btn-outline-danger" 
+                      (click)="camera.id !== undefined ? deleteCamera(camera.id) : null" 
+                      title="Delete Camera">
+                <i class="bi bi-trash"></i>
+              </button>
+            </div>
+            
+            <div class="camera-details">
+              <div class="detail-item">
+                <span class="detail-label">Type:</span>
+                <span class="detail-value" [ngClass]="{
+                  'text-primary': camera.type === 'entry',
+                  'text-danger': camera.type === 'exit'
+                }">
+                  {{ camera.type === 'entry' ? 'Entry' : 'Exit' }}
+                </span>
+              </div>
+              
+              <div class="detail-item">
+                <span class="detail-label">FPS:</span>
+                <span class="detail-value">{{ camera.fps }}</span>
+              </div>
+              
+              <div class="detail-item">
+                <span class="detail-label">Status:</span>
+                <span class="badge rounded-pill" 
+                      [ngClass]="{
+                        'bg-success': camera.operational,
+                        'bg-secondary': !camera.operational
+                      }">
+                  {{ camera.operational ? 'Active' : 'Inactive' }}
+                </span>
+              </div>
+              
+              <div class="detail-item">
+                <span class="detail-label">Stream:</span>
+                <a href="{{ camera.url }}" target="_blank" class="detail-value text-truncate d-block">
+                  {{ camera.url }}
+                </a>
+              </div>
+            </div>
+          </div>
+          
+          <div class="card-footer bg-transparent">
+            <small class="text-muted">
+              <i class="bi bi-clock-history me-1"></i>
+              Added {{ camera.created_at | date:'mediumDate' }}
+            </small>
+          </div>
+        </div>
       </div>
-      <div class="d-flex justify-content-between mt-2">
-        <p class="card-text"><strong>Type:</strong> {{ camera.type === 'entry' ? 'Entry' : 'Exit' }}</p>
-        <p class="card-text"><strong>FPS:</strong> {{ camera.fps }}</p>
-      </div>
-      <p class="card-text"><strong>URL:</strong> 
-        <a href="{{ camera.url }}" target="_blank">{{ camera.url }}</a>
-      </p>
-      <p class="card-text">
-        <strong>Status:</strong>
-        <span class="badge ms-2" 
-              [ngClass]="{'bg-success': camera.operational, 'bg-danger': !camera.operational}">
-          {{ camera.operational ? 'Operational' : 'Not Operational' }}
-        </span>
-      </p>
-      <p class="card-text text-muted" *ngIf="camera.created_at">
-        <small>Added on {{ camera.created_at | date:'medium' }}</small>
-      </p>
     </div>
   </div>
 </div>

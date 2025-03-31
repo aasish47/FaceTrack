@@ -2,3 +2,125 @@
     padding: 16px;
     padding-top: 0px;
 }
+
+/* Main Container */
+.attendance-container {
+    background-color: #f8f9fa;
+    padding: 20px;
+    border-radius: 10px;
+  }
+  
+  /* Header Section */
+  .attendance-header {
+    background: linear-gradient(135deg, #3f80ff 0%, #1a56ff 100%);
+    color: white;
+    padding: 20px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
+  
+  /* Form Styles */
+  .slide-down {
+    animation: slideDown 0.3s ease-out;
+  }
+  
+  @keyframes slideDown {
+    from { opacity: 0; transform: translateY(-20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  
+  .form-control {
+    border-radius: 6px;
+    border: 1px solid #dee2e6;
+  }
+  
+  /* Table Styles */
+  .table {
+    margin-bottom: 0;
+  }
+  
+  .table-hover tbody tr:hover {
+    background-color: rgba(63, 128, 255, 0.05);
+  }
+  
+  .table-primary {
+    background-color: #e9f0ff;
+    color: #2c3e50;
+  }
+  
+  /* Badge Styles */
+  .badge {
+    padding: 5px 10px;
+    border-radius: 12px;
+    font-weight: 500;
+  }
+  
+  .bg-info {
+    background-color: #d1ecf1 !important;
+    color: #0c5460 !important;
+  }
+  
+  .bg-warning {
+    background-color: #fff3cd !important;
+    color: #856404 !important;
+  }
+  
+  /* Button Styles */
+  .btn {
+    border-radius: 6px;
+    font-weight: 500;
+    transition: all 0.2s;
+  }
+  
+  .btn-primary {
+    background-color: #3f80ff;
+    border-color: #3f80ff;
+  }
+  
+  .btn-primary:hover {
+    background-color: #1a56ff;
+    border-color: #1a56ff;
+  }
+  
+  /* Pagination Styles */
+  .custom-pagination .ngx-pagination {
+    margin-bottom: 0;
+  }
+  
+  .custom-pagination .ngx-pagination li {
+    margin: 0 2px;
+    border-radius: 6px !important;
+  }
+  
+  .custom-pagination .ngx-pagination a:hover,
+  .custom-pagination .ngx-pagination .current {
+    background-color: #3f80ff !important;
+    color: white !important;
+  }
+  
+  /* Responsive Adjustments */
+  @media (max-width: 768px) {
+    .attendance-header {
+      padding: 15px;
+    }
+    
+    .form-row {
+      flex-direction: column;
+    }
+    
+    .form-row .col {
+      margin-bottom: 10px;
+      width: 100%;
+    }
+  }
+
+  .custom-pagination .ngx-pagination .pagination-previous::before {
+    content: '\f12c'; /* Bootstrap chevron-left */
+    font-family: 'Bootstrap Icons';
+  }
+  
+  .custom-pagination .ngx-pagination .pagination-next::before {
+    content: '\f138'; /* Bootstrap chevron-right */
+    font-family: 'Bootstrap Icons';
+  }
