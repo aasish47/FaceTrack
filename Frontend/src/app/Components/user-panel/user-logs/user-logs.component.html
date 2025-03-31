@@ -1,46 +1,125 @@
-<div class="flex-grow-1  ">
-    <h3 class="p-3">Attendace Log</h3>
-    <div>
-        <div class="table-responsive">
-            <table class="table table-striped table-bordered text-center">
-                <thead class="thead-dark">
-                    <tr>
-                        <th>ID</th>
-                        <th>Full Name</th>
-                        <th>Designation/Role</th>
-                        <th>Department</th>
-                        <th>Status</th>
-                        <th>Time</th>
-                        <th>Date</th>   
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr *ngFor="let student of filteredStudents | paginate: {itemsPerPage: itemsPerPage, currentPage: currentPage}">
-                        <td>{{ student.id }}</td>
-                        <td>
-                            <span *ngIf="!student.isEditing">{{ student.fullName }}</span>
-                            <input *ngIf="student.isEditing" [(ngModel)]="student.fullName">
-                        </td>
-                        <td>
-                            <span *ngIf="!student.isEditing">{{ student.designation }}</span>
-                            <input *ngIf="student.isEditing" [(ngModel)]="student.designation">
-                        </td>
-                        <td>
-                            <span *ngIf="!student.isEditing">{{ student.department }}</span>
-                            <input *ngIf="student.isEditing" [(ngModel)]="student.department">
-                        </td>
-                        <td>
-                            <span class="badge bg-success" *ngIf="student.status === 'Present'">Present</span>
-                            <span class="badge bg-danger" *ngIf="student.status === 'Absent'">Absent</span>
-                            <span class="badge bg-warning text-dark" *ngIf="student.status === 'Late'">Late</span>
-                        </td>
-                        <td>{{ student.time }}</td>
-                        <td>{{ student.date }}</td>
-                    </tr>
-                </tbody>
-
-            </table>
+<div class="user-logs-container">
+    <!-- Header and Filter Button -->
+    <div class="header-container">
+      <div class="header-left">
+        <h3 class="header">Attendance Log</h3>
+        <div class="date-range-display" *ngIf="filteredRangeText">
+          {{ filteredRangeText }}
         </div>
+      </div>
+      
+      <button class="btn btn-outline-primary filter-btn" (click)="toggleFilter()">
+        <i class="bi bi-funnel"></i> Filter
+      </button>
     </div>
-    <pagination-controls class="text-center" (pageChange)="currentPage = $event"></pagination-controls>
-</div>
+  
+    <!-- Filter Dropdown -->
+    <div class="filter-dropdown" *ngIf="showFilter">
+      <div class="date-range-filter">
+        <form [formGroup]="rangeForm">
+          <div class="date-pickers">
+            <div class="date-picker">
+              <label>From Date:</label>
+              <input type="date" 
+                     class="form-control"
+                     formControlName="startDate"
+                     [min]="startDate | date:'yyyy-MM-dd'"
+                     [max]="today | date:'yyyy-MM-dd'">
+            </div>
+            <div class="date-picker">
+              <label>To Date:</label>
+              <input type="date" 
+                     class="form-control"
+                     formControlName="endDate"
+                     [min]="startDate | date:'yyyy-MM-dd'"
+                     [max]="today | date:'yyyy-MM-dd'">
+            </div>
+          </div>
+          <div class="filter-actions">
+            <button type="button" class="btn btn-primary btn-sm" (click)="applyFilter()">
+              Apply
+            </button>
+            <button type="button" class="btn btn-outline-secondary btn-sm" (click)="resetFilter()">
+              Reset
+            </button>
+          </div>
+        </form>
+  
+        <div class="alert alert-danger mt-2" *ngIf="showInvalidRangeError">
+          <i class="bi bi-exclamation-triangle"></i> 
+          Invalid Date Range. Date starts from {{ startDate | date:'longDate' }}
+        </div>
+      </div>
+    </div>
+  
+    <!-- Loading State -->
+    <div *ngIf="isLoading" class="loading-state">
+      <div class="spinner"></div>
+      <p>Loading attendance data...</p>
+    </div>
+  
+    <!-- Main Content (when not loading) -->
+    <div *ngIf="!isLoading">
+      <!-- Main Log View -->
+      <div class="log-list">
+        <div *ngIf="(filteredDateRange.length > 0 && !showInvalidRangeError); else noData">
+          <div class="date-group" *ngFor="let day of filteredDateRange" (click)="openDateDetails(day.date)">
+            <div class="date-header">
+              <div class="date">{{ day.date | date:'mediumDate' }}</div>
+              <div class="status-badge" [ngClass]="{
+                'on-time': day.status === 'On Time',
+                'late': day.status === 'Late',
+                'absent': day.status === 'Absent'
+              }">
+                {{ day.status }}
+              </div>
+            </div>
+          </div>
+        </div>
+  
+        <ng-template #noData>
+          <div class="no-data-message">
+            No attendance records found for this period.
+          </div>
+        </ng-template>
+      </div>
+  
+      <!-- Date Details Modal -->
+      <div class="modal-overlay" *ngIf="selectedDate" (click)="closeDetails()">
+        <div class="modal-content" (click)="$event.stopPropagation()">
+          <button class="close-btn" (click)="closeDetails()">&times;</button>
+          <h3>{{ formatDate(selectedDate) }}</h3>
+          
+          <div class="summary" *ngIf="getEntriesForSelectedDate().length > 0">
+            <div class="total-hours">
+              <span>Total Working Hours:</span>
+              <strong>{{ getTotalHoursForSelectedDate() }}</strong>
+            </div>
+          </div>
+          
+          <div class="time-entries" *ngIf="getEntriesForSelectedDate().length > 0; else noEntries">
+            <div class="time-entry" *ngFor="let entry of getEntriesForSelectedDate()">
+              <div class="time-in">
+                <span class="label">IN:</span>
+                <span class="time">{{ entry.time_in || '--:--' }}</span>
+              </div>
+              <div class="time-spacer"></div>
+              <div class="time-out">
+                <span class="label">OUT:</span>
+                <span class="time">{{ entry.time_out || '--:--' }}</span>
+              </div>
+              <div class="entry-hours" *ngIf="entry.time_in && entry.time_out">
+                {{ calculateEntryHours(entry.time_in, entry.time_out) }}
+              </div>
+            </div>
+          </div>
+          
+          <ng-template #noEntries>
+            <div class="no-entries">
+              No attendance entries for this day
+            </div>
+          </ng-template>
+        </div>
+      </div>
+    </div>
+  </div>
