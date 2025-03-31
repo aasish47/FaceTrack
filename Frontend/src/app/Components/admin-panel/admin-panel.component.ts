@@ -52,12 +52,12 @@ export class AdminPanelComponent implements OnInit {
     }
   
     // Load saved theme
-    this.isDarkMode = localStorage.getItem('theme') === 'dark';
-    this.applyTheme();
+    // this.isDarkMode = localStorage.getItem('theme') === 'dark';
+    // this.applyTheme();
   
-    setInterval(() => {
-      this.currentTime = new Date();
-    }, 60000);
+    // setInterval(() => {
+    //   this.currentTime = new Date();
+    // }, 60000);
   }
 
   toggleSidebar() {
@@ -84,24 +84,24 @@ export class AdminPanelComponent implements OnInit {
 
 
 
-  toggleTheme() {
-    this.isDarkMode = !this.isDarkMode;
-    localStorage.setItem('theme', this.isDarkMode ? 'dark' : 'light');
-    this.applyTheme();
-  }
+  // toggleTheme() {
+  //   this.isDarkMode = !this.isDarkMode;
+  //   localStorage.setItem('theme', this.isDarkMode ? 'dark' : 'light');
+  //   this.applyTheme();
+  // }
 
-  applyTheme() {
-    this.themeClass = this.isDarkMode ? 'dark-theme' : 'light-theme';
+  // applyTheme() {
+  //   this.themeClass = this.isDarkMode ? 'dark-theme' : 'light-theme';
   
-    document.body.classList.remove('light-theme', 'dark-theme');
-    document.body.classList.add(this.themeClass);
+  //   document.body.classList.remove('light-theme', 'dark-theme');
+  //   document.body.classList.add(this.themeClass);
   
-    const container = document.querySelector('.admin-content');
-    if (container) {
-      container.classList.remove('light-theme', 'dark-theme');
-      container.classList.add(this.themeClass);
-    }
-  }
+  //   const container = document.querySelector('.admin-content');
+  //   if (container) {
+  //     container.classList.remove('light-theme', 'dark-theme');
+  //     container.classList.add(this.themeClass);
+  //   }
+  // }
 
 
 }

@@ -17,9 +17,9 @@
         <i class="bi bi-clock"></i>
         {{ currentTime | date:'mediumTime' }}
       </div>
-      <button class="nav-btn" (click)="toggleTheme()" title="Toggle Theme">
+      <!-- <button class="nav-btn" (click)="toggleTheme()" title="Toggle Theme">
         <i [ngClass]="isDarkMode ? 'bi bi-moon-stars-fill' : 'bi bi-brightness-high-fill'"></i>
-      </button>
+      </button> -->
       <button class="nav-btn" (click)="showSection('notification')" title="Notifications">
         <i [ngClass]="currentRoute.includes('admin-panel/notification') ? 'bi bi-bell-fill' : 'bi bi-bell'"></i>
         <span class="notification-badge" *ngIf="unreadNotifications > 0">{{ unreadNotifications }}</span>
@@ -27,13 +27,13 @@
       <div class="user-profile" (click)="toggleProfileMenu()">
         <img src="assets/default-admin.png" alt="Admin" class="profile-pic">
         <div class="profile-menu" *ngIf="showProfileMenu">
-          <div class="profile-info">
+          <!-- <div class="profile-info">
             <h6>Admin User</h6>
             <small>admin&#64;gmail.com</small>
           </div>
           <button class="profile-menu-item" (click)="showSection('settings')">
             <i class="bi bi-gear"></i> Settings
-          </button>
+          </button> -->
           <button class="profile-menu-item" (click)="logout()">
             <i class="bi bi-box-arrow-right"></i> Logout
           </button>
@@ -82,13 +82,13 @@
         <span class="menu-tooltip" *ngIf="!isSidebarOpen">Camera Setup</span>
       </button>
     </li>
-    <li [class.active]="currentRoute.includes('reports')">
+    <!-- <li [class.active]="currentRoute.includes('reports')">
       <button (click)="showSection('reports')" [attr.title]="isSidebarOpen ? '' : 'Reports'">
         <i class="bi bi-file-earmark-bar-graph"></i>
         <span *ngIf="isSidebarOpen">Reports</span>
         <span class="menu-tooltip" *ngIf="!isSidebarOpen">Reports</span>
       </button>
-    </li>
+    </li> -->
   </ul>
 
   <div class="sidebar-footer" *ngIf="isSidebarOpen">

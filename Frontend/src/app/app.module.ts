@@ -27,6 +27,7 @@ import { WfhRequestComponent } from './Components/user-panel/wfh-request/wfh-req
 import { WeeklyChartComponent } from './Components/user-panel/weekly-chart/weekly-chart.component';
 import { MonthlyChartComponent } from './Components/user-panel/monthly-chart/monthly-chart.component';
 import { CheckAttendanceComponent } from './Components/user-panel/check-attendance/check-attendance.component';
+import { ReportsComponent } from './Components/admin-panel/reports/reports.component';
 // import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 @NgModule({
   declarations: [
@@ -49,6 +50,7 @@ import { CheckAttendanceComponent } from './Components/user-panel/check-attendan
     WeeklyChartComponent,
     MonthlyChartComponent,
     CheckAttendanceComponent,
+    ReportsComponent,
   ],
   imports: [
     BrowserModule,

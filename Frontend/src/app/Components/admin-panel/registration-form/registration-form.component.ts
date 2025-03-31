@@ -1,87 +1,81 @@
-import { Component, DebugElement } from '@angular/core';
-import { Form, FormsModule, NgForm } from '@angular/forms';
-import { NgModule } from '@angular/core';
-import { NgModel } from '@angular/forms';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { BrowserModule } from '@angular/platform-browser';
+import { Component } from '@angular/core';
+import { NgForm } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-registration-form',
   templateUrl: './registration-form.component.html',
   styleUrls: ['./registration-form.component.css']
-
 })
-
 export class RegistrationFormComponent {
   constructor(private http: HttpClient) { }
 
   isFormSubmitted: boolean = false;
 
-  //Creating user form object
+  userForm = {
+    userName: '',
+    userId: '',
+    userEmail: '',
+    userDepartment: '',
+    userDesignation: '',
+    userPhoto: null as string | ArrayBuffer | null
+  };
 
-  userForm: any =
-    {
+  onSubmit(form: NgForm): void {
+    this.isFormSubmitted = true;
+
+    if (!this.userForm.userPhoto) {
+      alert("Please upload a profile photo before submitting.");
+      return;
+    }
+
+    if (form.invalid) {
+      return;
+    }
+
+    this.http.post("http://127.0.0.1:8000/Registration/user/", this.userForm)
+      .subscribe({
+        next: (response) => {
+          console.log('User registered successfully', response);
+          alert("Registration Successful!");
+          this.onReset();
+        },
+        error: (error) => {
+          console.error('Error registering user', error);
+          alert("Registration failed. Please try again.");
+        }
+      });
+  }
+
+  onReset(): void {
+    this.userForm = {
       userName: '',
       userId: '',
       userEmail: '',
       userDepartment: '',
       userDesignation: '',
-      userPhoto: null,
-    }
-
-    
-  //Submit function
-
-  onSubmit(form: NgForm) {
-    this.isFormSubmitted = true;
-
-    if (!this.userForm.userPhoto) {
-      window.alert("Please select an image before submitting.");
-      return;
-    }
-
-    if (form.form.invalid) {
-      return;
-    }
-
-    console.log("Data:", this.userForm.userPhoto);
-    this.http.post("http://127.0.0.1:8000/Registration/user/", this.userForm)
-      .subscribe(response => {
-        console.log('User registered successfully', response);
-        window.alert("Registration Successful");
-        this.onReset();
-      }, error => {
-        console.error('Error registering user', error);
-      });
-
-    this.isFormSubmitted = false;
-  }
-
-
-  //Reset function
-
-  onReset() {
-    this.userForm.userName = '';
-    this.userForm.userId = '';
-    this.userForm.userDepartment = '';
-    this.userForm.userDesignation = '';
-    this.userForm.userEmail = '';
-    this.userForm.userPhoto = null;
+      userPhoto: null
+    };
     this.isFormSubmitted = false;
 
     const fileInput = document.getElementById("userPhoto") as HTMLInputElement;
     if (fileInput) {
       fileInput.value = "";
+      const fileNameElement = document.getElementById("file-name");
+      if (fileNameElement) {
+        fileNameElement.textContent = "Choose a file...";
+      }
     }
   }
 
-
-  // File Change event of user photo field
-
-  onFileChange(event: any) {
+  onFileChange(event: any): void {
     const file = event.target.files[0];
     if (file) {
+      const fileNameElement = document.getElementById("file-name");
+      if (fileNameElement) {
+        fileNameElement.textContent = file.name;
+      }
+
       const reader = new FileReader();
       reader.readAsDataURL(file);
       reader.onload = () => {

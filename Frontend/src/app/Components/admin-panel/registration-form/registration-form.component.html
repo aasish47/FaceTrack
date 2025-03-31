@@ -1,84 +1,151 @@
-<!-- New user registration Form -->
-<div class="container mt-5">
-  <h2 class="text-center">New  User  Registration</h2>
-  <form class="row g-3 needs-validation" novalidate #form="ngForm">
-    <div>
-      <!-- Full Name -->
-      <div class="form-group">
-        <label for="userName">Name</label>
-        <input type="text" #userName="ngModel" [(ngModel)]="userForm.userName" name="userName" class="form-control" id="userName" placeholder="Enter user Name" required>
-        <div class="text-danger" *ngIf="userName.invalid && isFormSubmitted">
-          <span *ngIf="userName.errors?.['required']">This field is mandatory</span> 
-        </div>
-      </div>
-     
-      <!-- User ID -->
-      <div class="form-group">
-        <label for="userId">User ID</label>
-        <input type="text" #userId="ngModel" [(ngModel)]="userForm.userId" name="userId" class="form-control" id="userId" placeholder="Enter user ID" required>
-        <div class="text-danger" *ngIf="userId.invalid && isFormSubmitted">
-          <span *ngIf="userId.errors?.['required']">This field is mandatory</span> 
-        </div>
-      </div> 
-
-      <!-- User Email-->
-      <div class="form-group">
-        <label for="userId">Email</label>
-        <input type="text" #userEmail="ngModel" [(ngModel)]="userForm.userEmail" name="userEmail" class="form-control" pattern="[a-zA-Z0-9._%+\-]+@[a-zA-Z0-9.\-]+\.[a-zA-Z]{2,}" id="userEmail" placeholder="Enter user Email" required>
-        <div class="text-danger" *ngIf="userEmail.invalid && isFormSubmitted">
-          <span *ngIf="userEmail.errors?.['required']">This field is mandatory</span>
-          <span *ngIf="userEmail.errors?.['pattern']">Email is invalid</span> 
-        </div>
-      </div> 
-  
-      <!-- User Department -->
-      <div class="form-group">
-        <label for="department">Department</label>
-        <select #department="ngModel" [(ngModel)]="userForm.userDepartment" name="department" class="form-control" id="department" required>
-          <option value="" disabled selected>Select your department</option>
-          <option value="IT">Information Technology</option>
-          <option value="HR">Human Resources</option>
-          <option value="Finance">Finance</option>
-          <option value="Marketing">Marketing</option>
-        </select>
-        <div class="text-danger" *ngIf="department.invalid && isFormSubmitted">
-          <span *ngIf="department.errors?.['required']">This field is mandatory</span> 
-        </div>
-      </div>
-
-      <!-- User designation -->
-      <div class="form-group">
-        <label for="designation">Designation</label>
-        <select #designation="ngModel" [(ngModel)]="userForm.userDesignation" name="designation" class="form-control" id="designation" required>
-          <option value="" disabled selected>Select user designation</option>          
-          <option value="Intern">Intern</option>
-          <option value="Developer">Developer</option>
-          <option value="Team Lead">Team Lead</option>
-          <option value="Project Manager">Project Manager</option>
-          <option value="HR Cordinator">HR Cordinator</option>
-          <option value="HR Manager">HR Manager</option>
-          <option value="Finance Analyst">Finance Analyst</option>
-          <option value="Finance Manager">Finance Manager</option>
-          <option value="Marketing Associate">Marketing Associate</option>
-          <option value="Marketing Manager">Marketing Manager</option>
-        </select>
-        <div class="text-danger" *ngIf="designation.invalid && isFormSubmitted">
-          <span *ngIf="designation.errors?.['required']">This field is mandatory</span> 
-        </div>
-      </div>
-
-      <!-- User Photo -->
-      <div class="form-group">
-        <label for="userPhoto">Upload User Photo</label>
-        <input type="file" class="form-control-file" id="userPhoto" accept="image/*" (change)="onFileChange($event)" required>
-      </div>
-      
-  
-      <!-- Submit and Reset buttons -->
-      <div class="d-flex justify-content-center">
-        <button class="btn btn-primary w-25 mx-1" type="submit" (click)="onSubmit(form)"  >Register</button>
-        <button class="btn btn-secondary w-25 mx-1" type="reset" (click)="onReset() "value="reset"  >Reset</button>
-      </div>
+<div class="registration-container">
+  <div class="registration-card">
+    <div class="card-header">
+      <h2 class="text-center">
+        <i class="bi bi-person-plus me-2"></i>New User Registration
+      </h2>
+      <p class="text-center text-muted">Fill in the details to register a new user</p>
     </div>
-  </form>
+    
+    <div class="card-body">
+      <form #form="ngForm" class="needs-validation" novalidate>
+        <div class="row g-3">
+          <!-- Full Name -->
+          <div class="col-md-12">
+            <label for="userName" class="form-label">
+              <i class="bi bi-person-fill me-1"></i>Full Name
+            </label>
+            <div class="input-group">
+              <span class="input-group-text">
+                <i class="bi bi-person"></i>
+              </span>
+              <input type="text" class="form-control" id="userName" 
+                     [(ngModel)]="userForm.userName" name="userName" 
+                     #userName="ngModel" required
+                     placeholder="Enter Your Name">
+            </div>
+            <div class="invalid-feedback" *ngIf="userName.invalid && isFormSubmitted">
+              <span *ngIf="userName.errors?.['required']">Full name is required</span>
+            </div>
+          </div>
+
+          <!-- User ID -->
+          <div class="col-md-6">
+            <label for="userId" class="form-label">
+              <i class="bi bi-person-badge me-1"></i>User ID
+            </label>
+            <div class="input-group">
+              <span class="input-group-text">
+                <i class="bi bi-id-card"></i>
+              </span>
+              <input type="text" class="form-control" id="userId" 
+                     [(ngModel)]="userForm.userId" name="userId" 
+                     #userId="ngModel" required
+                     placeholder="eg: 123">
+            </div>
+            <div class="invalid-feedback" *ngIf="userId.invalid && isFormSubmitted">
+              <span *ngIf="userId.errors?.['required']">User ID is required</span>
+            </div>
+          </div>
+
+          <!-- User Email -->
+          <div class="col-md-6">
+            <label for="userEmail" class="form-label">
+              <i class="bi bi-envelope me-1"></i>Email
+            </label>
+            <div class="input-group">
+              <span class="input-group-text">
+                <i class="bi bi-at"></i>
+              </span>
+              <input type="email" class="form-control" id="userEmail" 
+                     [(ngModel)]="userForm.userEmail" name="userEmail" 
+                     #userEmail="ngModel" required
+                     pattern="[a-zA-Z0-9._%+\-]+@[a-zA-Z0-9.\-]+\.[a-zA-Z]{2,}"
+                     placeholder="user@example.com">
+            </div>
+            <div class="invalid-feedback" *ngIf="userEmail.invalid && isFormSubmitted">
+              <span *ngIf="userEmail.errors?.['required']">Email is required</span>
+              <span *ngIf="userEmail.errors?.['pattern']">Please enter a valid email</span>
+            </div>
+          </div>
+
+          <!-- Department -->
+          <div class="col-md-6">
+            <label for="department" class="form-label">
+              <i class="bi bi-building me-1"></i>Department
+            </label>
+            <select class="form-select" id="department" 
+                    [(ngModel)]="userForm.userDepartment" name="department" 
+                    #department="ngModel" required>
+              <option value="" disabled selected>Select department</option>
+              <option value="IT">Information Technology</option>
+              <option value="HR">Human Resources</option>
+              <option value="Finance">Finance</option>
+              <option value="Marketing">Marketing</option>
+            </select>
+            <div class="invalid-feedback" *ngIf="department.invalid && isFormSubmitted">
+              Department selection is required
+            </div>
+          </div>
+
+          <!-- Designation -->
+          <div class="col-md-6">
+            <label for="designation" class="form-label">
+              <i class="bi bi-briefcase me-1"></i>Designation
+            </label>
+            <select class="form-select" id="designation" 
+                    [(ngModel)]="userForm.userDesignation" name="designation" 
+                    #designation="ngModel" required>
+              <option value="" disabled selected>Select designation</option>
+              <option value="Intern">Intern</option>
+              <option value="Developer">Developer</option>
+              <option value="Team Lead">Team Lead</option>
+              <option value="Project Manager">Project Manager</option>
+              <option value="HR Cordinator">HR Cordinator</option>
+              <option value="HR Manager">HR Manager</option>
+              <option value="Finance Analyst">Finance Analyst</option>
+              <option value="Finance Manager">Finance Manager</option>
+              <option value="Marketing Associate">Marketing Associate</option>
+              <option value="Marketing Manager">Marketing Manager</option>
+            </select>
+            <div class="invalid-feedback" *ngIf="designation.invalid && isFormSubmitted">
+              Designation selection is required
+            </div>
+          </div>
+
+          <!-- User Photo -->
+          <div class="col-12">
+            <label for="userPhoto" class="form-label">
+              <i class="bi bi-camera me-1"></i>Profile Photo
+            </label>
+            <div class="file-upload-container">
+              <input type="file" class="form-control" id="userPhoto" 
+                     accept="image/*" (change)="onFileChange($event)" required>
+              <label for="userPhoto" class="file-upload-label">
+                <i class="bi bi-cloud-arrow-up me-2"></i>
+                <span id="file-name">Choose a file...</span>
+              </label>
+            </div>
+            <div class="invalid-feedback" *ngIf="isFormSubmitted && !userForm.userPhoto">
+              Profile photo is required
+            </div>
+          </div>
+
+          <!-- Buttons -->
+          <div class="col-12 mt-4">
+            <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+              <button type="button" class="btn btn-outline-secondary me-md-2" 
+                      (click)="onReset()">
+                <i class="bi bi-x-circle me-1"></i>Reset
+              </button>
+              <button type="submit" class="btn btn-primary" 
+                      (click)="onSubmit(form)">
+                <i class="bi bi-person-plus me-1"></i>Register User
+              </button>
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
 </div>
