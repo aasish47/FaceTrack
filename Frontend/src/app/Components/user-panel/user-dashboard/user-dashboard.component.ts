@@ -133,4 +133,56 @@ export class UserDashboardComponent implements OnInit {
   updateProfile() { }
 
   changePassword() { }
+  
+
+
+
+
+  // Add to your component class
+today = new Date();
+
+chartOptions = {
+  responsive: true,
+  maintainAspectRatio: false,
+  scales: {
+    y: {
+      beginAtZero: true,
+      ticks: {
+        callback: function(value: number) {
+          return value + ' hrs';
+        }
+      }
+    }
+  },
+  plugins: {
+    legend: {
+      display: false
+    }
+  }
+};
+
+// Helper methods for recent logs
+extractDate(log: string): string {
+  return log.split('|')[0].replace('Date:', '').trim();
 }
+
+extractTimeIn(log: string): string {
+  return log.split('|')[1].split(',')[0].replace('Logged in at', '').trim();
+}
+
+extractTimeOut(log: string): string {
+  return log.split('|')[1].split(',')[1].replace('Logged out at', '').trim();
+}
+
+calculateDuration(log: string): string {
+  const timeIn = this.extractTimeIn(log);
+  const timeOut = this.extractTimeOut(log);
+  if (timeIn && timeOut) {
+    // Add your duration calculation logic here
+    return '8h 15m'; // Example
+  }
+  return '--';
+}
+}
+
+

@@ -1,6 +1,7 @@
 {
   "dependencies": {
     "@angular/common": "^19.2.3",
-    "@angular/core": "^19.2.3"
+    "@angular/core": "^19.2.3",
+    "@ng-bootstrap/ng-bootstrap": "^18.0.0"
   }
 }

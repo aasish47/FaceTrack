@@ -24,3 +24,102 @@
 .btn:hover {
   opacity: 0.8;
 }
+
+
+
+/* Add to your component's CSS */
+.card {
+  border-radius: 12px;
+  transition: transform 0.2s;
+}
+
+.card:hover {
+  transform: translateY(-2px);
+}
+
+.timeline {
+  position: relative;
+  padding-left: 30px;
+}
+
+.timeline-item {
+  position: relative;
+  margin-bottom: 15px;
+}
+
+.timeline-badge {
+  position: absolute;
+  left: -20px;
+  top: 15px;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+}
+
+.timeline-content {
+  position: relative;
+}
+
+.bg-primary-light {
+  background-color: rgba(13, 110, 253, 0.1);
+}
+
+.text-break {
+  word-break: break-word;
+}
+
+
+/* Ensure all cards have equal height in their row */
+.row {
+  align-items: stretch;
+}
+
+/* Make sure flex columns work properly */
+.d-flex.flex-column {
+  min-height: 0;
+}
+
+/* Timeline adjustments for flex layout */
+.timeline {
+  overflow-y: auto;
+  max-height: 100%;
+}
+
+/* Card body adjustments */
+.card-body.d-flex {
+  min-height: 0;
+}
+
+
+/* Status indicator styles */
+.status-present {
+  background-color: #28a745;
+  color: white;
+}
+
+.status-late {
+  background-color: #ffc107;
+  color: #212529;
+}
+
+.status-absent {
+  background-color: #dc3545;
+  color: white;
+}
+
+/* Modal adjustments */
+.modal-content {
+  border-radius: 10px;
+}
+
+.modal-header {
+  border-bottom: 1px solid #eee;
+  background-color: #f8f9fa;
+  border-radius: 10px 10px 0 0;
+}
+
+/* Timeline adjustments */
+.timeline {
+  max-height: 300px;
+  overflow-y: auto;
+}

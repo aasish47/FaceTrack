@@ -1,127 +1,168 @@
-<div class="d-flex flex-column flex-md-row">
-  <div class="flex-grow-1 p-4 dashboard-content">
-    <h2 class="text-primary mb-4">User Dashboard</h2>
+<div class="container py-4">
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h2 class="text-primary mb-0">User Dashboard</h2>
+    <div class="text-muted">
+      <i class="fas fa-calendar-alt me-2"></i>
+      {{ today | date : "fullDate" }}
+    </div>
+  </div>
 
-    <div class="row">
-      <!-- User Profile Card -->
-      <div class="col-lg-6 col-md-12">
-        <div
-          class="card p-4 mb-4 shadow-lg text-center align-items-center"
-          style="border: none; color: rgb(0, 0, 0); border-radius: 12px"
-        >
-          <img
-            [src]="user.userPhoto"
-            alt="User Photo"
-            class="img-thumbnail rounded-circle mb-3 border border-light shadow-lg"
-            style="width: 120px; height: 120px"
-          />
+  <div class="row g-4">
+    <!-- User Profile Card (smaller to make space for charts) -->
+    <div class="col-xl-3 col-lg-4 col-md-6 col-xl-4 col-lg-5 col-md-6">
+      <div class="card shadow-lg h-100 border-0">
+        <div class="card-body text-center p-4">
+          <div class="position-relative d-inline-block mb-3">
+            <img
+              [src]="user.userPhoto || 'assets/default-user.png'"
+              class="rounded-circle shadow"
+              width="100"
+              height="100"
+              alt="User Photo"
+            />
+            <span
+              class="position-absolute bottom-0 end-0 bg-success p-2 rounded-circle border border-3 border-white"
+            ></span>
+          </div>
 
-          <h3 class="mb-1">{{ user.userName }}</h3>
-          <p class="mb-1">
-            <i class="fas fa-envelope"></i> {{ user.userEmail }}
-          </p>
-          <p class="mb-1">
-            <i class="fas fa-briefcase"></i> {{ user.userDesignation }}
-          </p>
-          <p class="mb-0">
-            <i class="fas fa-building"></i> {{ user.userDepartment }}
-          </p>
-        </div>
-      </div>
+          <h4 class="mb-2">{{ user.userName }}</h4>
+          <p class="text-muted mb-3">{{ user.userDesignation }}</p>
 
-      <!-- Attendance Overview -->
-      <div class="col-lg-6 col-md-12">
-        <div
-          class="card p-4 mb-4 shadow-lg text-center"
-          style="border-radius: 12px; background: #ffffff"
-        >
-          <h5 class="text-primary">
-            <i class="fas fa-chart-line"></i> Attendance Overview
-          </h5>
-          <canvas
-            baseChart
-            [datasets]="attendanceData"
-            [labels]="attendanceLabels"
-          ></canvas>
+          <div class="d-flex flex-column text-start bg-light rounded p-3">
+            <div class="mb-2">
+              <i class="fas fa-envelope text-primary me-2"></i>
+              <span class="text-break">{{ user.userEmail }}</span>
+            </div>
+            <div>
+              <i class="fas fa-building text-primary me-2"></i>
+              {{ user.userDepartment }}
+            </div>
+          </div>
         </div>
       </div>
     </div>
 
-    <div class="row">
-      <!-- Recent Logs -->
-      <div class="col-md-6">
-        <div
-          class="card p-4 mb-4 shadow-lg"
-          style="border-radius: 12px; background: #f8f9fa"
-        >
-          <h5 class="text-secondary">
-            <i class="fas fa-history"></i> Recent Logs
+    <!-- Recent Logs -->
+    <div class="col-xl-3 col-lg-4 col-md-6">
+      <div class="card shadow-lg h-100 border-0">
+        <div class="card-body p-4">
+          <h5 class="text-primary mb-3">
+            <i class="fas fa-history me-2"></i>Recent Logs
           </h5>
-          <ul class="list-unstyled">
-            <li *ngFor="let log of recentLogs.slice(0, 3)">
-              <i class="fas fa-clock text-primary"></i> {{ log }}
-            </li>
-          </ul>
+
+          <div *ngIf="recentLogs.length > 0; else noLogs" class="timeline">
+            <div
+              *ngFor="let log of recentLogs.slice(0, 3)"
+              class="timeline-item"
+            >
+              <div class="timeline-badge bg-primary"></div>
+              <div class="timeline-content p-3 bg-light rounded">
+                <div class="d-flex justify-content-between mb-1">
+                  <small class="text-muted">
+                    <i class="far fa-calendar me-1"></i>
+                    {{ extractDate(log) }}
+                  </small>
+                  <small class="text-primary">
+                    {{ calculateDuration(log) }}
+                  </small>
+                </div>
+                <div class="d-flex justify-content-between">
+                  <div>
+                    <i class="fas fa-sign-in-alt text-success me-2"></i>
+                    <strong>{{ extractTimeIn(log) }}</strong>
+                  </div>
+                  <div>
+                    <i class="fas fa-sign-out-alt text-danger me-2"></i>
+                    <strong>{{ extractTimeOut(log) }}</strong>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <ng-template #noLogs>
+            <div class="text-center py-4 text-muted">
+              <i class="far fa-clock fa-2x mb-2"></i>
+              <p>No recent logs available</p>
+            </div>
+          </ng-template>
         </div>
       </div>
+    </div>
 
-      <!-- Notifications -->
-      <div class="col-md-6">
-        <div
-          class="card p-4 mb-4 shadow-lg"
-          style="border-radius: 12px; background: #f8f9fa"
-        >
-          <h5 class="text-secondary">
-            <i class="fas fa-bell"></i> Notifications
-          </h5>
-          <ul class="list-unstyled">
-            <li *ngFor="let notification of notifications">
-              <i class="fas fa-bell text-warning"></i> {{ notification }}
-            </li>
-          </ul>
-        </div>
-      </div>
-
-      <!-- Weekly Chart -->
-      <div class="col-md-6">
-        <app-weekly-chart></app-weekly-chart>
-      </div>
-      
-      <!-- Monthly Chart -->
-      <div class="col-md-6">
-        <app-monthly-chart></app-monthly-chart>
-      </div>
-
-      <!-- Check Attendance -->
-      <div class="col-md-6">
-        <app-check-attendance></app-check-attendance>
-      </div>
-
-      <!-- Quick Actions -->
-      <div class="row">
-        <div class="col-12">
-          <div
-            class="card p-4 mb-4 shadow-lg text-center"
-            style="border-radius: 12px; background: #ffffff"
-          >
-            <h5 class="text-secondary">
-              <i class="fas fa-cogs"></i> Quick Actions
+    <!-- Attendance Overview -->
+    <div class="col-lg-5 col-md-6">
+      <div class="card shadow-lg h-100 border-0">
+        <div class="card-body p-4">
+          <div class="d-flex justify-content-between align-items-center mb-3">
+            <h5 class="mb-0 text-primary">
+              <i class="fas fa-chart-line me-2"></i>Attendance Overview
             </h5>
-            <button
-              class="btn btn-primary mx-2 shadow-sm"
-              (click)="updateProfile()"
+            <span class="badge bg-primary-light text-primary">Weekly</span>
+          </div>
+          <div class="chart-container" style="height: 250px">
+            <canvas
+              baseChart
+              [datasets]="attendanceData"
+              [labels]="attendanceLabels"
+              [options]="chartOptions"
             >
-              <i class="fas fa-user-edit"></i> Update Profile
-            </button>
-            <button
-              class="btn btn-warning mx-2 shadow-sm"
-              (click)="changePassword()"
-            >
-              <i class="fas fa-key"></i> Change Password
-            </button>
+            </canvas>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Monthly Attendance Overview (full width on medium screens) -->
+    <div class="col-xl-6 col-md-12 mb-3">
+      <div class="card shadow-lg h-100 border-0">
+        <div class="card-body p-4">
+          <div class="d-flex justify-content-between align-items-center mb-3">
+            <h5 class="mb-0 text-primary">
+              <i class="fas fa-calendar-alt me-2"></i>Monthly Attendance
+              Overview
+            </h5>
+            <span class="badge bg-primary-light text-primary">{{
+              today | date : "MMMM yyyy"
+            }}</span>
+          </div>
+          <div class="chart-container" style="height: 300px">
+            <app-monthly-chart
+              style="display: block; height: 100%; width: 100%"
+            ></app-monthly-chart>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Weekly Attendance Overview (larger space) -->
+    <div class="col-xl-6 col-lg-8 col-md-12">
+      <div class="card shadow-lg h-100 border-0">
+        <div class="card-body p-4">
+          <div class="d-flex justify-content-between align-items-center mb-3">
+            <h5 class="mb-0 text-primary">
+              <i class="fas fa-chart-line me-2"></i>Weekly Attendance Overview
+            </h5>
+            <span class="badge bg-primary-light text-primary">Last 7 Days</span>
+          </div>
+          <div class="chart-container" style="height: 300px">
+            <app-weekly-chart
+              style="display: block; height: 100%; width: 100%"
+            ></app-weekly-chart>
           </div>
         </div>
       </div>
     </div>
   </div>
+
+  <!-- Check Attendance Component -->
+  <div class="col-xl-6 col-md-12">
+    <div class="card shadow-lg h-100 border-0">
+      <div class="card-body p-4">
+        <app-check-attendance class="h-100"></app-check-attendance>
+      </div>
+    </div>
+  </div>
+
+  
 </div>

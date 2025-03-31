@@ -1704,3 +1704,5 @@ camera_2 - Frame frame_20250329_142617_0006.jpg: Recognized as Unknown
 camera_1 - Frame frame_20250329_142704_0006.jpg: Recognized as 6001
 camera_2 - Frame frame_20250329_142704_0018.jpg: Recognized as 6001
 camera_2 - Frame frame_20250329_142704_0020.jpg: Recognized as Unknown
+camera_1 - Frame frame_20250331_114746_0009.jpg: Recognized as 6001
+camera_1 - Frame frame_20250331_115142_0034.jpg: Recognized as 6001

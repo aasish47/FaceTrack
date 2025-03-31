@@ -124,7 +124,7 @@ if __name__ == "__main__":
     camera_urls = [
         "http://192.168.29.154:8080/video",
         # "http://192.168.29.37:8080/video",
-        "http://192.168.29.82:8080/video",
+        # "http://192.168.29.82:8080/video",
     ]
     
     # Base directory to save the captured frames
