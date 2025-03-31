@@ -32,3 +32,9 @@ CREATE TABLE camera (
     IP VARCHAR(20),
     camera_type VARCHAR(10)
 );
+
+CREATE TABLE admin_credentials (
+	id INT AUTO_INCREMENT PRIMARY KEY,
+    admin_id VARCHAR(50) NOT NULL,
+    hashed_password VARCHAR(128) NOT NULL
+);
