@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import * as bootstrap from 'bootstrap'; // Ensure Bootstrap is imported
-import { UserService } from 'src/app/services/user.service'; // Import UserService
+import * as bootstrap from 'bootstrap';
+import { UserService } from 'src/app/services/user.service';
+import { ChartConfiguration, ChartData, ChartType } from 'chart.js';
 
 interface User {
   userId: string;
@@ -10,13 +11,14 @@ interface User {
   userDepartment: string;
   userDesignation: string;
   userPhoto: string;
-  isEditing?: boolean; // Optional property for editing state
+  isEditing?: boolean;
 }
 
 interface AttendanceRecord {
   date: string;
   time_in: string;
   time_out: string;
+  status?: 'present' | 'late' | 'absent';
 }
 
 @Component({
@@ -26,16 +28,57 @@ interface AttendanceRecord {
 })
 export class UserDetailsComponent implements OnInit {
   users: User[] = [];
+  filteredUsers: User[] = [];
   itemsPerPage: number = 10;
   currentPage: number = 1;
-  filteredUsers: User[] = [];
-  attendanceData: { data: number[]; label: string }[] = [];
-  attendanceLabels: string[] = [];
-  recentLogs: string[] = [];
-  selectedUserPhoto: string = ''; // Add a property to hold the selected user's photo
-  selecteduserName: string = ''; // Add a property to hold the selected user's name
+  searchTerm: string = '';
 
-  constructor(private userService: UserService, private http: HttpClient) {} // Inject HttpClient
+  // Modal Data
+  selectedUserPhoto: string = 'assets/default-user.png';
+  selecteduserName: string = '';
+  selectedUserDesignation: string = '';
+  attendanceStats = {
+    presentDays: 0,
+    lateDays: 0,
+    absentDays: 0
+  };
+
+  // Chart Configuration
+  // attendanceData: ChartConfiguration['data'] = {
+  //   datasets: [],
+  //   labels: []
+  // };
+  // chartOptions: ChartConfiguration['options'] = {
+  //   responsive: true,
+  //   scales: {
+  //     y: {
+  //       beginAtZero: true,
+  //       title: {
+  //         display: true,
+  //         text: 'Hours'
+  //       }
+  //     },
+  //     x: {
+  //       title: {
+  //         display: true,
+  //         text: 'Date'
+  //       }
+  //     }
+  //   },
+  //   plugins: {
+  //     legend: {
+  //       position: 'top',
+  //     },
+  //     tooltip: {
+  //       callbacks: {
+  //         label: (context) => `${context.dataset.label}: ${context.raw} hours`
+  //       }
+  //     }
+  //   }
+  // };
+  recentLogs: string[] = [];
+
+  constructor(private userService: UserService, private http: HttpClient) { }
 
   ngOnInit(): void {
     this.fetchUsers();
@@ -53,35 +96,38 @@ export class UserDetailsComponent implements OnInit {
     });
   }
 
+  getUserInitials(userName: string): string {
+    return userName.split(' ')
+      .map(name => name[0])
+      .join('')
+      .toUpperCase();
+  }
+
   editUser(user: User): void {
-    console.log('Editing user:', user);
-    user.isEditing = true; // Enable editing mode
+    this.users.forEach(u => u.isEditing = false); // Close other edits
+    user.isEditing = true;
   }
 
   saveUser(user: User): void {
-    console.log('Saving user:', user);
-    user.isEditing = false; // Disable editing mode
-
-    // Send a PUT request to update the user data in the backend
     this.http.put(`http://localhost:8000/Registration/user/${user.userId}`, user).subscribe({
       next: () => {
-        console.log('User updated successfully in the backend');
+        user.isEditing = false;
+        console.log('User updated successfully');
       },
       error: (error) => {
-        console.error('Error updating user in the backend:', error);
+        console.error('Error updating user:', error);
       }
     });
   }
 
   deleteUser(userId: string): void {
     if (confirm('Are you sure you want to delete this user?')) {
-      this.http.delete<void>(`http://localhost:8000/Registration/user/${userId}`).subscribe({
-        next: (): void => {
-          this.users = this.users.filter((user: User) => user.userId !== userId);
+      this.http.delete(`http://localhost:8000/Registration/user/${userId}`).subscribe({
+        next: () => {
+          this.users = this.users.filter(user => user.userId !== userId);
           this.filteredUsers = [...this.users];
-          console.log('User deleted successfully');
         },
-        error: (error: any): void => {
+        error: (error) => {
           console.error('Error deleting user:', error);
         }
       });
@@ -89,57 +135,24 @@ export class UserDetailsComponent implements OnInit {
   }
 
   viewUserDetails(user: User): void {
-    console.log('User clicked:', user); // Debugging
-
     const userId = Number(user.userId);
 
-    // Fetch User Details (including photo)
     this.userService.getUserDetails(userId).subscribe({
       next: (data: User) => {
-        console.log('User details fetched:', data); // Debugging
-        this.selecteduserName= data.userName;
-        // Set the user's photo
+        this.selecteduserName = data.userName;
+        this.selectedUserDesignation = data.userDesignation;
         this.selectedUserPhoto = data.userPhoto
           ? `data:image/jpeg;base64,${data.userPhoto}`
-          : 'assets/default-user.png'; // Fallback to a default image if no photo is available
+          : 'assets/default-user.png';
 
-        // Fetch Attendance Data
         this.userService.getUserAttendance(userId).subscribe({
           next: (attendanceData: AttendanceRecord[]) => {
-            console.log('Attendance data fetched:', attendanceData); // Debugging
-
-            const lastFive = attendanceData.slice(-5); // Get last 5 records
-
-            this.attendanceData = [
-              {
-                data: lastFive.map(item => this.calculateLoggedHours(item)),
-                label: 'Logged Hours'
-              }
-            ];
-
-            this.attendanceLabels = lastFive.map(item => item.date);
-
-            this.recentLogs = lastFive.map(item => {
-              if (item.time_in !== '00:00:00' && item.time_out === '00:00:00') {
-                return `Date: ${item.date} | Logged in at ${item.time_in}`;
-              } else if (item.time_in === '00:00:00' && item.time_out !== '00:00:00') {
-                return `Date: ${item.date} | Logged out at ${item.time_out}`;
-              } else if (item.time_in !== '00:00:00' && item.time_out !== '00:00:00') {
-                return `Date: ${item.date} | Logged in at ${item.time_in}, Logged out at ${item.time_out}`;
-              } else {
-                return `Date: ${item.date} | No login or logout data`;
-              }
-            });
-
-            // Show the modal
-            const modalElement = document.getElementById('userDetailsModal');
-            if (modalElement) {
-              const modal = new bootstrap.Modal(modalElement);
-              modal.show();
-            }
+            this.processAttendanceData(attendanceData);
+            this.showModal();
           },
           error: (error) => {
-            console.error('Error fetching attendance data:', error);
+            console.error('Error fetching attendance:', error);
+            this.showModal();
           }
         });
       },
@@ -149,13 +162,146 @@ export class UserDetailsComponent implements OnInit {
     });
   }
 
-  calculateLoggedHours(item: AttendanceRecord): number {
+  // private processAttendanceData(attendanceData: AttendanceRecord[]): void {
+  //   // Get last 5 records
+  //   const lastFive = attendanceData.slice(-5).reverse();
+
+  //   // Calculate stats
+  //   this.attendanceStats = {
+  //     presentDays: attendanceData.filter(a => a.status === 'present').length,
+  //     lateDays: attendanceData.filter(a => a.status === 'late').length,
+  //     absentDays: attendanceData.filter(a => a.status === 'absent').length
+  //   };
+
+  //   // Prepare chart data
+  //   this.attendanceData = {
+  //     labels: lastFive.map(item => this.formatDate(item.date)),
+  //     datasets: [{
+  //       data: lastFive.map(item => this.calculateLoggedHours(item)),
+  //       label: 'Logged Hours',
+  //       backgroundColor: 'rgba(63, 128, 255, 0.5)',
+  //       borderColor: 'rgba(63, 128, 255, 1)',
+  //       borderWidth: 1
+  //     }]
+  //   };
+
+  //   // Prepare recent logs
+  //   this.recentLogs = lastFive.map(item => {
+  //     if (item.time_in !== '00:00:00' && item.time_out === '00:00:00') {
+  //       return `Logged in at ${this.formatTime(item.time_in)}`;
+  //     } else if (item.time_in === '00:00:00' && item.time_out !== '00:00:00') {
+  //       return `Logged out at ${this.formatTime(item.time_out)}`;
+  //     } else if (item.time_in !== '00:00:00' && item.time_out !== '00:00:00') {
+  //       const hours = this.calculateLoggedHours(item).toFixed(1);
+  //       return `Worked ${hours} hours (${this.formatTime(item.time_in)} - ${this.formatTime(item.time_out)})`;
+  //     }
+  //     return 'No attendance data';
+  //   });
+  // }
+
+  private showModal(): void {
+    const modalElement = document.getElementById('userDetailsModal');
+    if (modalElement) {
+      new bootstrap.Modal(modalElement).show();
+    }
+  }
+
+  private calculateLoggedHours(item: AttendanceRecord): number {
     if (item.time_in === '00:00:00' || item.time_out === '00:00:00') {
-      return 0; // Don't calculate if incomplete data
+      return 0;
     }
     const timeIn = new Date(`1970-01-01T${item.time_in}`);
     const timeOut = new Date(`1970-01-01T${item.time_out}`);
-    const diffInMs = timeOut.getTime() - timeIn.getTime();
-    return diffInMs / (1000 * 60 * 60); // Convert milliseconds to hours
+    return (timeOut.getTime() - timeIn.getTime()) / (1000 * 60 * 60);
   }
+
+  private formatDate(dateString: string): string {
+    const date = new Date(dateString);
+    return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+  }
+
+  private formatTime(timeString: string): string {
+    const [hours, minutes] = timeString.split(':');
+    return `${parseInt(hours) % 12 || 12}:${minutes} ${parseInt(hours) >= 12 ? 'PM' : 'AM'}`;
+  }
+
+
+
+
+  // Update your chart data properties
+  attendanceChartData: ChartData<'bar'> = {
+    labels: [],
+    datasets: []
+  };
+
+  chartOptions: ChartConfiguration<'bar'>['options'] = {
+    responsive: true,
+    scales: {
+      y: {
+        beginAtZero: true,
+        title: {
+          display: true,
+          text: 'Hours'
+        }
+      },
+      x: {
+        title: {
+          display: true,
+          text: 'Date'
+        }
+      }
+    },
+    plugins: {
+      legend: {
+        position: 'top',
+      },
+      tooltip: {
+        callbacks: {
+          label: (context) => `${context.dataset.label}: ${context.raw} hours`
+        }
+      }
+    }
+  };
+
+
+
+
+  // Update your processAttendanceData method
+  private processAttendanceData(attendanceData: AttendanceRecord[]): void {
+    const lastFive = attendanceData.slice(-5).reverse();
+
+    this.attendanceChartData = {
+      labels: lastFive.map(item => this.formatDate(item.date)),
+      datasets: [{
+        data: lastFive.map(item => this.calculateLoggedHours(item)),
+        label: 'Logged Hours',
+        backgroundColor: 'rgba(63, 128, 255, 0.5)',
+        borderColor: 'rgba(63, 128, 255, 1)',
+        borderWidth: 1
+      }]
+    };
+
+      //   // Prepare recent logs
+    this.recentLogs = lastFive.map(item => {
+      if (item.time_in !== '00:00:00' && item.time_out === '00:00:00') {
+        return `Logged in at ${this.formatTime(item.time_in)}`;
+      } else if (item.time_in === '00:00:00' && item.time_out !== '00:00:00') {
+        return `Logged out at ${this.formatTime(item.time_out)}`;
+      } else if (item.time_in !== '00:00:00' && item.time_out !== '00:00:00') {
+        const hours = this.calculateLoggedHours(item).toFixed(1);
+        return `Worked ${hours} hours (${this.formatTime(item.time_in)} - ${this.formatTime(item.time_out)})`;
+      }
+      return 'No attendance data';
+    });
+
+  }
+
+
 }
+
+
+
+
+
+
+
