@@ -1,119 +1,186 @@
-<div class="container">
-    <div class="d-flex justify-content-between align-items-center mb-3">
-        <h2>Dashboard</h2>
-        <!-- Export Options -->
-        <!-- <div class="d-flex gap-2">
-            <button class="btn btn-outline-primary" (click)="exportData('csv')">Export CSV</button>
-            <button class="btn btn-outline-success" (click)="exportData('excel')">Export Excel</button>
-            <button class="btn btn-outline-danger" (click)="exportData('pdf')">Export PDF</button>
-        </div> -->
+<div class="dashboard-container">
+    <!-- Header Section -->
+    <div class="dashboard-header">
+        <div class="header-content">
+            <h1 class="dashboard-title">
+                <i class="bi bi-speedometer2 me-2"></i>Employee Attendance Dashboard
+            </h1>
+            <div class="header-actions">
+                <div class="date-display">
+                    <i class="bi bi-calendar-date me-2"></i>
+                    {{ today | date:'fullDate' }}
+                </div>
+                <!-- <div class="export-buttons">
+                    <button class="btn btn-sm btn-outline-light me-2" (click)="exportData('csv')">
+                        <i class="bi bi-file-earmark-spreadsheet"></i> CSV
+                    </button>
+                    <button class="btn btn-sm btn-outline-light me-2" (click)="exportData('excel')">
+                        <i class="bi bi-file-excel"></i> Excel
+                    </button>
+                    <button class="btn btn-sm btn-outline-light" (click)="exportData('pdf')">
+                        <i class="bi bi-file-earmark-pdf"></i> PDF
+                    </button>
+                </div> -->
+            </div>
+        </div>
     </div>
 
-    <div class="row g-3">
-        <!-- Left Column: Filters and Summary Cards -->
-        <div class="col-md-8">
-            <div class="card p-3 shadow h-100">
-                <!-- Date Filter -->
-                <div class="mb-3">
-                    <label for="datePicker" class="form-label fw-bold">Select Date:</label>
-                    <div class="input-group">
-                        <span class="input-group-text bg-primary text-white">
-                            <i class="bi bi-calendar-date"></i>
-                        </span>
-                        <input type="date" id="datePicker" class="form-control" [(ngModel)]="selectedDate" (change)="loadAttendanceData()">
+    <!-- Main Content -->
+    <div class="dashboard-content">
+        <!-- Left Column -->
+        <div class="dashboard-main">
+            <!-- Date Filter Card -->
+            <div class="card filter-card">
+                <div class="card-body">
+                    <h5 class="card-title">
+                        <i class="bi bi-funnel me-2"></i>Date Filter
+                    </h5>
+                    <div class="date-filter">
+                        <label for="datePicker" class="form-label">Select Date</label>
+                        <div class="input-group date-picker">
+                            <span class="input-group-text">
+                                <i class="bi bi-calendar3"></i>
+                            </span>
+                            <input type="date" id="datePicker" class="form-control" 
+                                   [(ngModel)]="selectedDate" (change)="loadAttendanceData()">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Summary Cards Grid -->
+            <div class="summary-grid">
+                <!-- Total Employees -->
+                <div class="summary-card total-employees" (click)="fetchUsers('all')">
+                    <div class="card-icon">
+                        <i class="bi bi-people-fill"></i>
+                    </div>
+                    <div class="card-content">
+                        <h3>{{ totalStudents }}</h3>
+                        <p>Total Employees</p>
                     </div>
                 </div>
 
-                <!-- Summary Cards -->
-                <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3 mb-4">
-                    <div class="col">
-                        <div class="card bg-primary text-white text-center h-100 p-3 shadow">
-                            <i class="bi bi-people fs-1 mb-2"></i>
-                            <h5>Total Employees</h5>
-                            <h3>{{ totalStudents }}</h3>
-                        </div>
+                <!-- On-Time -->
+                <div class="summary-card on-time" (click)="fetchUsers('onTime', onTimeCard)" #onTimeCard>
+                    <div class="card-icon">
+                        <i class="bi bi-check-circle-fill"></i>
                     </div>
-                    <div class="col" (click)="fetchUsers('onTime', onTimeCard)" #onTimeCard style="cursor: pointer;">
-                        <div class="card bg-success text-white text-center h-100 p-3 shadow">
-                            <i class="bi bi-check-circle fs-1 mb-2"></i>
-                            <h5>On-Time</h5>
-                            <h3>{{ presentStudents }}</h3>
-                        </div>
+                    <div class="card-content">
+                        <h3>{{ presentStudents }}</h3>
+                        <p>On-Time</p>
                     </div>
-                    <div class="col" (click)="fetchUsers('late', lateCard)" #lateCard style="cursor: pointer;">
-                        <div class="card bg-warning text-white text-center h-100 p-3 shadow">
-                            <i class="bi bi-clock fs-1 mb-2"></i>
-                            <h5>Late</h5>
-                            <h3>{{ lateStudents }}</h3>
-                        </div>
+                </div>
+
+                <!-- Late -->
+                <div class="summary-card late" (click)="fetchUsers('late', lateCard)" #lateCard>
+                    <div class="card-icon">
+                        <i class="bi bi-clock-fill"></i>
                     </div>
-                    <div class="col" (click)="fetchUsers('present', presentCard)" #presentCard style="cursor: pointer;">
-                        <div class="card bg-info text-white text-center h-100 p-3 shadow">
-                            <i class="bi bi-person-check fs-1 mb-2"></i>
-                            <h5>Present</h5>
-                            <h3>{{ presentStudents + lateStudents }}</h3>
-                        </div>
+                    <div class="card-content">
+                        <h3>{{ lateStudents }}</h3>
+                        <p>Late Arrivals</p>
                     </div>
-                    <div class="col" (click)="fetchUsers('absent', absentCard)" #absentCard style="cursor: pointer;">
-                        <div class="card bg-danger text-white text-center h-100 p-3 shadow">
-                            <i class="bi bi-x-circle fs-1 mb-2"></i>
-                            <h5>Absent</h5>
-                            <h3>{{ absentStudents }}</h3>
-                        </div>
+                </div>
+
+                <!-- Present -->
+                <div class="summary-card present" (click)="fetchUsers('present', presentCard)" #presentCard>
+                    <div class="card-icon">
+                        <i class="bi bi-person-check-fill"></i>
                     </div>
-                    <div class="col" (click)="fetchUsers('wfhCorporate', wfhCard)" #wfhCard style="cursor: pointer;">
-                        <div class="card bg-secondary text-white text-center h-100 p-3 shadow">
-                            <i class="bi bi-house fs-1 mb-2"></i>
-                            <h5>Work From Home / Corporate Visit</h5>
-                            <h3>{{ wfhCorporateVisit }}</h3>
-                        </div>
+                    <div class="card-content">
+                        <h3>{{ presentStudents + lateStudents }}</h3>
+                        <p>Present Today</p>
+                    </div>
+                </div>
+
+                <!-- Absent -->
+                <div class="summary-card absent" (click)="fetchUsers('absent', absentCard)" #absentCard>
+                    <div class="card-icon">
+                        <i class="bi bi-x-circle-fill"></i>
+                    </div>
+                    <div class="card-content">
+                        <h3>{{ absentStudents }}</h3>
+                        <p>Absent Today</p>
+                    </div>
+                </div>
+
+                <!-- WFH/Corporate -->
+                <div class="summary-card wfh" (click)="fetchUsers('wfhCorporate', wfhCard)" #wfhCard>
+                    <div class="card-icon">
+                        <i class="bi bi-house-fill"></i>
+                    </div>
+                    <div class="card-content">
+                        <h3>{{ wfhCorporateVisit }}</h3>
+                        <p>Remote Work</p>
                     </div>
                 </div>
             </div>
         </div>
 
-        <!-- Right Column: Attendance Trend Chart -->
-        <div class="col-md-4">
-            <div class="card p-3 shadow h-100">
-                <h5 class="text-center">Attendance Trend</h5>
-                <div class="card p-3 shadow mb-3">
-                    <h5>Select Date Range</h5>
-                    <div class="row g-2">
-                        <div class="col">
-                            <label for="startDate" class="form-label">Start Date:</label>
-                            <input type="date" id="startDate" class="form-control" [(ngModel)]="startDate">
+        <!-- Right Column -->
+        <div class="dashboard-sidebar">
+            <!-- Attendance Trend Card -->
+            <div class="card trend-card">
+                <div class="card-body">
+                    <h5 class="card-title">
+                        <i class="bi bi-graph-up me-2"></i>Attendance Trend
+                    </h5>
+                    
+                    <!-- Date Range Selector -->
+                    <div class="date-range-selector">
+                        <div class="form-group">
+                            <label for="startDate">From</label>
+                            <input type="date" id="startDate" class="form-control" 
+                                   [(ngModel)]="startDate">
                         </div>
-                        <div class="col">
-                            <label for="endDate" class="form-label">End Date:</label>
-                            <input type="date" id="endDate" class="form-control" [(ngModel)]="endDate">
+                        <div class="form-group">
+                            <label for="endDate">To</label>
+                            <input type="date" id="endDate" class="form-control" 
+                                   [(ngModel)]="endDate">
                         </div>
-                        <div class="col-auto d-flex align-items-end">
-                            <button class="btn btn-primary" (click)="loadAttendanceBetweenDates()">Fetch Data</button>
-                        </div>
+                        <button class="btn btn-primary fetch-btn" 
+                                (click)="loadAttendanceBetweenDates()">
+                            <i class="bi bi-arrow-repeat"></i> Update
+                        </button>
                     </div>
-                </div>
-                <div style="height: 250px; width: 100%;">
-                    <canvas #attendanceChart></canvas>
+                    
+                    <!-- Chart Container -->
+                    <div class="chart-container">
+                        <canvas #attendanceChart></canvas>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- Floating User List Section -->
-    <div *ngIf="filteredUsers.length > 0" #floatingCard class="floating-card" [ngStyle]="{ top: positionTop + 'px', left: positionLeft + 'px' }">
-        <div class="card shadow">
-            <div class="card-header d-flex justify-content-between align-items-center">
-                <h5>{{ selectedCategory | titlecase }}</h5>
-                <button (click)="closeUserList()" class="btn-close p-0 m-0" aria-label="Close">
-                    <i class="bi bi-x-circle fs-3 text-danger"></i>
+    <!-- Floating User List -->
+    <div *ngIf="filteredUsers.length > 0" #floatingCard class="floating-user-list" 
+         [ngStyle]="{ top: positionTop + 'px', left: positionLeft + 'px' }">
+        <div class="user-list-card">
+            <div class="user-list-header">
+                <h5>
+                    <i class="bi bi-list-ul me-2"></i>
+                    {{ selectedCategory | titlecase }} Employees
+                    <span class="badge bg-primary ms-2">{{ filteredUsers.length }}</span>
+                </h5>
+                <button (click)="closeUserList()" class="close-btn">
+                    <i class="bi bi-x-lg"></i>
                 </button>
             </div>
-            <ul class="list-group list-group-flush">
-                <li *ngFor="let user of filteredUsers" class="list-group-item">
-                    <strong>{{ user.userName }}</strong> ({{ user.userId }}) <br>
-                    <small>{{ user.userEmail }}</small>
-                </li>
-            </ul>
+            <div class="user-list-body">
+                <div *ngFor="let user of filteredUsers" class="user-item">
+                    <div class="user-avatar">
+                        <i class="bi bi-person-circle"></i>
+                    </div>
+                    <div class="user-details">
+                        <strong>{{ user.userName }}</strong>
+                        <small>{{ user.userEmail }}</small>
+                        <div class="user-id">ID: {{ user.userId }}</div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
+
 </div>

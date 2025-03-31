@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { trigger, state, style, transition, animate } from '@angular/animations';
 
@@ -6,7 +6,7 @@ import { trigger, state, style, transition, animate } from '@angular/animations'
   selector: 'app-admin-panel',
   templateUrl: './admin-panel.component.html',
   styleUrls: ['./admin-panel.component.css'],
-  animations:[
+  animations: [
     trigger('slideInOut', [
       state('in', style({
         opacity: 1,
@@ -19,47 +19,56 @@ import { trigger, state, style, transition, animate } from '@angular/animations'
       transition('in <=> out', [
         animate('0.3s ease-in-out')
       ])
+    ]),
+    trigger('fadeInOut', [
+      transition(':enter', [
+        style({ opacity: 0 }),
+        animate('200ms ease-in', style({ opacity: 1 }))
+      ]),
+      transition(':leave', [
+        animate('200ms ease-out', style({ opacity: 0 }))
+      ])
     ])
-  ] 
+  ]
 })
-export class AdminPanelComponent {
-
-  // Sidebar toggle state
-  isSidebarOpen: boolean = true;
-  currentRoute: string = '';
-  activeSection: string = 'dashboard';
+export class AdminPanelComponent implements OnInit {
+  isSidebarOpen = true;
+  currentRoute = '';
   isDarkMode = false;
+  showProfileMenu = false;
+  unreadNotifications = 3; // Example count
+  currentTime = new Date();
+  themeClass = 'light-theme';
 
   constructor(private router: Router) {
     this.router.events.subscribe(() => {
       this.currentRoute = this.router.url;
     });
-   }
-   ngOnInit(){
-    // Check if admin is logged in
-    const isAdminLoggedIn = localStorage.getItem('adminLoggedIn');
+  }
 
-    if (!isAdminLoggedIn) {
-      this.router.navigate(['/login']); // Redirect to login if not logged in
+  ngOnInit() {
+    if (!localStorage.getItem('adminLoggedIn')) {
+      this.router.navigate(['/login']);
     }
-   }
+  
+    // Load saved theme
+    this.isDarkMode = localStorage.getItem('theme') === 'dark';
+    this.applyTheme();
+  
+    setInterval(() => {
+      this.currentTime = new Date();
+    }, 60000);
+  }
 
   toggleSidebar() {
     this.isSidebarOpen = !this.isSidebarOpen;
   }
 
-  // Change the active section based on button click
   showSection(section: string) {
-    this.activeSection = section;
     this.router.navigate([`/admin-panel/${section}`]);
+    this.showProfileMenu = false;
   }
 
-  // Trigger Add User modal
-  triggerAddUserModal() {
-    console.log("Add User Modal Triggered");
-  }
-
-  // Logout and navigate to login page
   logout() {
     const confirmLogout = window.confirm("Are you sure you want to logout?");
     if (confirmLogout) {
@@ -68,21 +77,31 @@ export class AdminPanelComponent {
     }
   }
 
+  toggleProfileMenu() {
+    this.showProfileMenu = !this.showProfileMenu;
+  }
+
+
+
+
   toggleTheme() {
     this.isDarkMode = !this.isDarkMode;
     localStorage.setItem('theme', this.isDarkMode ? 'dark' : 'light');
-
-    // Apply theme globally to body
-    document.body.classList.toggle('bg-dark', this.isDarkMode);
-    document.body.classList.toggle('text-light', this.isDarkMode);
-    document.body.classList.toggle('bg-light', !this.isDarkMode);
-    document.body.classList.toggle('text-dark', !this.isDarkMode);
+    this.applyTheme();
   }
 
   applyTheme() {
-    document.body.classList.toggle('bg-dark', this.isDarkMode);
-    document.body.classList.toggle('text-light', this.isDarkMode);
-    document.body.classList.toggle('bg-light', !this.isDarkMode);
-    document.body.classList.toggle('text-dark', !this.isDarkMode);
+    this.themeClass = this.isDarkMode ? 'dark-theme' : 'light-theme';
+  
+    document.body.classList.remove('light-theme', 'dark-theme');
+    document.body.classList.add(this.themeClass);
+  
+    const container = document.querySelector('.admin-content');
+    if (container) {
+      container.classList.remove('light-theme', 'dark-theme');
+      container.classList.add(this.themeClass);
+    }
   }
+
+
 }
