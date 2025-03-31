@@ -1,10 +1,13 @@
-<div class="flex-grow-1 user-management-container">
-  <div class="header-section p-4">
-    <h3 class="m-0 text-white"><i class="bi bi-people-fill me-2"></i>User Management</h3>
-    <div class="search-bar mt-3">
-      <input type="text" class="form-control" placeholder="Search users..." [(ngModel)]="searchTerm">
-    </div>
+<div class="flex-grow-1 user-management-container"><div class="header-section p-4">
+  <h3 class="m-0 text-white"><i class="bi bi-people-fill me-2"></i>User Management</h3>
+  <div class="search-bar mt-3 d-flex m-auto">
+    <input type="text" class="form-control" placeholder="Search users..." 
+           [(ngModel)]="searchTerm" (input)="filterUsers()">
+    <button class="btn btn-primary ms-2" (click)="filterUsers()">
+      <i class="bi bi-search"></i> Search
+    </button>
   </div>
+</div>
 
   <div class="content-section p-4">
     <div class="table-card card shadow-sm">
@@ -99,20 +102,20 @@
             <h4 class="mb-1 text-center">{{ selecteduserName }}</h4>
             <p class="text-muted text-center mb-3">{{ selectedUserDesignation }}</p>
             
-            <div class="user-stats w-100 mt-auto">
+            <!-- <div class="user-stats w-100 mt-auto">
               <div class="stat-item">
-                <div class="stat-value">{{ attendanceStats?.presentDays || 0 }}</div>
+                <div class="stat-value">{{ attendanceStats.presentDays || 0 }}</div>
                 <div class="stat-label">Days Present</div>
               </div>
               <div class="stat-item">
-                <div class="stat-value">{{ attendanceStats?.lateDays || 0 }}</div>
+                <div class="stat-value">{{ attendanceStats.lateDays || 0 }}</div>
                 <div class="stat-label">Days Late</div>
               </div>
               <div class="stat-item">
-                <div class="stat-value">{{ attendanceStats?.absentDays || 0 }}</div>
+                <div class="stat-value">{{ attendanceStats.absentDays || 0 }}</div>
                 <div class="stat-label">Days Absent</div>
               </div>
-            </div>
+            </div> -->
           </div>
           
           <!-- Attendance Data Section -->
@@ -145,7 +148,7 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary">Send Message</button>
+        <!-- <button type="button" class="btn btn-primary">Send Message</button> -->
       </div>
     </div>
   </div>

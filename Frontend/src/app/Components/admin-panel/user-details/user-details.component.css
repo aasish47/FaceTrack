@@ -267,3 +267,36 @@
     content: "\f138"; /* Unicode for Bootstrap chevron-right */
     font-family: "Bootstrap Icons";
   }
+
+
+
+  /* Add these styles to your existing CSS */
+.search-bar {
+    max-width: 500px;
+  }
+  
+  .search-bar input {
+    border-radius: 20px 0 0 20px !important;
+  }
+  
+  .search-bar button {
+    border-radius: 0 20px 20px 0;
+    min-width: 80px;
+  }
+  
+  /* For better mobile responsiveness */
+  @media (max-width: 576px) {
+    .search-bar {
+      flex-direction: column;
+    }
+    
+    .search-bar input {
+      border-radius: 20px !important;
+      margin-bottom: 8px;
+    }
+    
+    .search-bar button {
+      border-radius: 20px !important;
+      width: 100%;
+    }
+  }

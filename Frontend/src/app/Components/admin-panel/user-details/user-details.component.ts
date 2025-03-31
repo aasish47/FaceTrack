@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import * as bootstrap from 'bootstrap';
 import { UserService } from 'src/app/services/user.service';
 import { ChartConfiguration, ChartData, ChartType } from 'chart.js';
+import { debounceTime, distinctUntilChanged, Subject } from 'rxjs';
 
 interface User {
   userId: string;
@@ -32,16 +33,18 @@ export class UserDetailsComponent implements OnInit {
   itemsPerPage: number = 10;
   currentPage: number = 1;
   searchTerm: string = '';
+  searchSubject = new Subject<string>();
 
   // Modal Data
   selectedUserPhoto: string = 'assets/default-user.png';
   selecteduserName: string = '';
   selectedUserDesignation: string = '';
-  attendanceStats = {
-    presentDays: 0,
-    lateDays: 0,
-    absentDays: 0
-  };
+
+  // attendanceStats = {
+  //   presentDays: 0,
+  //   lateDays: 0,
+  //   absentDays: 0
+  // };
 
   // Chart Configuration
   // attendanceData: ChartConfiguration['data'] = {
@@ -78,7 +81,15 @@ export class UserDetailsComponent implements OnInit {
   // };
   recentLogs: string[] = [];
 
-  constructor(private userService: UserService, private http: HttpClient) { }
+  constructor(private userService: UserService, private http: HttpClient) {
+    // Add debounce for search input
+    this.searchSubject.pipe(
+      debounceTime(300),
+      distinctUntilChanged()
+    ).subscribe(searchTerm => {
+      this.filterUsers();
+    });
+  }
 
   ngOnInit(): void {
     this.fetchUsers();
@@ -94,6 +105,27 @@ export class UserDetailsComponent implements OnInit {
         console.error('Error fetching users:', error);
       }
     });
+  }
+
+  // Add this method for filtering users
+  filterUsers(): void {
+    if (!this.searchTerm) {
+      this.filteredUsers = [...this.users];
+      return;
+    }
+
+    const searchTermLower = this.searchTerm.toLowerCase();
+    this.filteredUsers = this.users.filter(user => 
+      user.userName.toLowerCase().includes(searchTermLower) ||
+      user.userEmail.toLowerCase().includes(searchTermLower) ||
+      user.userDepartment.toLowerCase().includes(searchTermLower) ||
+      user.userDesignation.toLowerCase().includes(searchTermLower)
+    );
+  }
+
+  // Update your input handler in the template to use:
+  onSearchInput(event: any): void {
+    this.searchSubject.next(event.target.value);
   }
 
   getUserInitials(userName: string): string {
