@@ -98,4 +98,30 @@ def send_user_data(request):
     return Response({'users': user_data})
 
 
+#Post method of accepted attendance request from admin notification panel
+
+@api_view(['POST'])
+def accept_attendance_request(request):
+    try:
+        # Extract data from the request
+        data = request.data
+        user_id = data.get('UserId')
+        date = data.get('Date')
+        time_in = data.get('TimeIn')
+        time_out = data.get('TimeOut')
+
+        # Create a new attendance record
+        attendance_record = UserAttendance(
+            user_id=user_id,
+            date=date,
+            time_in=time_in,
+            time_out=time_out
+        )
+        attendance_record.save()  # Save the record to the database
+
+        return Response({'message': 'Attendance recorded successfully!'}, status=201)
+    
+    except Exception as e:
+        return Response({'error': str(e)}, status=400)
+
 

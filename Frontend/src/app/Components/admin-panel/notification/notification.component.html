@@ -1,1 +1,42 @@
-<p>notification works!</p>
+<div class="container">
+  <h2>Attendance Requests</h2>
+
+  <table class="table table-bordered" *ngIf="attendanceRequests.length > 0; else noItemsTemplate">
+    <thead>
+      <tr>
+        <!-- <th>ID</th> -->
+        <th>User ID</th>
+        <th>Name</th>
+        <th>Email</th>
+        <th>Type</th>
+        <th>Date</th>
+        <th>Reason</th>
+        <th>Action</th>
+        <!-- <th>Status</th> -->
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let request of attendanceRequests">
+        <!-- <td>{{ request.Id }}</td> -->
+        <td>{{ request.UserId }}</td>
+        <td>{{ request.Name }}</td>
+        <td>{{ request.Email }}</td>
+        <td>{{ request.Type }}</td>
+        <td>{{ request.Date }}</td>
+        <td>{{ request.Reason }}</td>
+        <td>
+          <div class="button-container">
+            <button class="btn btn-success mx-1" (click)="acceptAttendanceRequest(request.Id)">Accept</button>
+            <button class="btn btn-danger mx-1" (click)="deleteAttendanceRequest(request.Id)">Decline</button>
+          </div>
+        </td>
+        <!-- <td>{{ request.Status || '' }}</td> -->
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- Template for when no items are available -->
+<ng-template #noItemsTemplate>
+  <p>No attendance requests</p>
+</ng-template>

@@ -1,7 +1,7 @@
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
-from .models import RegistrationUser as User, UserAttendance
-from .serializers import UserAttendanceSerializer
+from .models import RegistrationUser as User, UserAttendance, AttendanceRequest
+from .serializers import UserAttendanceSerializer, AttendanceRequestSerializer
 from django.shortcuts import get_object_or_404
 import base64
 from django.http import JsonResponse
@@ -21,19 +21,31 @@ def send_wfh_email(request):
 
         if not all([name, email, type_, date, reason]):
             return Response({"error": "Missing fields"}, status=status.HTTP_400_BAD_REQUEST)
+        
+        # Save the data to the AttendanceRequest table
+        attendance_request = AttendanceRequest(
+            UserId=userId,
+            Name=name,
+            Email=email,
+            Date=date,
+            Type=type_,
+            Reason=reason
+        )
+        attendance_request.save()
+
 
         subject = f"{type_} Request from {name}"
         message = f"""
-{name} has submitted a {type_} request.
+        {name} has submitted a {type_} request.
 
-Details:
-- Name: {name}
-- User Id: {userId}
-- Email: {email}
-- Type: {type_}
-- Date: {date}
-- Reason: {reason}
-        """
+        Details:
+        - Name: {name}
+        - User Id: {userId}
+        - Email: {email}
+        - Type: {type_}
+        - Date: {date}
+        - Reason: {reason}
+                """
 
         from_email = settings.EMAIL_HOST_USER
         to_email = [settings.EMAIL_HOST_USER, email]
@@ -79,3 +91,25 @@ def get_user_attendance(request, user_id):
     serializer = UserAttendanceSerializer(attendance_records, many=True)
 
     return Response(serializer.data)
+
+
+#Getting attendance requests from admin notification panel
+@api_view(['GET'])
+def get_attendance_requests(request):
+    try:
+        attendance_requests = AttendanceRequest.objects.all()
+        serializer = AttendanceRequestSerializer(attendance_requests, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+    except Exception as e:
+        return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+    
+
+#Deleting request when admin clicks on decline button in notification panel
+@api_view(['DELETE'])
+def delete_attendance_request(request, request_id):
+    try:
+        attendance_request = get_object_or_404(AttendanceRequest, Id=request_id)
+        attendance_request.delete()
+        return Response({"message": "Attendance request deleted successfully!"}, status=status.HTTP_200_OK)
+    except Exception as e:
+        return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)

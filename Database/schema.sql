@@ -38,3 +38,15 @@ CREATE TABLE admin_credentials (
     admin_id VARCHAR(50) NOT NULL,
     hashed_password VARCHAR(128) NOT NULL
 );
+
+-- Table for storing attendance requests
+
+CREATE TABLE Attendance_Request (
+    Id INT AUTO_INCREMENT PRIMARY KEY,
+    UserId VARCHAR(50),
+    Name VARCHAR(100),
+    Email VARCHAR(100),
+    Date VARCHAR(100),
+    Type VARCHAR(100),
+    Reason VARCHAR(250)
+);
