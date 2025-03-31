@@ -28,6 +28,7 @@ export class AdminPanelComponent {
   isSidebarOpen: boolean = true;
   currentRoute: string = '';
   activeSection: string = 'dashboard';
+  isDarkMode = false;
 
   constructor(private router: Router) {
     this.router.events.subscribe(() => {
@@ -65,5 +66,23 @@ export class AdminPanelComponent {
       localStorage.removeItem('adminLoggedIn');
       this.router.navigate(['/login']);
     }
+  }
+
+  toggleTheme() {
+    this.isDarkMode = !this.isDarkMode;
+    localStorage.setItem('theme', this.isDarkMode ? 'dark' : 'light');
+
+    // Apply theme globally to body
+    document.body.classList.toggle('bg-dark', this.isDarkMode);
+    document.body.classList.toggle('text-light', this.isDarkMode);
+    document.body.classList.toggle('bg-light', !this.isDarkMode);
+    document.body.classList.toggle('text-dark', !this.isDarkMode);
+  }
+
+  applyTheme() {
+    document.body.classList.toggle('bg-dark', this.isDarkMode);
+    document.body.classList.toggle('text-light', this.isDarkMode);
+    document.body.classList.toggle('bg-light', !this.isDarkMode);
+    document.body.classList.toggle('text-dark', !this.isDarkMode);
   }
 }

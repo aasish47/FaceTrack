@@ -1,5 +1,4 @@
-<!-- Navbar -->
-<nav class="navbar navbar-dark bg-dark fixed-top">
+<!-- <nav class="navbar navbar-dark bg-dark fixed-top">
   <div class="container-fluid">
     <div>
       <button class="btn btn-dark me-2 nav-icon-btn" type="button" (click)="toggleSidebar()"
@@ -11,8 +10,11 @@
       </button>
     </div>
 
-    <div class="ms-auto">
-      <button class="btn btn-dark nav-icon-btn" (click)="showSection('notification')" title="Notifications">
+    <div class="ms-auto d-flex align-items-center">
+      <button class="btn btn-dark nav-icon-btn me-2" type="button" (click)="toggleTheme()" title="Toggle Theme">
+        <i [ngClass]="isDarkMode ? 'bi bi-moon-stars-fill' : 'bi bi-brightness-high-fill'"></i>
+      </button>
+      <button class="btn btn-dark nav-icon-btn me-2" (click)="showSection('notification')" title="Notifications">
         <i [ngClass]="currentRoute.includes('admin-panel/notification') ? 'bi bi-bell-fill' : 'bi bi-bell'"></i>
       </button>
       <button class="btn btn-dark nav-icon-btn" type="button" (click)="logout()" title="Log Out">
@@ -22,7 +24,6 @@
   </div>
 </nav>
 
-<!-- Sidebar -->
 <div class="sidebar bg-dark text-white vh-100 d-flex flex-column align-items-center"
   [class.shrinked]="!isSidebarOpen">
 
@@ -61,9 +62,108 @@
   </ul>
 </div>
 
-<!-- Main Content Area -->
 <div class="d-flex" style="height: 100vh; overflow: hidden;">
   <div class="container-fluid" [ngClass]="{'collapsed': !isSidebarOpen}" 
+       [ngStyle]="{
+         'margin-left': isSidebarOpen ? '230px' : '70px',
+         'transition': 'margin-left 0.5s ease',
+         'padding-top': '60px',
+         'flex-grow': '1',
+         'overflow-y': 'auto'
+       }">
+    <router-outlet></router-outlet>
+  </div>
+</div> -->
+
+
+
+
+
+
+
+<!-- Navbar -->
+<nav class="navbar fixed-top" [ngClass]="{'navbar-dark bg-dark': isDarkMode, 'navbar-light bg-light': !isDarkMode}">
+  <div class="container-fluid">
+    <div>
+      <button class="btn me-2 nav-icon-btn" type="button" (click)="toggleSidebar()" 
+        [ngClass]="{'btn-dark': isDarkMode, 'btn-light': !isDarkMode}"
+        [attr.title]="isSidebarOpen ? 'Close Sidebar' : 'Open Sidebar'">
+        <i [ngClass]="isSidebarOpen ? 'bi bi-layout-sidebar-inset' : 'bi bi-layout-sidebar'"></i>
+      </button>
+      <button class="btn nav-icon-btn" type="button" (click)="showSection('registration-form')" 
+        [ngClass]="{'btn-dark': isDarkMode, 'btn-light': !isDarkMode}"
+        title="Add User">
+        <i class="bi bi-person-plus"></i>
+      </button>
+    </div>
+
+    <div class="ms-auto d-flex align-items-center">
+      <button class="btn nav-icon-btn me-2" type="button" (click)="toggleTheme()" title="Toggle Theme"
+        [ngClass]="{'btn-dark': isDarkMode, 'btn-light': !isDarkMode}">
+        <i [ngClass]="isDarkMode ? 'bi bi-moon-stars-fill' : 'bi bi-brightness-high-fill'"></i>
+      </button>
+      <button class="btn nav-icon-btn me-2" (click)="showSection('notification')" title="Notifications"
+        [ngClass]="{'btn-dark': isDarkMode, 'btn-light': !isDarkMode}">
+        <i [ngClass]="currentRoute.includes('admin-panel/notification') ? 'bi bi-bell-fill' : 'bi bi-bell'"></i>
+      </button>
+      <button class="btn nav-icon-btn" type="button" (click)="logout()" title="Log Out"
+        [ngClass]="{'btn-dark': isDarkMode, 'btn-light': !isDarkMode}">
+        <i class="bi bi-power"></i>
+      </button>
+    </div>
+  </div>
+</nav>
+
+<!-- Sidebar -->
+<div class="sidebar vh-100 d-flex flex-column align-items-center"
+  [ngClass]="{
+    'bg-dark text-white': isDarkMode, 
+    'bg-light text-dark': !isDarkMode, 
+    'shrinked': !isSidebarOpen
+  }">
+
+  <h4 class="text-center w-100 admin-label" *ngIf="isSidebarOpen">Admin Panel</h4>
+
+  <ul class="nav flex-column w-100">
+    <li class="nav-item mb-2">
+      <button class="btn w-100 d-flex align-items-center sidebar-btn"
+        [ngClass]="{'btn-dark': isDarkMode, 'btn-light': !isDarkMode}" 
+        (click)="showSection('dashboard')" [attr.title]="isSidebarOpen ? '' : 'Dashboard'">
+        <i class="bi bi-speedometer2"></i>
+        <span *ngIf="isSidebarOpen">Dashboard</span>
+      </button>
+    </li>
+    <li class="nav-item mb-2">
+      <button class="btn w-100 d-flex align-items-center sidebar-btn"
+        [ngClass]="{'btn-dark': isDarkMode, 'btn-light': !isDarkMode}"
+        (click)="showSection('user-details')" [attr.title]="isSidebarOpen ? '' : 'User Details'">
+        <i class="bi bi-people"></i>
+        <span *ngIf="isSidebarOpen">Student Details</span>
+      </button>
+    </li>
+    <li class="nav-item mb-2">
+      <button class="btn w-100 d-flex align-items-center sidebar-btn"
+        [ngClass]="{'btn-dark': isDarkMode, 'btn-light': !isDarkMode}"
+        (click)="showSection('attendance-log')" [attr.title]="isSidebarOpen ? '' : 'Attendance Log'">
+        <i class="bi bi-calendar-check"></i>
+        <span *ngIf="isSidebarOpen">Attendance Log</span>
+      </button>
+    </li>
+    <li class="nav-item mb-2">
+      <button class="btn w-100 d-flex align-items-center sidebar-btn"
+        [ngClass]="{'btn-dark': isDarkMode, 'btn-light': !isDarkMode}"
+        (click)="showSection('add-camera')" [attr.title]="isSidebarOpen ? '' : 'Add Camera'">
+        <i class="bi bi-camera"></i>
+        <span *ngIf="isSidebarOpen">Add Camera</span>
+      </button>
+    </li>
+  </ul>
+</div>
+
+<!-- Main Content Area -->
+<div class="d-flex" style="height: 100vh; overflow: hidden;">
+  <div class="container-fluid"
+       [ngClass]="{'bg-dark text-light': isDarkMode, 'bg-light text-dark': !isDarkMode}"
        [ngStyle]="{
          'margin-left': isSidebarOpen ? '230px' : '70px',
          'transition': 'margin-left 0.5s ease',
