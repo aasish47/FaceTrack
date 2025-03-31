@@ -1,4 +1,23 @@
-<div class="chart-container">
-    <h4>Monthly Attendance Overview</h4>
-    <canvas id="monthlyHoursChart"></canvas>
-</div>
+<div class="attendance-container">
+    <!-- <h4><i class="bi bi-calendar-check"></i> Monthly Attendance Overview</h4> -->
+    
+    <div class="month-cards">
+      <div *ngFor="let month of months; let i = index" class="month-card">
+        <div class="radial-progress" [style.--percentage]="getPercentage(hoursWorked[i])">
+          <span class="progress-value">{{ hoursWorked[i] || 0 }}<small>hrs</small></span>
+        </div>
+        <div class="month-info">
+          <h5>{{ month.name }}</h5>
+          <div class="performance-indicator" [ngClass]="getPerformanceClass(hoursWorked[i])">
+            {{ getPerformanceText(hoursWorked[i]) }}
+          </div>
+        </div>
+      </div>
+    </div>
+  
+    <div class="performance-scale">
+      <span class="scale-item excellent"><i class="bi bi-check-circle"></i> Excellent (>160hrs)</span>
+      <span class="scale-item good"><i class="bi bi-check-circle"></i> Good (144-160hrs)</span>
+      <span class="scale-item needs-improvement"><i class="bi bi-exclamation-circle"></i> Needs Improvement (<144hrs)</span>
+    </div>
+  </div>

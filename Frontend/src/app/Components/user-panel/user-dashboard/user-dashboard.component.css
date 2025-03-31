@@ -1,125 +1,512 @@
-.sidebar {
-  width: 250px;
+/* Base Styles */
+.dashboard-container {
+  padding: 2rem;
+  background-color: #f8fafc;
   min-height: 100vh;
 }
 
-.dashboard-content {
-  flex-grow: 1;
+.dashboard-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
 }
 
-.card {
-  background: #fff;
-  border-radius: 8px;
-  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+.dashboard-title {
+  font-weight: 600;
+  color: #2d3748;
+  display: flex;
+  align-items: center;
 }
 
-.card h5 {
-  font-weight: bold;
+.dashboard-row {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(450px, 1fr));
+  gap: 1.5rem;
+  margin-bottom: 1.5rem;
 }
 
-.btn {
-  transition: 0.3s;
-}
-
-.btn:hover {
-  opacity: 0.8;
-}
-
-
-
-/* Add to your component's CSS */
-.card {
+/* Card Styles */
+.dashboard-card {
+  background: white;
   border-radius: 12px;
-  transition: transform 0.2s;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.02);
+  transition: all 0.3s ease;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
 }
 
-.card:hover {
-  transform: translateY(-2px);
+.dashboard-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
 }
 
-.timeline {
+.card-header {
+  padding: 1.25rem 1.5rem;
+  border-bottom: 1px solid #edf2f7;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.card-header h3 {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #2d3748;
+  margin: 0;
+  display: flex;
+  align-items: center;
+}
+
+/* Profile Card Specific */
+.profile-card {
+  padding: 1.5rem;
+}
+
+.profile-header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 1.5rem;
+}
+
+.profile-avatar {
   position: relative;
-  padding-left: 30px;
+  margin-right: 1.25rem;
 }
 
-.timeline-item {
-  position: relative;
-  margin-bottom: 15px;
+.avatar-img {
+  width: 100px;
+  height: 100px;
+  border-radius: 10%;
+  object-fit: cover;
+  border: 3px solid white;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
 }
 
-.timeline-badge {
+.status-indicator {
   position: absolute;
-  left: -20px;
-  top: 15px;
-  width: 12px;
-  height: 12px;
+  bottom: 5px;
+  right: 5px;
+  width: 16px;
+  height: 16px;
   border-radius: 50%;
+  border: 2px solid white;
 }
 
-.timeline-content {
-  position: relative;
+.status-indicator.present {
+  background-color: #10b981;
 }
 
-.bg-primary-light {
-  background-color: rgba(13, 110, 253, 0.1);
+.status-indicator.absent {
+  background-color: #ef4444;
 }
 
-.text-break {
-  word-break: break-word;
+.profile-info {
+  flex: 1;
 }
 
-
-/* Ensure all cards have equal height in their row */
-.row {
-  align-items: stretch;
+.profile-name {
+  font-size: 1.4rem;
+  font-weight: 600;
+  margin-bottom: 0.25rem;
+  color: #1e293b;
 }
 
-/* Make sure flex columns work properly */
-.d-flex.flex-column {
-  min-height: 0;
+.profile-title {
+  color: #64748b;
+  font-size: 0.95rem;
+  margin-bottom: 0;
 }
 
-/* Timeline adjustments for flex layout */
-.timeline {
+.profile-details {
+  background-color: #f8fafc;
+  border-radius: 8px;
+  padding: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.detail-item {
+  display: flex;
+  align-items: center;
+  padding: 0.5rem 0;
+}
+
+.detail-item i {
+  margin-right: 0.75rem;
+  color: #6366f1;
+  width: 20px;
+  text-align: center;
+}
+
+.profile-footer {
+  margin-top: auto;
+}
+
+.attendance-status {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  background: none;
+  border: none;
+  padding: 0.75rem 1rem;
+  border-radius: 8px;
+  background-color: #f1f5f9;
+  color: #334155;
+  font-weight: 500;
+  transition: all 0.2s ease;
+  cursor: pointer;
+}
+
+.attendance-status:hover {
+  background-color: #e2e8f0;
+}
+
+.status-badge {
+  padding: 0.25rem 0.75rem;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+
+.badge-success {
+  background-color: #d1fae5;
+  color: #065f46;
+}
+
+.badge-danger {
+  background-color: #fee2e2;
+  color: #991b1b;
+}
+
+/* Analytics Card */
+.analytics-card {
+  display: flex;
+  flex-direction: column;
+}
+
+.chart-container {
+  padding: 1rem 1.5rem;
+  flex: 1;
+  min-height: 200px;
+}
+
+.card-footer {
+  display: flex;
+  padding: 1rem 1.5rem;
+  border-top: 1px solid #edf2f7;
+}
+
+.stat-item {
+  flex: 1;
+  text-align: center;
+}
+
+.stat-value {
+  display: block;
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #1e293b;
+}
+
+.stat-label {
+  font-size: 0.85rem;
+  color: #64748b;
+}
+
+/* Activity Card */
+.activity-card {
+  display: flex;
+  flex-direction: column;
+}
+
+.activity-list {
+  flex: 1;
+  padding: 0 1.5rem;
   overflow-y: auto;
-  max-height: 100%;
+  max-height: 300px;
 }
 
-/* Card body adjustments */
-.card-body.d-flex {
-  min-height: 0;
+.activity-item {
+  display: flex;
+  padding: 1rem 0;
+  border-bottom: 1px solid #f1f5f9;
 }
 
-
-/* Status indicator styles */
-.status-present {
-  background-color: #28a745;
-  color: white;
+.activity-item:last-child {
+  border-bottom: none;
 }
 
-.status-late {
-  background-color: #ffc107;
-  color: #212529;
+.activity-icon {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background-color: #f1f5f9;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 1rem;
+  flex-shrink: 0;
 }
 
-.status-absent {
-  background-color: #dc3545;
-  color: white;
+.activity-icon i {
+  font-size: 0.9rem;
 }
 
-/* Modal adjustments */
+.activity-content {
+  flex: 1;
+}
+
+.activity-text {
+  margin-bottom: 0.25rem;
+  color: #334155;
+}
+
+.activity-time {
+  color: #64748b;
+  font-size: 0.8rem;
+}
+
+/* Notifications Card */
+.notifications-card {
+  display: flex;
+  flex-direction: column;
+}
+
+.notifications-list {
+  flex: 1;
+  padding: 0 1.5rem;
+  overflow-y: auto;
+  max-height: 300px;
+}
+
+.notification-item {
+  display: flex;
+  padding: 1rem 0;
+  border-bottom: 1px solid #f1f5f9;
+}
+
+.notification-item:last-child {
+  border-bottom: none;
+}
+
+.notification-icon {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background-color: #f1f5f9;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 1rem;
+  flex-shrink: 0;
+}
+
+.notification-icon i {
+  font-size: 0.9rem;
+}
+
+.notification-content {
+  flex: 1;
+}
+
+.notification-content p {
+  margin-bottom: 0.25rem;
+  color: #334155;
+}
+
+.notification-content small {
+  color: #64748b;
+  font-size: 0.8rem;
+}
+
+/* Chart Cards */
+.chart-card {
+  display: flex;
+  flex-direction: column;
+}
+
+/* Modal Styles */
 .modal-content {
-  border-radius: 10px;
+  border-radius: 12px;
+  border: none;
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
 }
 
 .modal-header {
-  border-bottom: 1px solid #eee;
-  background-color: #f8f9fa;
-  border-radius: 10px 10px 0 0;
+  border-bottom: 1px solid #e2e8f0;
+  padding: 1.25rem 1.5rem;
 }
 
-/* Timeline adjustments */
-.timeline {
-  max-height: 300px;
-  overflow-y: auto;
+.modal-title {
+  display: flex;
+  align-items: center;
+  font-weight: 600;
+}
+
+.modal-body {
+  padding: 1.5rem;
+}
+
+.modal-footer {
+  border-top: 1px solid #e2e8f0;
+  padding: 1rem 1.5rem;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 992px) {
+  .dashboard-row {
+    grid-template-columns: 1fr;
+  }
+  
+  .dashboard-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+  }
+}
+
+@media (max-width: 576px) {
+  .dashboard-container {
+    padding: 1rem;
+  }
+  
+  .profile-header {
+    flex-direction: column;
+    text-align: center;
+  }
+  
+  .profile-avatar {
+    margin-right: 0;
+    margin-bottom: 1rem;
+  }
+}
+.dashboard-row {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+  gap: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.dashboard-card {
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.02);
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.card-header {
+  padding: 1.25rem 1.5rem;
+  border-bottom: 1px solid #edf2f7;
+}
+
+.card-body {
+  padding: 1.5rem;
+  flex: 1;
+}
+
+.activity-item {
+  display: flex;
+  padding: 0.75rem 0;
+  border-bottom: 1px solid #f1f5f9;
+}
+
+.activity-item:last-child {
+  border-bottom: none;
+}
+/* Add/Update these styles in your CSS */
+.profile-footer {
+  margin-top: 2rem;
+  display: flex;
+  justify-content: center;
+}
+
+.attendance-status-btn {
+  background: transparent;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  width: 100%;
+}
+
+.status-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50px;
+  overflow: hidden;
+  width: fit-content;
+  margin: 0 auto;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.status-pill {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px 24px;
+  min-width: 120px;
+  height: 40px;
+  width: 100%;
+}
+
+.status-pill.present {
+  background: rgba(40, 167, 69, 0.15);
+}
+
+.status-pill.absent {
+  background: rgba(220, 53, 69, 0.15);
+}
+
+.status-text {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #28a745;
+  line-height: 1;
+  width: 100%;
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.status-pill.absent .status-text {
+  color: #dc3545;
+}
+
+.status-arrow {
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+
+}
+.status-pill.present .status-arrow {
+  background: rgba(40, 167, 69, 0.15);
+}
+
+.attendance-status-btn:hover .status-arrow {
+  transform: translateX(4px);
+  color: #4361ee;
+}
+
+/* Dark Mode Support */
+[data-theme="dark"] .status-container {
+  background: transparent;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+}
+
+[data-theme="dark"] .status-arrow {
+  background: #3a3a3a;
+  color: #adb5bd;
+}
+
+[data-theme="dark"] .attendance-status-btn:hover .status-arrow {
+  color: #639754;
 }

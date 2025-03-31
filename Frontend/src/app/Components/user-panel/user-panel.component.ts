@@ -1,25 +1,17 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-
+import { interval } from 'rxjs';
 
 @Component({
   selector: 'app-user-panel',
   templateUrl: './user-panel.component.html',
   styleUrls: ['./user-panel.component.css']
 })
-export class UserPanelComponent {
-
-  // Sidebar toggle state
+export class UserPanelComponent implements OnInit {
   isSidebarOpen: boolean = true;
-  isNotificationOpen: boolean = false;
   currentRoute: string = '';
-
-  notifications: string[] = [
-    "Your attendance has been marked successfully.",
-    "New update available for the system.",
-    "Your profile details were updated.",
-    "Meeting scheduled for tomorrow at 10 AM."
-  ];
+  currentTime = new Date();
+  userPhoto: string | null = null;
 
   constructor(private router: Router) {
     this.router.events.subscribe(() => {
@@ -27,21 +19,23 @@ export class UserPanelComponent {
     });
   }
 
-  ngOnInit(){
-    // Check if user is logged in
-    const isUserLoggedIn = localStorage.getItem('userLoggedIn');
+  ngOnInit() {
+    // Update time every second
+    interval(1000).subscribe(() => {
+      this.currentTime = new Date();
+    });
 
-    if (!isUserLoggedIn) {
-      this.router.navigate(['/login']); // Redirect to login if not logged in
+    // Check authentication
+    if (!localStorage.getItem('userLoggedIn')) {
+      this.router.navigate(['/login']);
     }
+
+    // Load user photo (example - replace with actual implementation)
+    this.userPhoto = localStorage.getItem('userPhoto');
   }
 
   toggleSidebar() {
     this.isSidebarOpen = !this.isSidebarOpen;
-  }
-
-  toggleNotificationPanel() {
-    this.isNotificationOpen = !this.isNotificationOpen;
   }
 
   showSection(section: string) {
@@ -50,7 +44,7 @@ export class UserPanelComponent {
 
   logout() {
     localStorage.removeItem('userLoggedIn');
-    sessionStorage.removeItem('userId')
+    sessionStorage.removeItem('userId');
     this.router.navigate(['/login']);
   }
 }

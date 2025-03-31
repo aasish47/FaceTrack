@@ -1,55 +1,66 @@
-<div class="container mt-4">
-    <h3 class="mb-4">Request Form</h3>
+<div class="artistic-form-container">
+  <div class="form-ornament top"></div>
+  <div class="form-ornament bottom"></div>
   
-    <form [formGroup]="wfhForm" (ngSubmit)="onSubmit()">
-      <!-- Type of Request -->
-      <div class="mb-3">
-        <label for="requestType" class="form-label">Request Type</label>
-        <select
-          id="requestType"
-          class="form-select"
-          formControlName="type"
-          required
-        >
-          <option value="" disabled>Select a request type</option>
-          <option value="WFH">Work From Home</option>
-          <option value="Corporate Visit">Corporate Visit</option>
-        </select>
-      </div>
-  
-      <!-- Date -->
-      <div class="mb-3">
-        <label for="date" class="form-label">Date</label>
-        <input
-          type="date"
-          class="form-control"
-          id="date"
-          formControlName="date"
-          required
-        />
-      </div>
-  
-      <!-- Reason -->
-      <div class="mb-3">
-        <label for="reason" class="form-label">Reason</label>
-        <textarea
-          id="reason"
-          class="form-control"
-          rows="4"
-          formControlName="reason"
-          required
-          placeholder="Explain your reason for the request"
-        ></textarea>
-      </div>
-  
-      <!-- Submit Button -->
-      <button
-        type="submit"
-        class="btn btn-primary"
-        [disabled]="wfhForm.invalid"
-      >
-        Submit Request
-      </button>
-    </form>
+  <div class="form-header">
+    <h2 class="form-title">Request Submission Form</h2>
+    <p class="form-subtitle">Please fill in the details carefully</p>
   </div>
-  
+
+  <form [formGroup]="wfhForm" (ngSubmit)="onSubmit()" class="elegant-form">
+    <!-- Type of Request -->
+    <div class="form-group floating-label">
+      <select 
+        id="requestType" 
+        class="styled-select"
+        formControlName="type"
+        required
+      >
+        <option value="" disabled hidden></option>
+        <option value="WFH">Work From Home</option>
+        <option value="Corporate Visit">Corporate Visit</option>
+      </select>
+      <label for="requestType">Request Type</label>
+      <div class="select-decoration"></div>
+    </div>
+
+    <!-- Date -->
+    <div class="form-group floating-label">
+      <input
+        type="date"
+        class="styled-input"
+        id="date"
+        formControlName="date"
+        required
+      />
+      <label for="date">Select Date</label>
+      <div class="input-decoration"></div>
+    </div>
+
+    <!-- Reason -->
+    <div class="form-group floating-label">
+      <textarea
+        id="reason"
+        class="styled-textarea"
+        rows="4"
+        formControlName="reason"
+        required
+      ></textarea>
+      <label for="reason">Reason for Request</label>
+      <div class="textarea-decoration"></div>
+    </div>
+
+    <!-- Submit Button -->
+    <button 
+      type="submit" 
+      class="luxury-btn"
+      [disabled]="wfhForm.invalid"
+    >
+      <span class="btn-text">Submit Request</span>
+      <div class="btn-shine"></div>
+      <div class="btn-particles">
+        <span></span><span></span><span></span>
+      </div>
+    </button>
+  </form>
+</div>

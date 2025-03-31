@@ -12,6 +12,7 @@ export class WfhRequestComponent implements OnInit {
   wfhForm!: FormGroup;
   userId!: number;
   userData: any;
+  loading: boolean = false;
 
   constructor(
     private fb: FormBuilder,
@@ -20,51 +21,72 @@ export class WfhRequestComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.userId = Number(sessionStorage.getItem('userId'));
-    this.initForm();
-
-    this.userService.getUserDetails(this.userId).subscribe({
-      next: (data) => {
-        this.userData = data;
-      },
-      error: (err) => {
-        console.error('Error fetching user details:', err);
-        alert('Error loading user details.');
-      }
-    });
+    this.initializeForm();
+    this.fetchUserData();
   }
 
-  initForm() {
+  private initializeForm(): void {
     this.wfhForm = this.fb.group({
       type: ['', Validators.required],
       date: ['', Validators.required],
-      reason: ['', Validators.required]
+      reason: ['', [Validators.required, Validators.minLength(20)]]
     });
   }
 
-  onSubmit() {
-    if (this.wfhForm.valid && this.userData) {
-      const formData = {
-        ...this.wfhForm.value,
-        userId: this.userId,
-        name: this.userData.userName,
-        email: this.userData.userEmail,
-        department: this.userData.userDepartment,
-        designation: this.userData.userDesignation
-      };
+  private fetchUserData(): void {
+    this.userId = Number(sessionStorage.getItem('userId'));
+    
+    this.userService.getUserDetails(this.userId).subscribe({
+      next: (data) => this.userData = data,
+      error: (err) => this.handleUserDataError(err)
+    });
+  }
 
-      this.http.post('http://127.0.0.1:8000/api/send-email/', formData).subscribe({
-        next: () => {
-          alert('WFH request submitted and email sent!');
-          this.wfhForm.reset();
-        },
-        error: (error) => {
-          alert('Failed to send WFH request.');
-          console.error('Error:', error);
-        }
-      });
-    } else {
-      alert('Please fill all required fields.');
-    }
+  onSubmit(): void {
+    if (this.wfhForm.invalid || !this.userData || this.loading) return;
+
+    this.loading = true;
+    const formData = this.prepareFormData();
+    
+    this.http.post('http://127.0.0.1:8000/api/send-email/', formData).subscribe({
+      next: () => this.handleSubmissionSuccess(),
+      error: (err) => this.handleSubmissionError(err)
+    });
+  }
+
+  private prepareFormData(): any {
+    return {
+      ...this.wfhForm.value,
+      userId: this.userId,
+      name: this.userData.userName,
+      email: this.userData.userEmail,
+      department: this.userData.userDepartment,
+      designation: this.userData.userDesignation
+    };
+  }
+
+  private handleSubmissionSuccess(): void {
+    this.loading = false;
+    this.showAlert('Request submitted successfully!', 'success');
+    this.wfhForm.reset();
+  }
+
+  private handleSubmissionError(error: any): void {
+    this.loading = false;
+    this.showAlert('Submission failed. Please try again.', 'error');
+    console.error('Submission error:', error);
+  }
+
+  private handleUserDataError(error: any): void {
+    this.showAlert('Error loading user details.', 'error');
+    console.error('User data error:', error);
+  }
+
+  private showAlert(message: string, type: 'success' | 'error'): void {
+    alert(message); // Consider replacing with a toast notification
+  }
+
+  get formControls() {
+    return this.wfhForm.controls;
   }
 }
