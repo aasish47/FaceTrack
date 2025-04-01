@@ -22,7 +22,6 @@ def send_wfh_email(request):
         if not all([name, email, type_, date, reason]):
             return Response({"error": "Missing fields"}, status=status.HTTP_400_BAD_REQUEST)
         
-        # Save the data to the AttendanceRequest table
         attendance_request = AttendanceRequest(
             UserId=userId,
             Name=name,
@@ -78,10 +77,6 @@ def get_user_details(request, user_id):
     }
 
     return JsonResponse(user_data)
-# def get_user_details(request, user_id):
-#     user = get_object_or_404(RegistrationUser, user_id=user_id)
-#     serializer = RegistrationUserSerializer(user)
-#     return Response(serializer.data)
 
 
 @api_view(['GET'])

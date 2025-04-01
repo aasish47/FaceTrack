@@ -9,7 +9,7 @@ class RegistrationUserSerializer(serializers.ModelSerializer):
 class UserAttendanceSerializer(serializers.ModelSerializer):
     class Meta:
         model = UserAttendance
-        fields = ['time_in', 'time_out', 'date']  # ✅ Only include attendance details
+        fields = ['time_in', 'time_out', 'date'] 
 
 
 class AttendanceRequestSerializer(serializers.ModelSerializer):

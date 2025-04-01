@@ -4,7 +4,7 @@ from .views import (
     send_user_data, accept_attendance_request
 )
 
-print("DetailsAdminPanel URLs loaded")  # Debugging
+print("DetailsAdminPanel URLs loaded")
 
 urlpatterns = [
     path('get-users/', get_users, name='get_users'),

@@ -510,3 +510,30 @@
 [data-theme="dark"] .attendance-status-btn:hover .status-arrow {
   color: #639754;
 }
+
+
+.profile-avatar-wrapper {
+  position: relative;
+  display: inline-block;
+}
+
+.profile-avatar {
+  position: relative;
+  width: 100px; 
+  height: 100px;
+}
+
+.status-indicator {
+  position: absolute;
+  bottom: 0; 
+  right: 0; 
+  width: 15px; 
+  height: 15px; 
+  border-radius: 50%;
+  background-color: #ff0000;
+  border: 2px solid #fff; 
+}
+
+.status-indicator.present {
+  background-color: #28a745;
+}

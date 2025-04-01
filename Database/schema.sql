@@ -48,3 +48,14 @@ CREATE TABLE Attendance_Request (
     Type VARCHAR(100),
     Reason VARCHAR(250)
 );
+
+CREATE TABLE Past_Attendance_Request (
+    Id INT AUTO_INCREMENT PRIMARY KEY,
+    UserId VARCHAR(50),
+    Name VARCHAR(100),
+    Email VARCHAR(100),
+	Date VARCHAR(100),
+    Type VARCHAR(100),
+    Reason VARCHAR(250),
+    Status VARCHAR(50) NOT NULL
+);

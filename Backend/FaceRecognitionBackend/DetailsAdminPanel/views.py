@@ -33,7 +33,6 @@ def attendance_summary(request):
     total_users = set(User.objects.values_list('userId', flat=True))
     absent_users = total_users - all_attending_users
 
-    # Fetch all user data in one query
     users = User.objects.filter(userId__in=total_users)
     user_map = {user.userId: {'userId': user.userId, 'userName': user.userName, 'userEmail': user.userEmail} for user in users}
 
@@ -64,7 +63,6 @@ def attendance_monthly_summary(request):
         .order_by('date')
     )
 
-    # Fill missing dates with 0 attendance
     date_map = {entry['date']: entry['present_count'] for entry in attendance_data}
     summary = [{'date': (start_date + timedelta(days=i)).strftime('%Y-%m-%d'),
                 'present': date_map.get(start_date + timedelta(days=i), 0)}
@@ -103,21 +101,21 @@ def send_user_data(request):
 @api_view(['POST'])
 def accept_attendance_request(request):
     try:
-        # Extract data from the request
+       
         data = request.data
         user_id = data.get('UserId')
         date = data.get('Date')
         time_in = data.get('TimeIn')
         time_out = data.get('TimeOut')
 
-        # Create a new attendance record
+
         attendance_record = UserAttendance(
             user_id=user_id,
             date=date,
             time_in=time_in,
             time_out=time_out
         )
-        attendance_record.save()  # Save the record to the database
+        attendance_record.save() 
 
         return Response({'message': 'Attendance recorded successfully!'}, status=201)
     
