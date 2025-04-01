@@ -7,60 +7,60 @@
     background-color: #f8f9fa;
     min-height: 100vh;
   }
-  
+
   .header-section {
     background: linear-gradient(135deg, #3f80ff 0%, #1a56ff 100%);
     border-radius: 0 0 20px 20px;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
   }
-  
+
   .search-bar input {
     border-radius: 50px;
     border: none;
     padding: 10px 20px;
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
   }
-  
+
   /* Table Styling */
   .table-card {
     border-radius: 12px;
     overflow: hidden;
     border: none;
   }
-  
+
   .table-header {
     background-color: #f1f5ff;
     color: #3f80ff;
   }
-  
+
   .table-header th {
     border-bottom: none;
     padding: 15px;
     font-weight: 600;
   }
-  
+
   .user-row td {
     padding: 12px 15px;
     vertical-align: middle;
     border-bottom: 1px solid #f1f1f1;
   }
-  
+
   .user-row:last-child td {
     border-bottom: none;
   }
-  
+
   .user-name {
     font-weight: 500;
     color: #2c3e50;
     cursor: pointer;
     transition: all 0.2s;
   }
-  
+
   .user-name:hover {
     color: #3f80ff;
     text-decoration: underline;
   }
-  
+
   /* Avatar */
   .avatar {
     width: 36px;
@@ -71,13 +71,13 @@
     align-items: center;
     justify-content: center;
   }
-  
+
   .avatar-text {
     color: white;
     font-weight: 600;
     font-size: 14px;
   }
-  
+
   /* Badges */
   .badge {
     padding: 5px 10px;
@@ -85,27 +85,27 @@
     font-weight: 500;
     font-size: 12px;
   }
-  
+
   .bg-primary-light {
     background-color: rgba(63, 128, 255, 0.1);
   }
-  
+
   .bg-secondary-light {
     background-color: rgba(108, 117, 125, 0.1);
   }
-  
+
   /* Pagination */
   .custom-pagination .ngx-pagination {
     display: flex;
     justify-content: center;
     align-items: center;
   }
-  
+
   .custom-pagination .ngx-pagination li {
     margin: 0 5px;
     border-radius: 50%;
   }
-  
+
   .custom-pagination .ngx-pagination a {
     color: #6c757d;
     text-decoration: none;
@@ -117,27 +117,27 @@
     border-radius: 50%;
     transition: all 0.3s;
   }
-  
+
   .custom-pagination .ngx-pagination a:hover {
     background-color: #f1f5ff;
     color: #3f80ff;
   }
-  
+
   .custom-pagination .ngx-pagination .current {
     background-color: #3f80ff;
     color: white;
   }
-  
+
   /* Modal Styling */
   .modal-content {
     border-radius: 15px;
     overflow: hidden;
   }
-  
+
   .bg-gradient-primary {
     background: linear-gradient(135deg, #3f80ff 0%, #1a56ff 100%);
   }
-  
+
   .profile-avatar {
     width: 120px;
     height: 120px;
@@ -146,7 +146,7 @@
     overflow: hidden;
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
   }
-  
+
   .user-stats {
     display: flex;
     justify-content: space-between;
@@ -155,25 +155,25 @@
     border-radius: 10px;
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
   }
-  
+
   .stat-item {
     text-align: center;
     padding: 0 10px;
   }
-  
+
   .stat-value {
     font-size: 24px;
     font-weight: 700;
     color: #3f80ff;
   }
-  
+
   .stat-label {
     font-size: 12px;
     color: #6c757d;
     text-transform: uppercase;
     letter-spacing: 1px;
   }
-  
+
   .section-title {
     color: #3f80ff;
     font-weight: 600;
@@ -181,23 +181,23 @@
     display: flex;
     align-items: center;
   }
-  
+
   .chart-container {
     height: 200px;
     margin-bottom: 20px;
   }
-  
+
   /* Timeline */
   .timeline {
     position: relative;
     padding-left: 30px;
   }
-  
+
   .timeline-item {
     position: relative;
     padding-bottom: 20px;
   }
-  
+
   .timeline-badge {
     position: absolute;
     left: -30px;
@@ -208,50 +208,50 @@
     background-color: #3f80ff;
     border: 4px solid #e0e9ff;
   }
-  
+
   .timeline-content {
     background: white;
     padding: 15px;
     border-radius: 8px;
     box-shadow: 0 3px 10px rgba(0, 0, 0, 0.05);
   }
-  
+
   .timeline-text {
     color: #2c3e50;
     margin-bottom: 5px;
   }
-  
+
   .timeline-time {
     font-size: 12px;
     color: #6c757d;
   }
-  
+
   /* Buttons */
   .btn-outline-primary {
     border-color: #3f80ff;
     color: #3f80ff;
   }
-  
+
   .btn-outline-primary:hover {
     background-color: #3f80ff;
     color: white;
   }
-  
+
   .btn-outline-danger {
     border-color: #ff4757;
     color: #ff4757;
   }
-  
+
   .btn-outline-danger:hover {
     background-color: #ff4757;
     color: white;
   }
-  
+
   .btn-outline-success {
     border-color: #2ed573;
     color: #2ed573;
   }
-  
+
   .btn-outline-success:hover {
     background-color: #2ed573;
     color: white;
@@ -259,42 +259,39 @@
 
 
   .custom-pagination .ngx-pagination .pagination-previous::before {
-    content: "\f12c"; /* Unicode for Bootstrap chevron-left */
+    content: "\f12c";
     font-family: "Bootstrap Icons";
   }
-  
+
   .custom-pagination .ngx-pagination .pagination-next::before {
-    content: "\f138"; /* Unicode for Bootstrap chevron-right */
+    content: "\f138";
     font-family: "Bootstrap Icons";
   }
 
-
-
-  /* Add these styles to your existing CSS */
 .search-bar {
     max-width: 500px;
   }
-  
+
   .search-bar input {
     border-radius: 20px 0 0 20px !important;
   }
-  
+
   .search-bar button {
     border-radius: 0 20px 20px 0;
     min-width: 80px;
   }
-  
+
   /* For better mobile responsiveness */
   @media (max-width: 576px) {
     .search-bar {
       flex-direction: column;
     }
-    
+
     .search-bar input {
       border-radius: 20px !important;
       margin-bottom: 8px;
     }
-    
+
     .search-bar button {
       border-radius: 20px !important;
       width: 100%;
