@@ -5,16 +5,19 @@ from datetime import datetime
 from concurrent.futures import ThreadPoolExecutor
 import django
 
-# Absolute path to your Django project root (FaceRecognitionBackend folder)
-PROJECT_ROOT = r'/Volumes/Keiko/FaceTrack/FaceTrack1/FaceTrack/Backend/FaceRecognitionBackend'
+# Absolute path needed here so, i have taken the path from system and added the folder name manually
+PROJECT_ROOT = os.path.dirname(sys.path[0])+'/FaceRecognitionBackend'
+
+CAPTURED_FRAMES = sys.path[0]+'/captured_frames'
+
+
 
 
 sys.path.append(PROJECT_ROOT)
 
-# Set Django settings module
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'FaceRecognitionBackend.settings')
 
-# Initialize Django
+
 try:
     django.setup()
 except Exception as e:
@@ -52,7 +55,7 @@ def get_operational_cameras():
     """Fetch all operational cameras from database."""
     return Camera.objects.filter(operational=True)
 
-def process_cameras(output_base_dir="/Volumes/Keiko/FaceTrack/FaceTrack1/FaceTrack/Backend/model/captured_frames"):
+def process_cameras(output_base_dir=CAPTURED_FRAMES):
     """Process all operational cameras."""
     cameras = get_operational_cameras()
     if not cameras:

@@ -6,8 +6,10 @@ import django
 import sys
 from django.db import connection
 
-# Initialize Django environment (same as your capture script)
-PROJECT_ROOT = r'/Volumes/Keiko/FaceTrack/FaceTrack1/FaceTrack/Backend/FaceRecognitionBackend'
+
+# here also we need the absolute path of the folder so i have done it in the same way as in videoprocessing
+PROJECT_ROOT = os.path.dirname(sys.path[0])+'/FaceRecognitionBackend'
+
 sys.path.append(PROJECT_ROOT)
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'FaceRecognitionBackend.settings')
 
@@ -18,17 +20,31 @@ except Exception as e:
     print(f"Failed to initialize Django: {e}")
     sys.exit(1)
 
-# Initialize model paths
-model_path = 'FaceTrack1/FaceTrack/Backend/model/deploy.prototxt.txt'
-weights_path = "FaceTrack1/FaceTrack/Backend/model/res10_300x300_ssd_iter_140000.caffemodel"
-input_directory = "FaceTrack1/FaceTrack/Backend/model/captured_frames"
-output_directory = "FaceTrack1/FaceTrack/Backend/model/filtered_frames"
 
-# Load the face detection model
+
+def find_relative_path(root_dir, target_name):
+    for root, dirs, files in os.walk(root_dir):
+        if target_name in files or target_name in dirs:
+            return os.path.relpath(os.path.join(root, target_name), start=root_dir)
+    return None
+
+root_directory = os.getcwd()  
+
+model_path=find_relative_path(root_directory, 'deploy.prototxt.txt')
+weights_path = find_relative_path(root_directory, "res10_300x300_ssd_iter_140000.caffemodel")
+input_directory =find_relative_path(root_directory, "captured_frames")
+output_directory =find_relative_path(root_directory, "filtered_frames")
+
+
+# Resnet model used
+# model_path = 'FaceTrack1/FaceTrack/Backend/model/deploy.prototxt.txt'
+# weights_path = "FaceTrack1/FaceTrack/Backend/model/res10_300x300_ssd_iter_140000.caffemodel"
+# input_directory = "FaceTrack1/FaceTrack/Backend/model/captured_frames"
+# output_directory = "FaceTrack1/FaceTrack/Backend/model/filtered_frames"
+
 net = cv2.dnn.readNetFromCaffe(model_path, weights_path)
 
 def get_operational_cameras():
-    """Fetch all operational cameras from database with connection handling"""
     try:
         # Ensure database connection is alive
         connection.ensure_connection()
@@ -38,7 +54,6 @@ def get_operational_cameras():
         return []
 
 def ensure_camera_directories(cameras):
-    """Create input/output directories for all cameras"""
     for camera in cameras:
         # Create camera-specific directories
         cam_input_dir = os.path.join(input_directory, f"camera_{camera.id}")
@@ -49,7 +64,6 @@ def ensure_camera_directories(cameras):
         print(f"Ensured directories exist for camera_{camera.id}")
 
 def detect_faces_dnn(image_path, net, conf_threshold=0.5):
-    """Detect faces in an image using DNN model"""
     image = cv2.imread(image_path)
     if image is None:
         print(f"Error: Could not load image {image_path}.")
@@ -77,26 +91,23 @@ def detect_faces_dnn(image_path, net, conf_threshold=0.5):
     for i in range(detections.shape[2]):
         confidence = detections[0, 0, i, 2]
         if confidence > conf_threshold:
-            return True  # Face detected
+            # when face is detected it will return true
+            return True  
 
-    return False  # No face detected
+    return False
 
 def filter_frames_dnn():
-    """Main function to filter frames from all operational cameras"""
-    processed_files = {}  # Dictionary to track processed files per camera
+    processed_files = {}  
     
     while True:
-        # Get current operational cameras from database
         cameras = get_operational_cameras()
         if not cameras:
             print("No operational cameras found, retrying in 10 seconds...")
             time.sleep(10)
             continue
-
-        # Ensure directories exist for all cameras
         ensure_camera_directories(cameras)
 
-        # Initialize processed files tracking for new cameras
+
         for camera in cameras:
             cam_id = f"camera_{camera.id}"
             if cam_id not in processed_files:
@@ -141,7 +152,12 @@ def filter_frames_dnn():
                 except Exception as e:
                     print(f"Error processing {filename}: {e}")
 
-        # Sleep to avoid constant polling
+        # Sleep is necessary in these kind of situations to avoid constant polling
+        
+        # constant polling means repeatedly checking for a condition without any delay, 
+        # which can lead to high CPU usage and unnecessary resource consumption. 
+        # Adding a sleep interval helps reduce system load and improves efficiency.
+        # so sleep is necessary
         time.sleep(1)
 
 if __name__ == "__main__":

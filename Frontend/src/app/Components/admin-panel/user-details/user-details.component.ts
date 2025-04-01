@@ -299,22 +299,70 @@ export class UserDetailsComponent implements OnInit {
 
 
   // Update your processAttendanceData method
-  private processAttendanceData(attendanceData: AttendanceRecord[]): void {
-    const lastFive = attendanceData.slice(-5).reverse();
+  // private processAttendanceData(attendanceData: AttendanceRecord[]): void {
+  //   const lastFive = attendanceData.slice(-5).reverse();
 
+  //   this.attendanceChartData = {
+  //     labels: lastFive.map(item => this.formatDate(item.date)),
+  //     datasets: [{
+  //       data: lastFive.map(item => this.calculateLoggedHours(item)),
+  //       label: 'Logged Hours',
+  //       backgroundColor: 'rgba(63, 128, 255, 0.5)',
+  //       borderColor: 'rgba(63, 128, 255, 1)',
+  //       borderWidth: 1
+  //     }]
+  //   };
+
+  //     //   // Prepare recent logs
+  //   this.recentLogs = lastFive.map(item => {
+  //     if (item.time_in !== '00:00:00' && item.time_out === '00:00:00') {
+  //       return `Logged in at ${this.formatTime(item.time_in)}`;
+  //     } else if (item.time_in === '00:00:00' && item.time_out !== '00:00:00') {
+  //       return `Logged out at ${this.formatTime(item.time_out)}`;
+  //     } else if (item.time_in !== '00:00:00' && item.time_out !== '00:00:00') {
+  //       const hours = this.calculateLoggedHours(item).toFixed(1);
+  //       return `Worked ${hours} hours (${this.formatTime(item.time_in)} - ${this.formatTime(item.time_out)})`;
+  //     }
+  //     return 'No attendance data';
+  //   });
+
+  // }
+
+  private processAttendanceData(attendanceData: AttendanceRecord[]): void {
+    // Group attendance records by date and calculate total hours per day
+    const dailyHours: { [date: string]: number } = {};
+  
+    attendanceData.forEach(item => {
+      const date = item.date.split('T')[0]; // Get just the date part (YYYY-MM-DD)
+      const hours = this.calculateLoggedHours(item);
+      
+      if (!dailyHours[date]) {
+        dailyHours[date] = 0;
+      }
+      dailyHours[date] += hours;
+    });
+  
+    // Convert to array of { date, totalHours } and take last 5 entries
+    const dailySummaries = Object.entries(dailyHours)
+      .map(([date, totalHours]) => ({ date, totalHours }))
+      .sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime())
+      .slice(-5)
+      .reverse();
+  
+    // Prepare chart data
     this.attendanceChartData = {
-      labels: lastFive.map(item => this.formatDate(item.date)),
+      labels: dailySummaries.map(item => this.formatDate(item.date)),
       datasets: [{
-        data: lastFive.map(item => this.calculateLoggedHours(item)),
+        data: dailySummaries.map(item => item.totalHours),
         label: 'Logged Hours',
         backgroundColor: 'rgba(63, 128, 255, 0.5)',
         borderColor: 'rgba(63, 128, 255, 1)',
         borderWidth: 1
       }]
     };
-
-      //   // Prepare recent logs
-    this.recentLogs = lastFive.map(item => {
+  
+    // Prepare recent logs (unchanged)
+    this.recentLogs = attendanceData.slice(-5).reverse().map(item => {
       if (item.time_in !== '00:00:00' && item.time_out === '00:00:00') {
         return `Logged in at ${this.formatTime(item.time_in)}`;
       } else if (item.time_in === '00:00:00' && item.time_out !== '00:00:00') {
@@ -325,9 +373,7 @@ export class UserDetailsComponent implements OnInit {
       }
       return 'No attendance data';
     });
-
   }
-
 
 }
 

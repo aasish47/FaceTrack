@@ -28,9 +28,14 @@ CREATE TABLE user_attendance (
 );
 
 CREATE TABLE camera (
-	camera_name VARCHAR(20),
-    IP VARCHAR(20),
-    camera_type VARCHAR(10)
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(100) NOT NULL,
+    type VARCHAR(5) NOT NULL,
+    fps INT NOT NULL,
+    url VARCHAR(200) NOT NULL,
+    operational TINYINT(1) NOT NULL DEFAULT 1,
+    created_at DATETIME(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6),
+    updated_at DATETIME(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6) ON UPDATE CURRENT_TIMESTAMP(6)
 );
 
 CREATE TABLE admin_credentials (

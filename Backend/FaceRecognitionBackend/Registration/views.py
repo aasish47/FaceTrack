@@ -12,6 +12,8 @@ import os
 import subprocess
 from django.conf import settings
 
+PRECOMPUTE_EMBEDDINGS = os.path.join(os.path.dirname(settings.BASE_DIR), 'model', 'precomputeEmbeddings.py')
+
 @csrf_exempt
 def userApi(request, id=0):
     if request.method == 'GET':
@@ -75,7 +77,7 @@ def userApi(request, id=0):
             # Call embedding script after successful user registration
             if image_path:
                 try:
-                    subprocess.run(["python3", "/Volumes/Keiko/FaceTrack/FaceTrack1/FaceTrack/Backend/model/precomputeEmbeddings.py", image_path], check=True)
+                    subprocess.run(["python3", PRECOMPUTE_EMBEDDINGS, image_path], check=True)
                 except subprocess.CalledProcessError as e:
                     return JsonResponse(f"User added, but embedding generation failed: {str(e)}", safe=False)
 

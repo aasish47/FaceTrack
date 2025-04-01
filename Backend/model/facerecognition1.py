@@ -6,11 +6,22 @@ from scipy.spatial.distance import cosine
 import time
 import requests
 import json
+import sys
 
-# Paths
-filtered_frames_path = "FaceTrack1/FaceTrack/Backend/model/filtered_frames"
-embeddings_file = "FaceTrack1/FaceTrack/Backend/model/embeddings.pkl"
-log_file = "FaceTrack1/FaceTrack/Backend/model/recognition_log.txt"
+def find_relative_path(root_dir, target_name):
+    for root, dirs, files in os.walk(root_dir):
+        if target_name in files or target_name in dirs:
+            return os.path.relpath(os.path.join(root, target_name), start=root_dir)
+    return None
+
+root_directory = os.getcwd()  
+
+# here paths are made by using the find_relative_path function above
+filtered_frames_path = find_relative_path(root_directory, 'filtered_frames')
+embeddings_file = find_relative_path(root_directory, "embeddings.pkl")
+log_file = find_relative_path(root_directory, "recognition_log.txt")
+
+
 
 # Load precomputed embeddings
 if os.path.exists(embeddings_file):
@@ -119,7 +130,7 @@ def process_frames(camera):
 
 print("Starting continuous monitoring of filtered frames...")
 
-import sys
+
 
 folder_path = sys.path[0]+'/filtered_frames'
 
@@ -130,9 +141,3 @@ while True:
         process_frames(camera)
         
         time.sleep(5)
-
-# while True:
-#     for camera in ["camera_10", "camera_2"]:
-#         process_frames(camera)
-
-#     time.sleep(5)

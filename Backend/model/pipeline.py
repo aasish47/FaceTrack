@@ -33,14 +33,14 @@ if __name__ == "__main__":
     print(f"Started {scripts[0]} immediately")
 
     # Wait 5ms before starting facedetection.py
-    time.sleep(0.005)  # 5ms delay
+    time.sleep(0.005) 
     p2 = Process(target=run_script, args=(scripts[1],))
     p2.start()
     processes.append(p2)
     print(f"Started {scripts[1]} after 5ms delay")
 
     # Wait another 5ms before starting facerecognition1.py
-    time.sleep(0.005)  # 5ms delay
+    time.sleep(0.005) 
     p3 = Process(target=run_script, args=(scripts[2],))
     p3.start()
     processes.append(p3)
