@@ -137,9 +137,6 @@ export class MonthlyChartComponent implements OnInit {
             grid: {
               color: colors.grid,
             },
-            border: {
-              display: false
-            },
             ticks: {
               color: colors.text,
               stepSize: 40,
@@ -158,9 +155,6 @@ export class MonthlyChartComponent implements OnInit {
             grid: {
               display: false,
               drawTicks: false
-            },
-            border: {
-              display: false
             },
             ticks: {
               color: colors.text

@@ -43,9 +43,6 @@ export class NotificationComponent implements OnInit {
   }
 
   deleteAttendanceRequest(requestId: number): void {
-    if (!confirm('Are you sure you want to decline this request?')) {
-      return;
-    }
 
     const deleteUrl = `http://localhost:8000/api/delete-attendance-request/${requestId}/`;
     this.http.delete(deleteUrl).subscribe({
