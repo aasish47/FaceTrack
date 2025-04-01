@@ -9,6 +9,7 @@ from rest_framework import status
 from django.core.mail import send_mail
 from django.conf import settings
 
+
 @api_view(['POST'])
 def send_wfh_email(request):
     try:
@@ -21,8 +22,7 @@ def send_wfh_email(request):
 
         if not all([name, email, type_, date, reason]):
             return Response({"error": "Missing fields"}, status=status.HTTP_400_BAD_REQUEST)
-        
-        # Save the data to the AttendanceRequest table
+
         attendance_request = AttendanceRequest(
             UserId=userId,
             Name=name,

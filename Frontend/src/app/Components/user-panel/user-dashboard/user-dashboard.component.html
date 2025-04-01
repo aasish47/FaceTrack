@@ -3,19 +3,12 @@
     <h2 class="dashboard-title">
       <i class="fas fa-tachometer-alt me-2"></i> User Dashboard
     </h2>
-    <!-- <div class="dashboard-controls">
-      <button class="btn btn-sm btn-outline-primary">
-        <i class="fas fa-cog"></i> Settings
-      </button>
-    </div> -->
   </div>
 
-  <!-- Row 1 -->
   <div class="dashboard-row">
-    <!-- User Profile Card - Centered Layout -->
+    <!-- User Profile Card -->
     <div class="dashboard-card profile-card">
       <div class="profile-content text-center">
-        <!-- Centered Avatar Image -->
         <div class="profile-avatar-wrapper">
           <div class="profile-avatar mx-auto">
             <img [src]="user.userPhoto || 'assets/default-user.png'" 
@@ -28,25 +21,13 @@
           </div>
         </div>
 
-        <!-- Centered Text Below Image -->
         <div class="profile-text-content">
           <h2 class="profile-text-content mt-3">{{ user.userName }}</h2>
           <h4 class="profile-footer text-muted">{{ user.userDesignation }}</h4>
           <h4 class="profile-text-content text-muted">{{ user.userEmail }}</h4>
           <h4 class="profile-text-content text-muted">{{ user.userDepartment }}</h4>
-          <!-- <div class="profile-details mt-3">
-            <div class="detail-item d-flex justify-content-center align-items-center mb-2">
-              <i class="fas fa-envelope me-2"></i>
-              <span>{{ user.userEmail }}</span>
-            </div>
-            <div class="detail-item d-flex justify-content-center align-items-center">
-              <i class="fas fa-building me-2"></i>
-              <span>{{ user.userDepartment }}</span>
-            </div>
-          </div> -->
         </div>
 
-        <!-- Centered Footer Button -->
         <div class="profile-footer">
           <button class="attendance-status-btn" (click)="openAttendanceModal()">
             <div class="status-container">
@@ -56,9 +37,6 @@
               }">
                 <span class="status-text">{{ isUserPresent ? 'Present' : 'Absent' }}</span>
               </div>
-              <!-- <span class="status-arrow">
-                <i class="fas fa-chevron-right"></i>
-              </span> -->
             </div>
           </button>
         </div>
@@ -69,13 +47,6 @@
     <div class="dashboard-card analytics-card">
       <div class="card-header">
         <h3><i class="fas fa-chart-line me-2"></i>Attendance Overview</h3>
-        <!-- <div class="time-filter">
-          <select class="form-select form-select-sm">
-            <option>This Week</option>
-            <option>This Month</option>
-            <option>This Year</option>
-          </select>
-        </div> -->
       </div>
       <div class="chart-container">
         <canvas baseChart
@@ -97,13 +68,10 @@
     </div>
   </div>
 
-  <!-- Row 2 -->
   <div class="dashboard-row">
-    <!-- Recent Logs - Updated to match other panel sizes -->
     <div class="dashboard-card activity-card">
       <div class="card-header">
         <h3><i class="fas fa-history me-2"></i>Recent Activity</h3>
-        <!-- <button class="btn btn-sm btn-link">View All</button> -->
       </div>
       <div class="card-body">
         <div *ngIf="recentLogs.length > 0; else noLogs" class="activity-list">
@@ -152,7 +120,6 @@
     <div class="dashboard-card notifications-card">
       <div class="card-header">
         <h3><i class="fas fa-bell me-2"></i>Notifications</h3>
-        <!-- <button class="btn btn-sm btn-link" (click)="markAllNotificationsAsRead()">Mark All Read</button> -->
       </div>
       <div class="notifications-list">
         <div class="notification-item" *ngFor="let notification of notifications">
@@ -172,7 +139,6 @@
     </div>
   </div>
 
-  <!-- Row 3 -->
   <div class="dashboard-row">
     <!-- Weekly Chart -->
     <div class="dashboard-card chart-card">
@@ -211,7 +177,6 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" (click)="closeAttendanceModal()">Close</button>
-        <button type="button" class="btn btn-primary">Export Data</button>
       </div>
     </div>
   </div>

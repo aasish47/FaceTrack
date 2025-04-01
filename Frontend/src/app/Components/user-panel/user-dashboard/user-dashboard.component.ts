@@ -35,7 +35,7 @@ interface Notification {
   styleUrls: ['./user-dashboard.component.css']
 })
 export class UserDashboardComponent implements OnInit {
-  // User Data
+
   user: User = { 
     userId: '', 
     userName: '', 
@@ -45,17 +45,14 @@ export class UserDashboardComponent implements OnInit {
     userPhoto: '' 
   };
 
-  // Form Control
-  editProfileForm: FormGroup;
-  isEditing: boolean = false;
-  isLoading: boolean = true;
 
-  // Attendance Data
+  editProfileForm: FormGroup;
+
   isUserPresent: boolean = false;
   today = new Date();
   recentLogs: AttendanceRecord[] = [];
 
-  // Chart Data
+
   public attendanceChartData: ChartData<'line'> = {
     labels: [],
     datasets: [
@@ -94,7 +91,7 @@ export class UserDashboardComponent implements OnInit {
     }
   };
 
-  // Notifications
+  
   notifications: Notification[] = [
     {
       id: 1,
@@ -119,7 +116,7 @@ export class UserDashboardComponent implements OnInit {
     }
   ];
 
-  // Statistics
+  
   stats = {
     monthlyAverage: '95%',
     daysPresent: '28/30'
@@ -175,7 +172,7 @@ export class UserDashboardComponent implements OnInit {
     return `${hours}h ${minutes}m`;
   }
 
-  // Data loading methods
+
   private checkAuthentication() {
     if (!localStorage.getItem('userLoggedIn')) {
       this.router.navigate(['/login']);
@@ -271,38 +268,6 @@ export class UserDashboardComponent implements OnInit {
     return parseFloat(((timeOutMs - timeInMs) / (1000 * 60 * 60)).toFixed(2));
   }
 
-  // UI Methods
-  toggleEdit() {
-    this.isEditing = !this.isEditing;
-    if (this.isEditing) {
-      this.editProfileForm.patchValue({
-        userName: this.user.userName,
-        userEmail: this.user.userEmail,
-        userDepartment: this.user.userDepartment,
-        userDesignation: this.user.userDesignation
-      });
-    }
-  }
-
-  saveProfile() {
-    if (this.editProfileForm.valid) {
-      this.isLoading = true;
-      setTimeout(() => {
-        this.user = { ...this.user, ...this.editProfileForm.value };
-        this.isEditing = false;
-        this.isLoading = false;
-      }, 1000);
-    }
-  }
-
-  cancelEdit() {
-    this.isEditing = false;
-  }
-
-  markAllNotificationsAsRead() {
-    this.notifications.forEach(notification => notification.read = true);
-  }
-
   openAttendanceModal() {
     const modal = new bootstrap.Modal(document.getElementById('attendanceModal')!);
     modal.show();
@@ -315,8 +280,4 @@ export class UserDashboardComponent implements OnInit {
       modal?.hide();
     }
   }
-
-  // Placeholder methods
-  updateProfile() {}
-  changePassword() {}
 }

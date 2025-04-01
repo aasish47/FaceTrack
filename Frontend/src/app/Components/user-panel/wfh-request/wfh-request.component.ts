@@ -83,7 +83,7 @@ export class WfhRequestComponent implements OnInit {
   }
 
   private showAlert(message: string, type: 'success' | 'error'): void {
-    alert(message); // Consider replacing with a toast notification
+    alert(message);
   }
 
   get formControls() {

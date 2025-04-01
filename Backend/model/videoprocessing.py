@@ -4,7 +4,7 @@ import subprocess
 from datetime import datetime
 from concurrent.futures import ThreadPoolExecutor
 import django
-
+from Camera.models import Camera
 # Absolute path needed here so, i have taken the path from system and added the folder name manually
 PROJECT_ROOT = os.path.dirname(sys.path[0])+'/FaceRecognitionBackend'
 
@@ -24,8 +24,6 @@ except Exception as e:
     print(f"Failed to initialize Django: {e}")
     sys.exit(1)
 
-
-from Camera.models import Camera
 
 def capture_frames_with_ffmpeg(camera_url, output_dir, fps=1):
     """Capture frames from camera using FFmpeg."""
