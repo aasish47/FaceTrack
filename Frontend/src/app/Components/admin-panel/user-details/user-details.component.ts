@@ -39,46 +39,6 @@ export class UserDetailsComponent implements OnInit {
   selectedUserPhoto: string = 'assets/default-user.png';
   selecteduserName: string = '';
   selectedUserDesignation: string = '';
-
-  // attendanceStats = {
-  //   presentDays: 0,
-  //   lateDays: 0,
-  //   absentDays: 0
-  // };
-
-  // Chart Configuration
-  // attendanceData: ChartConfiguration['data'] = {
-  //   datasets: [],
-  //   labels: []
-  // };
-  // chartOptions: ChartConfiguration['options'] = {
-  //   responsive: true,
-  //   scales: {
-  //     y: {
-  //       beginAtZero: true,
-  //       title: {
-  //         display: true,
-  //         text: 'Hours'
-  //       }
-  //     },
-  //     x: {
-  //       title: {
-  //         display: true,
-  //         text: 'Date'
-  //       }
-  //     }
-  //   },
-  //   plugins: {
-  //     legend: {
-  //       position: 'top',
-  //     },
-  //     tooltip: {
-  //       callbacks: {
-  //         label: (context) => `${context.dataset.label}: ${context.raw} hours`
-  //       }
-  //     }
-  //   }
-  // };
   recentLogs: string[] = [];
 
   constructor(private userService: UserService, private http: HttpClient) {
@@ -107,7 +67,7 @@ export class UserDetailsComponent implements OnInit {
     });
   }
 
-  // Add this method for filtering users
+  // Add method for filtering users
   filterUsers(): void {
     if (!this.searchTerm) {
       this.filteredUsers = [...this.users];
@@ -115,7 +75,7 @@ export class UserDetailsComponent implements OnInit {
     }
 
     const searchTermLower = this.searchTerm.toLowerCase();
-    this.filteredUsers = this.users.filter(user => 
+    this.filteredUsers = this.users.filter(user =>
       user.userName.toLowerCase().includes(searchTermLower) ||
       user.userEmail.toLowerCase().includes(searchTermLower) ||
       user.userDepartment.toLowerCase().includes(searchTermLower) ||
@@ -123,7 +83,7 @@ export class UserDetailsComponent implements OnInit {
     );
   }
 
-  // Update your input handler in the template to use:
+  // Update input handler in the template to use:
   onSearchInput(event: any): void {
     this.searchSubject.next(event.target.value);
   }
@@ -194,43 +154,6 @@ export class UserDetailsComponent implements OnInit {
     });
   }
 
-  // private processAttendanceData(attendanceData: AttendanceRecord[]): void {
-  //   // Get last 5 records
-  //   const lastFive = attendanceData.slice(-5).reverse();
-
-  //   // Calculate stats
-  //   this.attendanceStats = {
-  //     presentDays: attendanceData.filter(a => a.status === 'present').length,
-  //     lateDays: attendanceData.filter(a => a.status === 'late').length,
-  //     absentDays: attendanceData.filter(a => a.status === 'absent').length
-  //   };
-
-  //   // Prepare chart data
-  //   this.attendanceData = {
-  //     labels: lastFive.map(item => this.formatDate(item.date)),
-  //     datasets: [{
-  //       data: lastFive.map(item => this.calculateLoggedHours(item)),
-  //       label: 'Logged Hours',
-  //       backgroundColor: 'rgba(63, 128, 255, 0.5)',
-  //       borderColor: 'rgba(63, 128, 255, 1)',
-  //       borderWidth: 1
-  //     }]
-  //   };
-
-  //   // Prepare recent logs
-  //   this.recentLogs = lastFive.map(item => {
-  //     if (item.time_in !== '00:00:00' && item.time_out === '00:00:00') {
-  //       return `Logged in at ${this.formatTime(item.time_in)}`;
-  //     } else if (item.time_in === '00:00:00' && item.time_out !== '00:00:00') {
-  //       return `Logged out at ${this.formatTime(item.time_out)}`;
-  //     } else if (item.time_in !== '00:00:00' && item.time_out !== '00:00:00') {
-  //       const hours = this.calculateLoggedHours(item).toFixed(1);
-  //       return `Worked ${hours} hours (${this.formatTime(item.time_in)} - ${this.formatTime(item.time_out)})`;
-  //     }
-  //     return 'No attendance data';
-  //   });
-  // }
-
   private showModal(): void {
     const modalElement = document.getElementById('userDetailsModal');
     if (modalElement) {
@@ -257,10 +180,7 @@ export class UserDetailsComponent implements OnInit {
     return `${parseInt(hours) % 12 || 12}:${minutes} ${parseInt(hours) >= 12 ? 'PM' : 'AM'}`;
   }
 
-
-
-
-  // Update your chart data properties
+  // Update chart data properties
   attendanceChartData: ChartData<'bar'> = {
     labels: [],
     datasets: []
@@ -295,60 +215,27 @@ export class UserDetailsComponent implements OnInit {
     }
   };
 
-
-
-
-  // Update your processAttendanceData method
-  // private processAttendanceData(attendanceData: AttendanceRecord[]): void {
-  //   const lastFive = attendanceData.slice(-5).reverse();
-
-  //   this.attendanceChartData = {
-  //     labels: lastFive.map(item => this.formatDate(item.date)),
-  //     datasets: [{
-  //       data: lastFive.map(item => this.calculateLoggedHours(item)),
-  //       label: 'Logged Hours',
-  //       backgroundColor: 'rgba(63, 128, 255, 0.5)',
-  //       borderColor: 'rgba(63, 128, 255, 1)',
-  //       borderWidth: 1
-  //     }]
-  //   };
-
-  //     //   // Prepare recent logs
-  //   this.recentLogs = lastFive.map(item => {
-  //     if (item.time_in !== '00:00:00' && item.time_out === '00:00:00') {
-  //       return `Logged in at ${this.formatTime(item.time_in)}`;
-  //     } else if (item.time_in === '00:00:00' && item.time_out !== '00:00:00') {
-  //       return `Logged out at ${this.formatTime(item.time_out)}`;
-  //     } else if (item.time_in !== '00:00:00' && item.time_out !== '00:00:00') {
-  //       const hours = this.calculateLoggedHours(item).toFixed(1);
-  //       return `Worked ${hours} hours (${this.formatTime(item.time_in)} - ${this.formatTime(item.time_out)})`;
-  //     }
-  //     return 'No attendance data';
-  //   });
-
-  // }
-
   private processAttendanceData(attendanceData: AttendanceRecord[]): void {
     // Group attendance records by date and calculate total hours per day
     const dailyHours: { [date: string]: number } = {};
-  
+
     attendanceData.forEach(item => {
       const date = item.date.split('T')[0]; // Get just the date part (YYYY-MM-DD)
       const hours = this.calculateLoggedHours(item);
-      
+
       if (!dailyHours[date]) {
         dailyHours[date] = 0;
       }
       dailyHours[date] += hours;
     });
-  
+
     // Convert to array of { date, totalHours } and take last 5 entries
     const dailySummaries = Object.entries(dailyHours)
       .map(([date, totalHours]) => ({ date, totalHours }))
       .sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime())
       .slice(-5)
       .reverse();
-  
+
     // Prepare chart data
     this.attendanceChartData = {
       labels: dailySummaries.map(item => this.formatDate(item.date)),
@@ -360,8 +247,8 @@ export class UserDetailsComponent implements OnInit {
         borderWidth: 1
       }]
     };
-  
-    // Prepare recent logs (unchanged)
+
+    // Prepare recent logs
     this.recentLogs = attendanceData.slice(-5).reverse().map(item => {
       if (item.time_in !== '00:00:00' && item.time_out === '00:00:00') {
         return `Logged in at ${this.formatTime(item.time_in)}`;
