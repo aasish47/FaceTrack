@@ -16,3 +16,21 @@ class AttendanceRequest(models.Model):
 
     def __str__(self):
         return f"{self.Name} - {self.Type} on {self.Date}"
+    
+    
+#Model to store past attendance requests
+class PastAttendanceRequest(models.Model):
+    Id = models.AutoField(primary_key=True)
+    UserId = models.CharField(max_length=50)
+    Name = models.CharField(max_length=100)
+    Email = models.EmailField(max_length=100)
+    Date = models.CharField(max_length=100)
+    Type = models.CharField(max_length=50)
+    Reason = models.TextField(max_length=250)
+    Status = models.CharField(max_length=50)
+
+    class Meta:
+        db_table = 'Past_Attendance_Request'
+
+    def __str__(self):
+        return f"{self.Name} - {self.Status}"    
