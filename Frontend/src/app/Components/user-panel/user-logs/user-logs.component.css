@@ -1,71 +1,50 @@
-/* Main Container */
-.user-logs-container {
-  max-width: 1000px;
-  margin: 0 auto;
-  padding: 20px;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-}
-
-/* Header */
-.header {
-  color: #2c3e50;
-  margin-bottom: 20px;
-  padding-bottom: 10px;
-  border-bottom: 1px solid #ecf0f1;
-}
-
-/* Date Groups */
-.date-group {
-  margin-bottom: 10px;
-  border-radius: 8px;
-  overflow: hidden;
-  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-  transition: all 0.3s ease;
-}
-
-.date-group:hover {
-  box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-  transform: translateY(-2px);
-}
-
-.date-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 15px 20px;
-  background-color: white;
-  cursor: pointer;
-  transition: background-color 0.2s;
-}
-
-.date-header:hover {
+/* Reuse the admin-logs styles with some adjustments */
+.attendance-container {
   background-color: #f8f9fa;
+  padding: 20px;
+  border-radius: 10px;
 }
 
-.date {
-  font-size: 16px;
-  font-weight: 500;
-  color: #34495e;
-}
-
-.status-badge {
-  padding: 5px 12px;
-  border-radius: 20px;
-  font-size: 14px;
-  font-weight: 600;
+/* Header Section */
+.attendance-header {
+  background: linear-gradient(135deg, #3f80ff 0%, #1a56ff 100%);
   color: white;
+  padding: 20px;
+  border-radius: 8px;
+  margin-bottom: 20px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
-.status-badge.present {
-  background-color: #2ecc71;
+/* Form Styles */
+.slide-down {
+  animation: slideDown 0.3s ease-out;
 }
 
-.status-badge.pending {
-  background-color: #f39c12;
+@keyframes slideDown {
+  from { opacity: 0; transform: translateY(-20px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 
-.status-badge.absent {
-  background-color: #e74c3c;
+/* Table Styles */
+.table {
+  margin-bottom: 0;
+}
+
+.table-hover tbody tr:hover {
+  background-color: rgba(63, 128, 255, 0.05);
+  cursor: pointer;
+}
+
+.table-primary {
+  background-color: #e9f0ff;
+  color: #2c3e50;
+}
+
+/* Badge Styles */
+.badge {
+  padding: 5px 10px;
+  border-radius: 12px;
+  font-weight: 500;
 }
 
 /* Modal Styles */
@@ -122,9 +101,10 @@
 
 .time-entry {
   display: flex;
-  justify-content: space-between;
+  align-items: center;
   padding: 12px 0;
   border-bottom: 1px solid #ecf0f1;
+  gap: 20px;
 }
 
 .time-entry:last-child {
@@ -148,8 +128,20 @@
   color: #2c3e50;
 }
 
-/* Loading Spinner */
-.loading-spinner {
+.time-spacer {
+  width: 20px;
+}
+
+.entry-hours {
+  margin-left: auto;
+  background-color: #e9f5ff;
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 14px;
+}
+
+/* Loading State */
+.loading-state {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -172,10 +164,35 @@
   100% { transform: rotate(360deg); }
 }
 
-/* Responsive Design */
+/* No Data Message */
+.no-data-message {
+  padding: 20px;
+  text-align: center;
+  color: #7f8c8d;
+  font-style: italic;
+  background: #f8f9fa;
+  border-radius: 8px;
+  margin-top: 20px;
+}
+
+/* Summary */
+.summary {
+  margin-bottom: 20px;
+}
+
+.total-hours {
+  background-color: #f5f5f5;
+  padding: 10px;
+  border-radius: 4px;
+  font-weight: 500;
+  display: flex;
+  justify-content: space-between;
+}
+
+/* Responsive Adjustments */
 @media (max-width: 768px) {
-  .date-header {
-    padding: 12px 15px;
+  .attendance-header {
+    padding: 15px;
   }
   
   .modal-content {
@@ -184,235 +201,12 @@
   }
 }
 
-.status-badge.on-time {
-    background-color: #2ecc71; /* Green */
-  }
-  
-  .status-badge.late {
-    background-color: #f39c12; /* Yellow/Orange */
-    color: #000;
-  }
-  
-  .status-badge.absent {
-    background-color: #e74c3c; /* Red */
-  }
-  
-  .no-entries {
-    padding: 20px;
-    text-align: center;
-    color: #7f8c8d;
-    font-style: italic;
-  }
+.last-out-warning {
+  background-color: #fff3cd !important;
+  color: #856404 !important;
+}
 
-
-.total-hours {
-    margin-left: auto;
-    padding: 4px 10px;
-    background-color: #f8f9fa;
-    border-radius: 4px;
-    font-weight: 500;
-    color: #2c3e50;
-  }
-  
-  .modal-content .total-hours {
-    background-color: #e9f5ff;
-    padding: 8px 15px;
-    margin-bottom: 15px;
-    display: flex;
-    justify-content: space-between;
-  }
-  
-  .entry-hours {
-    margin-left: auto;
-    color: #7f8c8d;
-    font-size: 14px;
-  }
-  
-  .time-entry {
-    display: flex;
-    align-items: center;
-    padding: 12px 0;
-    border-bottom: 1px solid #ecf0f1;
-  }
-  
-
-  .date-header {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    padding: 15px 20px;
-  }
-
-
-.time-entry {
-    display: flex;
-    align-items: center;
-    padding: 12px 0;
-    border-bottom: 1px solid #ecf0f1;
-    gap: 20px; /* Adds space between elements */
-  }
-  
-  .time-spacer {
-    width: 20px; /* Explicit spacer between IN and OUT */
-  }
-  
-  .time-in, .time-out {
-    display: flex;
-    flex-direction: column;
-    min-width: 80px; /* Ensures consistent width */
-  }
-  
-  .modal-content {
-    padding: 25px;
-    border-radius: 8px;
-  }
-  
-  .total-hours {
-    background-color: #f5f5f5;
-    padding: 10px;
-    border-radius: 4px;
-    margin-bottom: 15px;
-    font-weight: 500;
-  }
-  
-  .entry-hours {
-    margin-left: auto;
-    background-color: #e9f5ff;
-    padding: 4px 8px;
-    border-radius: 4px;
-    font-size: 14px;
-  }
-
-
-/* Date Range Filter Styles */
-.date-range-filter {
-    margin-bottom: 20px;
-    padding: 15px;
-    background: #f8f9fa;
-    border-radius: 8px;
-  }
-  
-  .date-pickers {
-    display: flex;
-    gap: 20px;
-    margin-bottom: 10px;
-  }
-  
-  .date-picker {
-    display: flex;
-    flex-direction: column;
-  }
-  
-  .date-picker label {
-    margin-bottom: 5px;
-    font-weight: 500;
-    color: #495057;
-  }
-  
-  .date-picker input[type="date"] {
-    padding: 8px 12px;
-    border: 1px solid #ced4da;
-    border-radius: 4px;
-    font-size: 14px;
-  }
-  
-  .error-message {
-    color: #dc3545;
-    padding: 8px;
-    background: #f8d7da;
-    border-radius: 4px;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-  }
-  
-  .error-icon {
-    font-size: 18px;
-  }
-  
-  /* Loading State */
-  .loading-state {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    height: 200px;
-  }
-  
-  .spinner {
-    width: 50px;
-    height: 50px;
-    border: 5px solid #f3f3f3;
-    border-top: 5px solid #3498db;
-    border-radius: 50%;
-    animation: spin 1s linear infinite;
-    margin-bottom: 15px;
-  }
-  
-  @keyframes spin {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
-  }
-  
-  .no-data-message {
-    padding: 20px;
-    text-align: center;
-    color: #7f8c8d;
-    font-style: italic;
-  }
-
-
-.header-container {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 20px;
-    flex-wrap: wrap;
-  }
-  
-  .header-right {
-    text-align: right;
-  }
-  
-  .filter-btn {
-    display: flex;
-    align-items: center;
-    gap: 5px;
-  }
-  
-  .date-range-display {
-    font-size: 0.9rem;
-    color: #6c757d;
-    margin-top: 5px;
-  }
-  
-  .filter-dropdown {
-    background: white;
-    padding: 15px;
-    border-radius: 8px;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-    margin-bottom: 20px;
-    border: 1px solid #dee2e6;
-    animation: fadeIn 0.2s ease-out;
-  }
-  
-  @keyframes fadeIn {
-    from { opacity: 0; transform: translateY(-10px); }
-    to { opacity: 1; transform: translateY(0); }
-  }
-  
-  .date-pickers {
-    display: flex;
-    gap: 15px;
-    margin-bottom: 15px;
-  }
-  
-  .date-picker {
-    flex: 1;
-  }
-  
-  .filter-actions {
-    display: flex;
-    gap: 10px;
-  }
-  
+.bg-info {
+  background-color: #d1ecf1 !important;
+  color: #0c5460 !important;
+}

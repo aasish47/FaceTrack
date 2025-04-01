@@ -1,125 +1,170 @@
-<div class="user-logs-container">
-    <!-- Header and Filter Button -->
-    <div class="header-container">
-      <div class="header-left">
-        <h3 class="header">Attendance Log</h3>
-        <div class="date-range-display" *ngIf="filteredRangeText">
-          {{ filteredRangeText }}
-        </div>
-      </div>
-      
-      <button class="btn btn-outline-primary filter-btn" (click)="toggleFilter()">
-        <i class="bi bi-funnel"></i> Filter
+<div class="attendance-container">
+  <!-- Header Section -->
+  <div class="attendance-header">
+    <div class="d-flex justify-content-between align-items-center">
+      <h2 class="mb-0">
+        <i class="bi bi-clock-history me-2"></i>Attendance Logs
+      </h2>
+      <button class="btn btn-outline-light" type="button" (click)="toggleFilter()" title="Filter Attendance">
+        <i class="bi bi-funnel me-1"></i>
       </button>
     </div>
-  
-    <!-- Filter Dropdown -->
-    <div class="filter-dropdown" *ngIf="showFilter">
-      <div class="date-range-filter">
-        <form [formGroup]="rangeForm">
-          <div class="date-pickers">
-            <div class="date-picker">
-              <label>From Date:</label>
-              <input type="date" 
-                     class="form-control"
-                     formControlName="startDate"
-                     [min]="startDate | date:'yyyy-MM-dd'"
-                     [max]="today | date:'yyyy-MM-dd'">
-            </div>
-            <div class="date-picker">
-              <label>To Date:</label>
-              <input type="date" 
-                     class="form-control"
-                     formControlName="endDate"
-                     [min]="startDate | date:'yyyy-MM-dd'"
-                     [max]="today | date:'yyyy-MM-dd'">
-            </div>
+  </div>
+
+  <!-- Filter Dropdown -->
+  <div class="card mb-4 slide-down" *ngIf="showFilter">
+    <div class="card-body">
+      <form [formGroup]="rangeForm">
+        <div class="row g-3">
+          <div class="col-md-5">
+            <label class="form-label">From Date</label>
+            <input type="date" class="form-control" formControlName="startDate"
+                   [min]="startDate | date:'yyyy-MM-dd'"
+                   [max]="today | date:'yyyy-MM-dd'">
           </div>
-          <div class="filter-actions">
-            <button type="button" class="btn btn-primary btn-sm" (click)="applyFilter()">
-              Apply
+          <div class="col-md-5">
+            <label class="form-label">To Date</label>
+            <input type="date" class="form-control" formControlName="endDate"
+                   [min]="startDate | date:'yyyy-MM-dd'"
+                   [max]="today | date:'yyyy-MM-dd'">
+          </div>
+          <div class="col-md-2 d-flex align-items-end">
+            <button type="button" class="btn btn-primary me-2" (click)="applyFilter()">
+              <i class="bi bi-check-lg me-1"></i> Apply
             </button>
-            <button type="button" class="btn btn-outline-secondary btn-sm" (click)="resetFilter()">
-              Reset
+            <button type="button" class="btn btn-outline-secondary" (click)="resetFilter()">
+              <i class="bi bi-x-lg me-1"></i> Reset
             </button>
           </div>
-        </form>
-  
-        <div class="alert alert-danger mt-2" *ngIf="showInvalidRangeError">
-          <i class="bi bi-exclamation-triangle"></i> 
-          Invalid Date Range. Date starts from {{ startDate | date:'longDate' }}
         </div>
-      </div>
-    </div>
-  
-    <!-- Loading State -->
-    <div *ngIf="isLoading" class="loading-state">
-      <div class="spinner"></div>
-      <p>Loading attendance data...</p>
-    </div>
-  
-    <!-- Main Content (when not loading) -->
-    <div *ngIf="!isLoading">
-      <!-- Main Log View -->
-      <div class="log-list">
-        <div *ngIf="(filteredDateRange.length > 0 && !showInvalidRangeError); else noData">
-          <div class="date-group" *ngFor="let day of filteredDateRange" (click)="openDateDetails(day.date)">
-            <div class="date-header">
-              <div class="date">{{ day.date | date:'mediumDate' }}</div>
-              <div class="status-badge" [ngClass]="{
-                'on-time': day.status === 'On Time',
-                'late': day.status === 'Late',
-                'absent': day.status === 'Absent'
-              }">
-                {{ day.status }}
-              </div>
-            </div>
-          </div>
-        </div>
-  
-        <ng-template #noData>
-          <div class="no-data-message">
-            No attendance records found for this period.
-          </div>
-        </ng-template>
-      </div>
-  
-      <!-- Date Details Modal -->
-      <div class="modal-overlay" *ngIf="selectedDate" (click)="closeDetails()">
-        <div class="modal-content" (click)="$event.stopPropagation()">
-          <button class="close-btn" (click)="closeDetails()">&times;</button>
-          <h3>{{ formatDate(selectedDate) }}</h3>
-          
-          <div class="summary" *ngIf="getEntriesForSelectedDate().length > 0">
-            <div class="total-hours">
-              <span>Total Working Hours:</span>
-              <strong>{{ getTotalHoursForSelectedDate() }}</strong>
-            </div>
-          </div>
-          
-          <div class="time-entries" *ngIf="getEntriesForSelectedDate().length > 0; else noEntries">
-            <div class="time-entry" *ngFor="let entry of getEntriesForSelectedDate()">
-              <div class="time-in">
-                <span class="label">IN:</span>
-                <span class="time">{{ entry.time_in || '--:--' }}</span>
-              </div>
-              <div class="time-spacer"></div>
-              <div class="time-out">
-                <span class="label">OUT:</span>
-                <span class="time">{{ entry.time_out || '--:--' }}</span>
-              </div>
-              <div class="entry-hours" *ngIf="entry.time_in && entry.time_out">
-                {{ calculateEntryHours(entry.time_in, entry.time_out) }}
-              </div>
-            </div>
-          </div>
-          
-          <ng-template #noEntries>
-            <div class="no-entries">
-              No attendance entries for this day
-            </div>
-          </ng-template>
-        </div>
+      </form>
+      <div class="alert alert-danger mt-3" *ngIf="showInvalidRangeError">
+        <i class="bi bi-exclamation-triangle me-2"></i>
+        Invalid Date Range. Date starts from {{ startDate | date:'longDate' }}
       </div>
     </div>
   </div>
+
+  <!-- Date Range Display -->
+  <div class="mb-3 text-muted" *ngIf="filteredRangeText">
+    Showing records from: <strong>{{ filteredRangeText }}</strong>
+  </div>
+
+  <!-- Loading State -->
+  <div *ngIf="isLoading" class="loading-state">
+    <div class="spinner"></div>
+    <p>Loading attendance data...</p>
+  </div>
+
+  <!-- Attendance Logs Table -->
+  <div *ngIf="!isLoading">
+    <div class="card shadow-sm">
+      <div class="card-body p-0">
+        <div class="table-responsive">
+          <table class="table table-hover align-middle mb-0">
+            <thead class="table-primary">
+              <tr>
+                <th>Date</th>
+                <th>Status</th>
+                <th>First In</th>
+                <th>Last Out</th>
+                <th>Working Hours</th>
+                <th class="text-end">Details</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let day of filteredDateRange | paginate: {itemsPerPage: itemsPerPage, currentPage: currentPage}">
+                <td class="fw-semibold">{{ day.date | date:'mediumDate' }}</td>
+                <td>
+                  <span class="badge" [ngClass]="{
+                    'bg-success': day.status === 'On Time',
+                    'bg-warning text-dark': day.status === 'Late',
+                    'bg-danger': day.status === 'Absent'
+                  }">
+                    {{ day.status }}
+                  </span>
+                </td>
+                <td>
+                  <span class="badge bg-info text-dark">
+                    {{ getFirstInTime(day.entries) || '--:--' }}
+                  </span>
+                </td>
+                <td>
+                  <span class="badge last-out-warning text-dark">
+                    {{ getLastOutTime(day.entries) || '--:--' }}
+                  </span>
+                </td>
+                <td>
+                  <span class="badge bg-light text-dark">
+                    {{ day.totalHours }}
+                  </span>
+                </td>
+                <td class="text-end">
+                  <button class="btn btn-outline-primary btn-sm" (click)="openDateDetails(day.date)" title="View Details">
+                    <i class="bi bi-eye"></i>
+                  </button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- No Data Message -->
+    <div *ngIf="filteredDateRange.length === 0 && !isLoading" class="no-data-message">
+      No attendance records found for this period.
+    </div>
+  </div>
+
+  <!-- Date Details Modal -->
+  <div class="modal-overlay" *ngIf="selectedDate" (click)="closeDetails()">
+    <div class="modal-content" (click)="$event.stopPropagation()">
+      <button class="close-btn" (click)="closeDetails()">&times;</button>
+      <h3>{{ formatDate(selectedDate) }}</h3>
+      
+      <div class="summary" *ngIf="getEntriesForSelectedDate().length > 0">
+        <div class="total-hours">
+          <span>Total Working Hours:</span>
+          <strong>{{ getTotalHoursForSelectedDate() }}</strong>
+        </div>
+      </div>
+      
+      <div class="time-entries" *ngIf="getEntriesForSelectedDate().length > 0; else noEntries">
+        <div class="time-entry" *ngFor="let entry of getEntriesForSelectedDate()">
+          <div class="time-in">
+            <span class="label">IN:</span>
+            <span class="time">{{ entry.time_in || '--:--' }}</span>
+          </div>
+          <div class="time-spacer"></div>
+          <div class="time-out">
+            <span class="label">OUT:</span>
+            <span class="time">{{ entry.time_out || '--:--' }}</span>
+          </div>
+          <div class="entry-hours" *ngIf="entry.time_in && entry.time_out">
+            {{ calculateEntryHours(entry.time_in, entry.time_out) }}
+          </div>
+        </div>
+      </div>
+      
+      <ng-template #noEntries>
+        <div class="no-entries">
+          No attendance entries for this day
+        </div>
+      </ng-template>
+    </div>
+  </div>
+  <div class="d-flex justify-content-between align-items-center mt-3">
+    <div class="text-muted">
+      Showing {{ getDisplayedRange() }}
+    </div>
+    <pagination-controls 
+      class="custom-pagination" 
+      (pageChange)="currentPage = $event"
+      [previousLabel]="'<'"
+      [nextLabel]="'>'"
+      [maxSize]="5"
+      [directionLinks]="true">
+    </pagination-controls>
+  </div>  
+</div>

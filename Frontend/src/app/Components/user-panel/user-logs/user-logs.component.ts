@@ -29,9 +29,11 @@ export class UserLogsComponent implements OnInit {
   selectedDate: Date | null = null;
   isLoading: boolean = true;
   userId: number | null = null;
+  itemsPerPage: number = 10;
+  currentPage: number = 1;
   
   today = new Date();
-  startDate = new Date(2025, 2, 21); // March 21, 2025
+  startDate = new Date(2025, 2, 1); // March 1, 2025
   rangeForm: FormGroup;
   showInvalidRangeError = false;
   
@@ -46,7 +48,7 @@ export class UserLogsComponent implements OnInit {
   ) { 
     // Set dates to India timezone
     this.today = this.convertToIST(new Date());
-    this.startDate = this.convertToIST(new Date(2025, 2, 21));
+    this.startDate = this.convertToIST(new Date(2025, 2, 1));
     this.today.setHours(0, 0, 0, 0);
     this.startDate.setHours(0, 0, 0, 0);
 
@@ -155,6 +157,11 @@ export class UserLogsComponent implements OnInit {
       const dayDate = this.convertToIST(new Date(day.date));
       return dayDate >= startDate && dayDate <= endDate;
     });
+    
+    // Ensure filtered results are also sorted
+    this.filteredDateRange.sort((a, b) => {
+      return new Date(b.date).getTime() - new Date(a.date).getTime();
+    });
   }
 
   loadAttendanceData() {
@@ -212,7 +219,7 @@ export class UserLogsComponent implements OnInit {
       currentDate.setDate(currentDate.getDate() + 1);
     }
     
-    this.filteredDateRange = [...this.allDateRange];
+    this.sortDateRangeDescending();
   }
 
   calculateTotalHours(entries: AttendanceEntry[]): string {
@@ -306,5 +313,43 @@ export class UserLogsComponent implements OnInit {
       day.date.getTime() === this.selectedDate!.getTime()
     );
     return dayData ? dayData.totalHours : '0h 0m';
+  }
+  
+  getDisplayedRange(): string {
+    const totalEntries = this.filteredDateRange.length;
+    const start = (this.currentPage - 1) * this.itemsPerPage + 1;
+    const end = Math.min(this.currentPage * this.itemsPerPage, totalEntries);
+    return `${start} to ${end} of ${totalEntries} entries`;
+  }
+
+  sortDateRangeDescending() {
+    this.allDateRange.sort((a, b) => {
+      return new Date(b.date).getTime() - new Date(a.date).getTime();
+    });
+    this.filteredDateRange = [...this.allDateRange];
+  }
+
+  getFirstInTime(entries: AttendanceEntry[]): string | null {
+    if (!entries || entries.length === 0) return null;
+    
+    // Filter out entries without time_in and sort by time_in
+    const validEntries = entries.filter(entry => entry.time_in !== null);
+    if (validEntries.length === 0) return null;
+    
+    // Sort by time_in and get the earliest
+    validEntries.sort((a, b) => a.time_in!.localeCompare(b.time_in!));
+    return validEntries[0].time_in;
+  }
+  
+  getLastOutTime(entries: AttendanceEntry[]): string | null {
+    if (!entries || entries.length === 0) return null;
+    
+    // Filter out entries without time_out and sort by time_out
+    const validEntries = entries.filter(entry => entry.time_out !== null);
+    if (validEntries.length === 0) return null;
+    
+    // Sort by time_out and get the latest
+    validEntries.sort((a, b) => b.time_out!.localeCompare(a.time_out!));
+    return validEntries[0].time_out;
   }
 }
