@@ -1,142 +1,74 @@
-# import os
-# import subprocess
-# from datetime import datetime
-
-# def capture_frames_with_ffmpeg(camera_url, output_dir, fps=1):
-#     """
-#     Captures frames from a camera feed using FFmpeg.
-
-#     Args:
-#         camera_url (str): The camera URL (HTTP or RTSP).
-#         output_dir (str): Directory to save captured frames.
-#         fps (int): Frames per second to capture.
-#     """
-#     # Create the output directory if it doesn't exist
-#     os.makedirs(output_dir, exist_ok=True)
-
-#     # Define the output file naming pattern
-#     timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-#     output_pattern = os.path.join(output_dir, f"frame_{timestamp}_%04d.jpg")
-
-#     # FFmpeg command to capture frames
-#     ffmpeg_command = [
-#         "ffmpeg", "-i", camera_url,    # Input camera feed
-#         "-vf", f"fps={fps}",          # Frame rate filter
-#         "-q:v", "2",                  # Image quality
-#         output_pattern                # Output file pattern
-#     ]
-
-#     try:
-#         print(f"Starting FFmpeg to capture frames at {fps} FPS...")
-#         subprocess.run(ffmpeg_command, check=True)
-#         print("Frames captured successfully.")
-#     except subprocess.CalledProcessError as e:
-#         print(f"Error capturing frames: {e}")
-
-# if __name__ == "__main__":
-
-#     print("video processing starts")
-#     # Replace with your correct HTTP or RTSP camera URL
-#     camera_url = "http://192.168.29.154:8080/video"
-    
-#     # Directory to save the captured frames
-#     output_directory = "FaceTrack/Backend/model/captured_frames"
-
-#     # Set the desired frames per second (e.g., 1 frame per second)
-#     capture_fps = 3
-
-#     # Start capturing frames
-#     capture_frames_with_ffmpeg(camera_url, output_directory, capture_fps)
-
-
-
-
-
-
-
 import os
+import sys
 import subprocess
 from datetime import datetime
 from concurrent.futures import ThreadPoolExecutor
+import django
+
+# Absolute path to your Django project root (FaceRecognitionBackend folder)
+PROJECT_ROOT = r'/Volumes/Keiko/FaceTrack/FaceTrack1/FaceTrack/Backend/FaceRecognitionBackend'
+
+
+sys.path.append(PROJECT_ROOT)
+
+# Set Django settings module
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'FaceRecognitionBackend.settings')
+
+# Initialize Django
+try:
+    django.setup()
+except Exception as e:
+    print(f"Failed to initialize Django: {e}")
+    sys.exit(1)
+
+
+from Camera.models import Camera
 
 def capture_frames_with_ffmpeg(camera_url, output_dir, fps=1):
-    """
-    Captures frames from a camera feed using FFmpeg.
-
-    Args:
-        camera_url (str): The camera URL (HTTP or RTSP).
-        output_dir (str): Directory to save captured frames.
-        fps (int): Frames per second to capture.
-    """
-    # Create the output directory if it doesn't exist
+    """Capture frames from camera using FFmpeg."""
     os.makedirs(output_dir, exist_ok=True)
-
-    # Define the output file naming pattern
     timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
     output_pattern = os.path.join(output_dir, f"frame_{timestamp}_%04d.jpg")
 
-    # # FFmpeg command to capture frames
-    # ffmpeg_command = [
-    #     "ffmpeg", "-i", camera_url,    # Input camera feed
-    #     "-vf", f"fps={fps}",          # Frame rate filter
-    #     "-q:v", "2",                  # Image quality
-    #     output_pattern                # Output file pattern
-    # ]
-    
-    
     ffmpeg_command = [
-    "ffmpeg", "-timeout", "10000000", "-i", camera_url,   # 10s timeout
-    "-rtsp_transport", "tcp", "-vf", f"fps={fps}",
-    "-q:v", "2", output_pattern, "-loglevel", "error"
-]
-
-#     ffmpeg_command = [
-#     "ffmpeg", "-reconnect", "1", "-reconnect_streamed", "1", "-reconnect_delay_max", "2",
-#     "-i", camera_url, "-rtsp_transport", "tcp", "-vf", f"fps={fps}", "-q:v", "2",
-#     output_pattern, "-loglevel", "error"
-# ]
+        "ffmpeg",
+        "-timeout", "10000000",
+        "-i", camera_url,
+        "-rtsp_transport", "tcp",
+        "-vf", f"fps={fps}",
+        "-q:v", "2",
+        output_pattern,
+        "-loglevel", "error"
+    ]
 
     try:
         print(f"Starting FFmpeg for {camera_url} at {fps} FPS...")
         subprocess.run(ffmpeg_command, check=True)
-        print(f"Frames captured successfully from {camera_url}.")
+        print(f"Successfully captured frames from {camera_url}")
     except subprocess.CalledProcessError as e:
-        print(f"Error capturing frames from {camera_url}: {e}")
+        print(f"Error capturing from {camera_url}: {e}")
 
-def process_multiple_cameras(camera_urls, output_base_dir, fps=1):
-    """
-    Processes multiple camera feeds simultaneously.
+def get_operational_cameras():
+    """Fetch all operational cameras from database."""
+    return Camera.objects.filter(operational=True)
 
-    Args:
-        camera_urls (list): List of camera URLs.
-        output_base_dir (str): Base directory to save captured frames.
-        fps (int): Frames per second to capture.
-    """
-    with ThreadPoolExecutor(max_workers=len(camera_urls)) as executor:
-        for i, url in enumerate(camera_urls):
-            output_dir = os.path.join(output_base_dir, f"camera_{i+1}")
-            executor.submit(capture_frames_with_ffmpeg, url, output_dir, fps)
+def process_cameras(output_base_dir="/Volumes/Keiko/FaceTrack/FaceTrack1/FaceTrack/Backend/model/captured_frames"):
+    """Process all operational cameras."""
+    cameras = get_operational_cameras()
+    if not cameras:
+        print("No operational cameras found in database")
+        return
+
+    with ThreadPoolExecutor(max_workers=len(cameras)) as executor:
+        for camera in cameras:
+            camera_dir = os.path.join(output_base_dir, f"camera_{camera.id}")
+            executor.submit(
+                capture_frames_with_ffmpeg,
+                camera.url,
+                camera_dir,
+                camera.fps or 1  
+            )
 
 if __name__ == "__main__":
-    print("Starting video processing for multiple cameras...")
-
-    # List of camera URLs
-    camera_urls = [
-        "http://192.168.29.154:8080/video",
-        # "http://192.168.29.37:8080/video",
-        # "http://192.168.29.82:8080/video",
-    ]
-    
-    # Base directory to save the captured frames
-    output_base_directory = "FaceTrack1/FaceTrack/Backend/model/captured_frames"
-    
-    # Set the desired frames per second (e.g., 1 frame per second)
-    capture_fps = 1
-
-    # Start capturing frames from multiple cameras
-    process_multiple_cameras(camera_urls, output_base_directory, capture_fps)
-
-
-
-
-
+    print("Starting camera frame capture process...")
+    process_cameras()

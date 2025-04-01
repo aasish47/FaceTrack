@@ -14,7 +14,6 @@ from django.conf import settings
 
 @csrf_exempt
 def userApi(request, id=0):
-    # For GET method
     if request.method == 'GET':
         user = User.objects.all()
         user_serializer = UserSerializer(user, many=True)

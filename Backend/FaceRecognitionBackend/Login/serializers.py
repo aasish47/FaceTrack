@@ -15,7 +15,6 @@ class LoginSerializer(serializers.Serializer):
         if not user_id or not password or not role:
             raise serializers.ValidationError("Missing required fields")
 
-        # Determine the correct model to query
         if role == "admin":
             try:
                 user_login = AdminUser.objects.get(admin_id=user_id)
@@ -29,11 +28,10 @@ class LoginSerializer(serializers.Serializer):
         else:
             raise serializers.ValidationError("Invalid role specified")
 
-        # Check the hashed password
+        # Checking  password
         if not check_password(password, user_login.hashed_password):
             raise serializers.ValidationError("Incorrect password")
 
-        # Return user details based on role
         if role == "admin":
             return {
                 "userId": user_login.admin_id,

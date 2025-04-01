@@ -1,5 +1,5 @@
 from django.http import JsonResponse
-from DetailsAdminPanel.models import UserAttendance  # Import from the first app
+from DetailsAdminPanel.models import UserAttendance  
 from .serializer import AttendanceSerializer
 from rest_framework.decorators import api_view
 from rest_framework import status
@@ -20,12 +20,12 @@ def getAttendance(request):
 @api_view(['PUT', 'DELETE'])
 def editAttendance(request, id):
     try:
-        record = UserAttendance.objects.get(id=id)  # Get record by ID
+        record = UserAttendance.objects.get(id=id)  
     except UserAttendance.DoesNotExist:
         return JsonResponse({'error': 'Record not found'}, status=status.HTTP_404_NOT_FOUND)
 
     if request.method == 'PUT':
-        serializer = AttendanceSerializer(record, data=request.data, partial=True)  # Allow partial updates
+        serializer = AttendanceSerializer(record, data=request.data, partial=True)  
         if serializer.is_valid():
             serializer.save()
             return JsonResponse(serializer.data, status=status.HTTP_200_OK)

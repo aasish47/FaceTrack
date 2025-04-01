@@ -28,5 +28,5 @@ class CameraRetrieveUpdateDestroyView(generics.RetrieveUpdateDestroyAPIView):
         self.perform_destroy(instance)
         return Response({
             'message': 'Camera deleted successfully',
-            'id': kwargs['pk']  # Include the deleted camera ID
+            'id': kwargs['pk']
         }, status=200)

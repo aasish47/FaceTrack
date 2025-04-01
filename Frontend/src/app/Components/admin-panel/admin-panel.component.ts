@@ -55,9 +55,10 @@ export class AdminPanelComponent implements OnInit {
     // this.isDarkMode = localStorage.getItem('theme') === 'dark';
     // this.applyTheme();
   
-    // setInterval(() => {
-    //   this.currentTime = new Date();
-    // }, 60000);
+    setInterval(() => {
+      this.currentTime = new Date();
+    }, 1000);
+    
   }
 
   toggleSidebar() {

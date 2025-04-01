@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import RegistrationUser, UserAttendance, AttendanceRequest
+from .models import RegistrationUser, UserAttendance, AttendanceRequest, PastAttendanceRequest
 
 class RegistrationUserSerializer(serializers.ModelSerializer):
     class Meta:
@@ -9,7 +9,7 @@ class RegistrationUserSerializer(serializers.ModelSerializer):
 class UserAttendanceSerializer(serializers.ModelSerializer):
     class Meta:
         model = UserAttendance
-        fields = ['time_in', 'time_out', 'date']  # ✅ Only include attendance details
+        fields = ['time_in', 'time_out', 'date'] 
 
 
 class AttendanceRequestSerializer(serializers.ModelSerializer):
@@ -21,3 +21,8 @@ class AttendanceRequestSerializer(serializers.ModelSerializer):
         if not data.get('UserId') or not data.get('Email'):
             raise serializers.ValidationError("UserId and Email are required.")
         return data
+
+class PastAttendanceRequestSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = PastAttendanceRequest
+        fields = '__all__'
