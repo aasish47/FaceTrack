@@ -23,7 +23,7 @@ log_file = find_relative_path(root_directory, "recognition_log.txt")
 
 
 
-# Load precomputed embeddings
+# loading the  precomputed embeddings
 if os.path.exists(embeddings_file):
     with open(embeddings_file, "rb") as f:
         known_embeddings = pickle.load(f)
@@ -32,7 +32,7 @@ else:
     print("Error: Embeddings file not found!")
     exit(1)
 
-# Function to recognize faces using cosine similarity
+# Function to recognize faces using cosine similarity 
 def recognize_face(embedding, threshold=0.6):
     identity = "Unknown"
     min_distance = float("inf")

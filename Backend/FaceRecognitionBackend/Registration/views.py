@@ -28,17 +28,17 @@ def userApi(request, id=0):
         # Decode base64 image and save it
         if 'userPhoto' in user_data:
             try:
-                format, imgstr = user_data['userPhoto'].split(';base64,')  # Extract format and base64
-                ext = format.split('/')[-1]  # Extract file extension (jpg, png, etc.)
-                file_name = f"{user_data['userId']}.{ext}"  # Unique filename
+                format, imgstr = user_data['userPhoto'].split(';base64,') 
+                ext = format.split('/')[-1]  
+                file_name = f"{user_data['userId']}.{ext}"  
 
-                image_path = os.path.join(settings.MEDIA_ROOT, 'user_images', file_name)  # Save in 'user_images' directory
-                os.makedirs(os.path.dirname(image_path), exist_ok=True)  # Ensure directory exists
+                image_path = os.path.join(settings.MEDIA_ROOT, 'user_images', file_name)  
+                os.makedirs(os.path.dirname(image_path), exist_ok=True)  
 
                 with open(image_path, "wb") as img_file:
-                    img_file.write(base64.b64decode(imgstr))  # Decode and write to file
+                    img_file.write(base64.b64decode(imgstr))  
 
-                user_data['userPhoto'] = f"user_images/{file_name}"  # Store relative path in DB
+                user_data['userPhoto'] = f"user_images/{file_name}"  
             except Exception as e:
                 return JsonResponse(f"Failed to process image: {str(e)}", safe=False)
 
@@ -86,25 +86,25 @@ def userApi(request, id=0):
 
     # For PUT method
     elif request.method == 'PUT':
-        user_data = JSONParser().parse(request)  # Parse the incoming data
-        user = User.objects.get(userId=user_data['userId'])  # Find the user by userId
-        user_serializer = UserSerializer(user, data=user_data)  # Update the user data
+        user_data = JSONParser().parse(request)  
+        user = User.objects.get(userId=user_data['userId'])  
+        user_serializer = UserSerializer(user, data=user_data) 
         if user_serializer.is_valid():
-            user_serializer.save()  # Save the updated data
+            user_serializer.save() 
             return JsonResponse("Updated successfully!!", safe=False)
         return JsonResponse("Failed to update", safe=False)
 
     # For DELETE method
     elif request.method == 'DELETE':
         try:
-            user = User.objects.get(userId=id)  # Ensure the user exists
+            user = User.objects.get(userId=id) 
         except User.DoesNotExist:
             return JsonResponse("User not found", safe=False, status=404)
 
     # Check if LoginDetails exists before deleting
         login_details = LoginDetails.objects.filter(user=user).first()
         if login_details:
-            login_details.delete()  # Delete login details only if they exist
+            login_details.delete()  
 
     # Delete user
         user.delete()

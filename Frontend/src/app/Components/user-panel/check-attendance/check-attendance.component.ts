@@ -57,7 +57,7 @@ export class CheckAttendanceComponent {
   calculateStatus(timeIn: string): string {
     if (!timeIn || timeIn === '00:00:00') return 'Absent';
     const loginTime = new Date(`1970-01-01T${timeIn}`);
-    const lateThreshold = new Date('1970-01-01T09:30:00'); // Adjust based on policy
+    const lateThreshold = new Date('1970-01-01T09:00:00'); // Adjust based on policy
     return loginTime > lateThreshold ? 'Late' : 'Present';
   }
 

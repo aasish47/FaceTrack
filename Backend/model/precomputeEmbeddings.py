@@ -1,11 +1,11 @@
-import os
+import os, sys
 import pickle
 from deepface import DeepFace
 
 # absolute path needed
-REGISTERED_FACES_DIR = "/Volumes/Keiko/FaceTrack/FaceTrack1/FaceTrack/Backend/FaceRecognitionBackend/user_images"
-EMBEDDINGS_FILE = "/Volumes/Keiko/FaceTrack/FaceTrack1/FaceTrack/Backend/model/embeddings.pkl"
 
+REGISTERED_FACES_DIR = os.path.dirname(sys.path[0])+'/FaceRecognitionBackend/user_images'
+EMBEDDINGS_FILE = sys.path[0]+'/embeddings.pkl'
 # Load existing embeddings if the file exists
 if os.path.exists(EMBEDDINGS_FILE):
     with open(EMBEDDINGS_FILE, "rb") as f:

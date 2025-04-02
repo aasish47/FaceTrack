@@ -1,0 +1,9 @@
+# install CMAKE and ffmpeg via chrome
+
+# these are the python libraries we are using
+pip install django  
+pip install deepface  
+pip install opencv-python  
+pip install scipy  
+pip install requests  
+pip install mysqlclient  
