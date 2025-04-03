@@ -50,62 +50,60 @@
 
             <!-- Summary Cards Grid -->
             <div class="summary-grid">
-                <!-- Total Employees -->
-                <div class="summary-card total-employees" (click)="fetchUsers('all')">
+
+                <div class="summary-card total-employees" (click)="fetchUsers('total', totalCard)" #totalCard>
                     <div class="card-icon">
                         <i class="bi bi-people-fill"></i>
                     </div>
                     <div class="card-content">
-                        <h3>{{ totalStudents }}</h3>
-                        <p>Total Employees</p>
+                        <h3>{{ totalEmployees }}</h3>
+                        <p>Total</p>
                     </div>
                 </div>
 
-                <!-- On-Time -->
+
                 <div class="summary-card on-time" (click)="fetchUsers('onTime', onTimeCard)" #onTimeCard>
                     <div class="card-icon">
                         <i class="bi bi-check-circle-fill"></i>
                     </div>
                     <div class="card-content">
-                        <h3>{{ presentStudents }}</h3>
+                        <h3>{{ presentEmployees }}</h3>
                         <p>On-Time</p>
                     </div>
                 </div>
 
-                <!-- Late -->
+
                 <div class="summary-card late" (click)="fetchUsers('late', lateCard)" #lateCard>
                     <div class="card-icon">
                         <i class="bi bi-clock-fill"></i>
                     </div>
                     <div class="card-content">
-                        <h3>{{ lateStudents }}</h3>
+                        <h3>{{ lateEmployees }}</h3>
                         <p>Late Arrivals</p>
                     </div>
                 </div>
 
-                <!-- Present -->
                 <div class="summary-card present" (click)="fetchUsers('present', presentCard)" #presentCard>
                     <div class="card-icon">
                         <i class="bi bi-person-check-fill"></i>
                     </div>
                     <div class="card-content">
-                        <h3>{{ presentStudents + lateStudents }}</h3>
+                        <h3>{{ presentEmployees + lateEmployees }}</h3>
                         <p>Present Today</p>
                     </div>
                 </div>
 
-                <!-- Absent -->
                 <div class="summary-card absent" (click)="fetchUsers('absent', absentCard)" #absentCard>
                     <div class="card-icon">
                         <i class="bi bi-x-circle-fill"></i>
                     </div>
                     <div class="card-content">
-                        <h3>{{ absentStudents }}</h3>
+                        <h3>{{ absentEmployees }}</h3>
                         <p>Absent Today</p>
                     </div>
                 </div>
 
-                <!-- WFH/Corporate -->
+
                 <div class="summary-card wfh" (click)="fetchUsers('wfhCorporate', wfhCard)" #wfhCard>
                     <div class="card-icon">
                         <i class="bi bi-house-fill"></i>
@@ -154,33 +152,43 @@
         </div>
     </div>
 
-    <!-- Floating User List -->
-    <div *ngIf="filteredUsers.length > 0" #floatingCard class="floating-user-list" 
-         [ngStyle]="{ top: positionTop + 'px', left: positionLeft + 'px' }">
-        <div class="user-list-card">
-            <div class="user-list-header">
-                <h5>
-                    <i class="bi bi-list-ul me-2"></i>
-                    {{ selectedCategory | titlecase }} Employees
-                    <span class="badge bg-primary ms-2">{{ filteredUsers.length }}</span>
-                </h5>
-                <button (click)="closeUserList()" class="close-btn">
-                    <i class="bi bi-x-lg"></i>
-                </button>
-            </div>
-            <div class="user-list-body">
-                <div *ngFor="let user of filteredUsers" class="user-item">
-                    <div class="user-avatar">
-                        <i class="bi bi-person-circle"></i>
-                    </div>
-                    <div class="user-details">
-                        <strong>{{ user.userName }}</strong>
-                        <small>{{ user.userEmail }}</small>
-                        <div class="user-id">ID: {{ user.userId }}</div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+    <!-- Floating User List for displaying the data when clicked -->
+    <!-- Floating User List for displaying the data when clicked -->
+<div *ngIf="filteredUsers.length > 0" #floatingCard class="floating-user-list mb-3" 
+    [ngStyle]="{ top: positionTop + 'px', left: positionLeft + 'px' }">
+   <div class="user-list-card">
+       <div class="user-list-header">
+           <h5>
+               <i class="bi bi-list-ul me-2"></i>
+               {{ selectedCategory | titlecase }} Employees
+               <span class="badge bg-primary ms-2">{{ filteredUsers.length }}</span>
+           </h5>
+           <button (click)="closeUserList()" class="close-btn">
+               <i class="bi bi-x-lg"></i>
+           </button>
+       </div>
+       <div class="user-list-body">
+           <div *ngFor="let user of filteredUsers" class="user-item">
+               <div class="user-avatar">
+                   <i class="bi bi-person-circle"></i>
+               </div>
+               <div class="user-details">
+                   <strong>{{ user.userName || user.Name }}</strong>
+                   <small>{{ user.userEmail || user.Email }}</small>
+                   <div class="user-id">ID: {{ user.userId || user.UserId}}</div>
+                   
+                   <!-- Only show Status and Reason if they exist -->
+                   <div *ngIf="user.Status && user.Reason">
+                       <!-- <div class="status"><strong>Status:</strong> {{ user.Status }}</div> -->
+                       <div class="reason"><strong>Reason:</strong> {{ user.Reason }}</div>
+                   </div>
+               </div>
+           </div>
+       </div>
+   </div>
+</div>
 
+    <!-- <div class="reports-section">
+        <app-reports></app-reports>
+      </div> -->
 </div>

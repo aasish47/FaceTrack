@@ -3,39 +3,53 @@ import { HttpClient } from '@angular/common/http';
 import { Chart } from 'chart.js';
 import { Router } from '@angular/router';
 
+export interface acceptedRequests {
+  Id: number;
+  UserId: string;
+  Name: string;
+  Email: string;
+  Date: string;
+  Type: string;
+  Reason: string;
+  Status: string;
+}
 @Component({
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.css']
 })
+
 export class DashboardComponent implements OnInit {
-  // Attendance Data
-  presentStudents: number = 0;
-  absentStudents: number = 0;
-  lateStudents: number = 0;
+
+  presentEmployees: number = 0;
+  absentEmployees: number = 0;
+  lateEmployees: number = 0;
   wfhCorporateVisit: number = 0;
-  totalStudents: number = 0;
+  totalEmployees: number = 0;
   
-  // Date Handling
+
   today: Date = new Date();
   selectedDate: string = this.formatDate(this.today);
   startDate: string = this.formatDate(this.today);
   endDate: string = this.formatDate(this.today);
   
-  // User List
+
   selectedCategory: string = '';
   filteredUsers: any[] = [];
   positionTop: number = 0;
   positionLeft: number = 0;
 
-  // Chart References
+
   @ViewChild('attendanceChart') attendanceChart!: ElementRef;
   private chart: any;
 
-  // API Endpoints
+
   private apiUrl = 'http://127.0.0.1:8000/DetailsAdminPanel/attendance-summary/';
-  private usersApiUrl = 'http://127.0.0.1:8000/DetailsAdminPanel/attendance-users/';
   private monthlyApiUrl = 'http://127.0.0.1:8000/DetailsAdminPanel/attendance-monthly-summary/';
+  private apiUrl2 = 'http://localhost:8000/api/past-attendance-requests/';
+
+  acceptedRequests: acceptedRequests[] = [];
+  pastAttendanceRequestAccepted: number = 0;
 
   constructor(private http: HttpClient, private router: Router) { }
 
@@ -45,12 +59,13 @@ export class DashboardComponent implements OnInit {
     }
     this.loadAttendanceData();
     this.loadMonthlyAttendanceData();
+    this.loadAcceptedRequests();
   }
 
   ngAfterViewInit() {
     this.loadChart([], [], []);
-    // this.loadDepartmentChart();
   }
+
 
   private formatDate(date: Date): string {
     const year = date.getFullYear();
@@ -62,11 +77,23 @@ export class DashboardComponent implements OnInit {
   loadAttendanceData() {
     const url = `${this.apiUrl}?date=${this.selectedDate}`;
     this.http.get<any>(url).subscribe(data => {
-      this.totalStudents = data.total_strength;
-      this.lateStudents = data.late_users.length;
-      this.presentStudents = data.on_time_users.length;
-      this.absentStudents = data.absent_users.length;
-      this.wfhCorporateVisit = data.wfh_corporate_visit;
+      this.totalEmployees = data.total_users.length;
+      this.lateEmployees = data.late_users.length;
+      this.presentEmployees = data.on_time_users.length;
+      this.absentEmployees = data.absent_users.length;
+      this.wfhCorporateVisit = this.pastAttendanceRequestAccepted;
+    });
+  }
+
+  loadAcceptedRequests(): void {
+    this.http.get<acceptedRequests[]>(this.apiUrl2).subscribe({
+      next: (data: acceptedRequests[]) => {
+        this.acceptedRequests = data.filter(request => request.Status === "Accepted");
+        this.pastAttendanceRequestAccepted = this.acceptedRequests.length;
+      },
+      error: (error) => {
+        console.error('Error fetching past attendance requests', error);
+      }
     });
   }
 
@@ -86,6 +113,9 @@ export class DashboardComponent implements OnInit {
     const url = `${this.apiUrl}?date=${this.selectedDate}`;
     this.http.get<any>(url).subscribe(response => {
       switch(category) {
+        case 'total':
+          this.filteredUsers = response.total_users;
+          break;
         case 'onTime':
           this.filteredUsers = response.on_time_users;
           break;
@@ -99,7 +129,8 @@ export class DashboardComponent implements OnInit {
           this.filteredUsers = [...response.on_time_users, ...response.late_users];
           break;
         case 'wfhCorporate':
-          this.filteredUsers = []; // Add your WFH users logic here
+          // the wfh logic is not yet added , it will be added on or before 6th of april
+          this.filteredUsers = this.acceptedRequests; 
           break;
         default:
           this.filteredUsers = [];

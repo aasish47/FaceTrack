@@ -16,6 +16,7 @@ import { UserLogsComponent } from './Components/user-panel/user-logs/user-logs.c
 import { AddCameraComponent } from './Components/admin-panel/add-camera/add-camera.component';
 import { AttendanceComponent } from './Components/attendance/attendance.component';
 import { WfhRequestComponent } from './Components/user-panel/wfh-request/wfh-request.component';
+import { ReportsComponent } from './Components/admin-panel/reports/reports.component';
 // These are previous Routes.
 // const routes: Routes = [
 //   { path: '', component: HomeComponent},
@@ -41,6 +42,7 @@ const routes: Routes = [
       { path: 'attendance-log', component: LogsComponent },
       { path: 'notification', component: NotificationComponent },
       { path: 'add-camera', component: AddCameraComponent },
+      { path: 'reports', component: ReportsComponent}
     ]
   },
   {

@@ -43,6 +43,7 @@ def attendance_summary(request):
         'on_time_users': [user_map[uid] for uid in on_time_users],
         'absent_users': [user_map[uid] for uid in absent_users],
         'present_users': [user_map[uid] for uid in late_users | on_time_users],
+        'total_users': [user_map[uid] for uid in total_users],
     })
 
 

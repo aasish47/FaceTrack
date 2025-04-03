@@ -1861,3 +1861,9 @@ camera_3 - Frame frame_20250402_012802_0061.jpg: Recognized as 6003
 camera_3 - Frame frame_20250402_012802_0061.jpg: Recognized as Unknown
 camera_3 - Frame frame_20250402_012802_0062.jpg: Recognized as Unknown
 camera_3 - Frame frame_20250402_012802_0063.jpg: Recognized as Unknown
+camera_16 - Frame frame_20250402_065409_0016.jpg: Recognized as Unknown
+camera_16 - Frame frame_20250402_065409_0016.jpg: Recognized as 6001
+camera_16 - Frame frame_20250403_041313_0017.jpg: Recognized as 6001
+camera_16 - Frame frame_20250403_041313_0020.jpg: Recognized as Unknown
+camera_17 - Frame frame_20250403_041539_0010.jpg: Recognized as 6001
+camera_17 - Frame frame_20250403_041539_0009.jpg: Recognized as Unknown

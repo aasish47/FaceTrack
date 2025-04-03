@@ -10,6 +10,7 @@
     overflow-y: auto;
     transition: transform 0.3s ease-in-out;
 }
+
 .floating-card .btn-close {
     position: absolute;
     top: 10px;
@@ -21,24 +22,24 @@
 }
 
 .floating-card .card-header {
-    padding: 0.75rem 1rem; /* Adjust padding inside the card header */
+    padding: 0.75rem 1rem;
 }
 
 .floating-card .btn-close i {
-    font-size: 1.5rem; /* Set icon size for consistency */
-    padding: 0; /* No padding around the icon */
-    margin: 0; /* Remove any default margin */
+    font-size: 1.5rem;
+    padding: 0; 
+    margin: 0; 
 }
 
 
-/* Remove focus outline on close button */
+
 .floating-card .btn-close:focus {
     outline: none;
-    box-shadow: none; /* Remove any box-shadow */
+    box-shadow: none; 
 }
 
 
-/* Base Styles */
+
 .dashboard-container {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     background-color: #f5f7fa;
@@ -46,7 +47,7 @@
     padding: 20px;
 }
 
-/* Header Styles */
+
 .dashboard-header {
     background: linear-gradient(135deg, #3a7bd5, #00d2ff);
     color: white;
@@ -75,14 +76,14 @@
     font-weight: 500;
 }
 
-/* Main Layout */
+
 .dashboard-content {
     display: grid;
     grid-template-columns: 2fr 1fr;
     gap: 20px;
 }
 
-/* Left Column */
+
 .filter-card {
     background-color: white;
     border-radius: 10px;
@@ -108,7 +109,7 @@
     border: none;
 }
 
-/* Summary Cards Grid */
+
 .summary-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
@@ -154,7 +155,7 @@
     font-size: 0.9rem;
 }
 
-/* Card Color Variants */
+
 .total-employees {
     border-left: 4px solid #3a7bd5;
 }
@@ -209,7 +210,7 @@
     color: #6c757d;
 }
 
-/* Right Column */
+
 .trend-card {
     background-color: white;
     border-radius: 10px;
@@ -254,12 +255,12 @@
     width: 100%;
 }
 
-/* Floating User List */
+
 .floating-user-list {
     position: fixed;
     z-index: 1050;
     width: 320px;
-    max-height: 500px;
+    max-height: 300px;
     overflow-y: auto;
     box-shadow: 0 5px 25px rgba(0, 0, 0, 0.15);
     border-radius: 10px;
@@ -345,7 +346,7 @@
     margin-top: 2px;
 }
 
-/* Responsive Adjustments */
+
 @media (max-width: 992px) {
     .dashboard-content {
         grid-template-columns: 1fr;
@@ -380,7 +381,7 @@
 }
 
 
-/* Activity Feed */
+
 .activity-card {
     margin-top: 20px;
   }
@@ -425,7 +426,7 @@
     flex: 1;
   }
   
-  /* Employee of the Month */
+
   .employee-card {
     margin-top: 20px;
   }
@@ -451,7 +452,7 @@
     gap: 5px;
   }
   
-  /* New summary cards */
+
   .summary-card.overtime {
     border-left: 4px solid #6f42c1;
   }
@@ -470,7 +471,7 @@
     color: #fd7e14;
   }
   
-  /* Department chart */
+
   .department-card {
     margin-top: 20px;
   }
