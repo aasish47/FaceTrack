@@ -11,6 +11,10 @@ import base64
 import os
 import subprocess
 from django.conf import settings
+import shutil
+
+
+python_cmd = shutil.which("python") or shutil.which("python3")
 
 PRECOMPUTE_EMBEDDINGS = os.path.join(os.path.dirname(settings.BASE_DIR), 'model', 'precomputeEmbeddings.py')
 
@@ -77,7 +81,7 @@ def userApi(request, id=0):
             # Call embedding script after successful user registration
             if image_path:
                 try:
-                    subprocess.run(["python3", PRECOMPUTE_EMBEDDINGS, image_path], check=True)
+                    subprocess.run([python_cmd, PRECOMPUTE_EMBEDDINGS, image_path], check=True)
                 except subprocess.CalledProcessError as e:
                     return JsonResponse(f"User added, but embedding generation failed: {str(e)}", safe=False)
 
