@@ -1,11 +1,22 @@
 <div class="registration-container">
 
-  <app-loading 
+  <!-- <app-loading 
   *ngIf="loading"
   [message]="'Registering New User...'"
   [progress]="submissionProgress"
   [showProgress]="true"
   [fullScreen]="true"
+  spinnerType="dots"
+></app-loading> -->
+
+
+<app-loading 
+  *ngIf="loading"
+  [status]="loadingStatus"
+  [message]="loadingMessage"
+  [progress]="submissionProgress"
+  [successMessage]="loadingSuccessMessage"
+  [errorMessage]="loadingErrorMessage"
   spinnerType="dots"
 ></app-loading>
 

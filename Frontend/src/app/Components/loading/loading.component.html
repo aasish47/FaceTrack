@@ -1,11 +1,11 @@
-<div class="loading-overlay" [class.full-screen]="fullScreen">
+<!-- <div class="loading-overlay" [class.full-screen]="fullScreen">
     <div class="loading-content">
-      <!-- New circular spinner -->
+
       <div class="circular-spinner" *ngIf="spinnerType === 'circular'">
         <div class="spinner"></div>
       </div>
       
-      <!-- Dot spinner (optional) -->
+
       <div class="dot-spinner" *ngIf="spinnerType === 'dots'">
         <div class="dot"></div>
         <div class="dot"></div>
@@ -22,4 +22,48 @@
         <div class="progress-fill" [style.width.%]="progress"></div>
       </div>
     </div>
-  </div>
+  </div> -->
+
+
+
+
+  <div class="loading-overlay" [class.full-screen]="fullScreen">
+    <div class="loading-content">
+      <!-- Loading state -->
+      <div *ngIf="status === 'loading'">
+        <!-- Circular spinner -->
+        <div class="circular-spinner" *ngIf="spinnerType === 'circular'">
+          <div class="spinner"></div>
+        </div>
+        
+        <!-- Dot spinner -->
+        <div class="dot-spinner" *ngIf="spinnerType === 'dots'">
+          <div class="dot"></div>
+          <div class="dot"></div>
+          <div class="dot"></div>
+          <div class="dot"></div>
+          <div class="dot"></div>
+          <div class="dot"></div>
+          <div class="dot"></div>
+          <div class="dot"></div>
+        </div>
+        
+        <div class="loading-text">{{ message }}</div>
+        <div class="progress-bar" *ngIf="showProgress">
+          <div class="progress-fill" [style.width.%]="progress"></div>
+        </div>
+      </div>
+
+      <!-- Success state -->
+      <div *ngIf="status === 'success'" class="status-message success">
+        <div class="status-icon">✓</div>
+        <div class="status-text">{{ successMessage }}</div>
+      </div>
+
+      <!-- Error state -->
+      <div *ngIf="status === 'error'" class="status-message error">
+        <div class="status-icon">✗</div>
+        <div class="status-text">{{ errorMessage }}</div>
+      </div>
+    </div>
+</div>

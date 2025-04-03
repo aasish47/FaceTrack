@@ -1,11 +1,21 @@
 <div class="artistic-form-container">
 
-  <app-loading 
+  <!-- <app-loading 
   *ngIf="loading"
   [message]="'Submitting your request...'"
   [progress]="submissionProgress"
   [showProgress]="true"
   [fullScreen]="true"
+  spinnerType="dots"
+></app-loading> -->
+
+<app-loading 
+  *ngIf="loading"
+  [status]="loadingStatus"
+  [message]="loadingMessage"
+  [progress]="submissionProgress"
+  [successMessage]="loadingSuccessMessage"
+  [errorMessage]="loadingErrorMessage"
   spinnerType="dots"
 ></app-loading>
 

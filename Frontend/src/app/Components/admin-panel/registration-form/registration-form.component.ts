@@ -14,6 +14,11 @@ export class RegistrationFormComponent {
   isFormSubmitted: boolean = false;
 
   loading: boolean = false;
+  loadingStatus: 'loading' | 'success' | 'error' = 'loading';
+  loadingMessage = 'Processing your request...';
+  loadingProgress = 0;
+  loadingSuccessMessage = 'Request submitted successfully!';
+  loadingErrorMessage = 'An error occurred while submitting your request';
   submissionProgress: number = 0;
 
   userForm = {
@@ -48,13 +53,23 @@ export class RegistrationFormComponent {
       .subscribe({
         next: (response) => {
           console.log('User registered successfully', response);
-          // alert("Registration Successful!");
+          this.loadingStatus = 'success';
+          this.loadingMessage = 'Almost done...';
+          setTimeout(() => {
+            this.loading = false;
+            // this.loading = false;
+          }, 1500);
           this.onReset();
-          this.loading = false;
+          // alert("Registration Successful!");
         },
         error: (error) => {
           console.error('Error registering user', error);
-          alert("Registration failed. Please try again.");
+          // alert("Registration failed. Please try again.");
+          this.loadingStatus = 'error';
+          this.loadingMessage = 'Almost done...';
+          setTimeout(() => {
+            this.loading = false;
+          }, 1500);
         }
       });
   }

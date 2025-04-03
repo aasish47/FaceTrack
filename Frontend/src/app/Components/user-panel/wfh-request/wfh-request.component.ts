@@ -13,7 +13,13 @@ export class WfhRequestComponent implements OnInit {
   wfhForm!: FormGroup;
   userId!: number;
   userData: any;
-  loading: boolean = false;
+  
+  loading = false;
+  loadingStatus: 'loading' | 'success' | 'error' = 'loading';
+  loadingMessage = 'Processing your request...';
+  loadingProgress = 0;
+  loadingSuccessMessage = 'Request submitted successfully!';
+  loadingErrorMessage = 'An error occurred while submitting your request';
   submissionProgress: number = 0;
 
   constructor(
@@ -73,18 +79,29 @@ export class WfhRequestComponent implements OnInit {
   }
 
   private handleSubmissionSuccess(): void {
-    this.loading = false;
+    // this.loading = false;
     // this.showAlert('Request submitted successfully!', 'success');
+    this.loadingStatus = 'success';
+    this.loadingMessage = 'Almost done...';
+    setTimeout(() => {
+      this.loading = false;
+  }, 1500);
     this.wfhForm.reset();
   }
 
   private handleSubmissionError(error: any): void {
-    this.loading = false;
-    this.showAlert('Submission failed. Please try again.', 'error');
+    // this.loading = false;
+    // this.showAlert('Submission failed. Please try again.', 'error');
+    this.loadingStatus = 'error';
+    this.loadingMessage = 'Almost done...';
+    setTimeout(() => {
+      this.loading = false;
+    }, 1500);
     console.error('Submission error:', error);
   }
 
   private handleUserDataError(error: any): void {
+    this.loading = false;
     this.showAlert('Error loading user details.', 'error');
     console.error('User data error:', error);
   }

@@ -144,5 +144,27 @@
     0%, 80%, 100% { transform: scale(0); } 
     40% { transform: scale(1); }
   }
+
+
+  .status-message {
+    text-align: center;
+    padding: 20px;
+  }
   
-  /* Rest of your existing styles... */
+  .status-icon {
+    font-size: 48px;
+    margin-bottom: 15px;
+  }
+  
+  .success {
+    color: #4CAF50;
+  }
+  
+  .error {
+    color: #F44336;
+  }
+  
+  .status-text {
+    font-size: 18px;
+    margin-top: 10px;
+  }
