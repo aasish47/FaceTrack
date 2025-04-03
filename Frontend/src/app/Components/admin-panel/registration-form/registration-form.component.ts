@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
+import { LoadingComponent } from '../../loading/loading.component';
 
 @Component({
   selector: 'app-registration-form',
@@ -11,6 +12,9 @@ export class RegistrationFormComponent {
   constructor(private http: HttpClient) { }
 
   isFormSubmitted: boolean = false;
+
+  loading: boolean = false;
+  submissionProgress: number = 0;
 
   userForm = {
     userName: '',
@@ -33,12 +37,20 @@ export class RegistrationFormComponent {
       return;
     }
 
+    this.loading = true;
+    this.submissionProgress = 0;
+    const progressInterval = setInterval(() => {
+      this.submissionProgress = Math.min(this.submissionProgress + 10, 90)
+      ,200 });
+
+
     this.http.post("http://127.0.0.1:8000/Registration/user/", this.userForm)
       .subscribe({
         next: (response) => {
           console.log('User registered successfully', response);
-          alert("Registration Successful!");
+          // alert("Registration Successful!");
           this.onReset();
+          this.loading = false;
         },
         error: (error) => {
           console.error('Error registering user', error);
@@ -57,6 +69,7 @@ export class RegistrationFormComponent {
       userPhoto: null
     };
     this.isFormSubmitted = false;
+    this.submissionProgress = 0;
 
     const fileInput = document.getElementById("userPhoto") as HTMLInputElement;
     if (fileInput) {

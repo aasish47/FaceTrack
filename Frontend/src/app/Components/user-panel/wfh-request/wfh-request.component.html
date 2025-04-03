@@ -1,4 +1,14 @@
 <div class="artistic-form-container">
+
+  <app-loading 
+  *ngIf="loading"
+  [message]="'Submitting your request...'"
+  [progress]="submissionProgress"
+  [showProgress]="true"
+  [fullScreen]="true"
+  spinnerType="dots"
+></app-loading>
+
   <div class="form-ornament top"></div>
   <div class="form-ornament bottom"></div>
   
@@ -54,9 +64,9 @@
     <button 
       type="submit" 
       class="luxury-btn"
-      [disabled]="wfhForm.invalid"
+      [disabled]="wfhForm.invalid || loading"
     >
-      <span class="btn-text">Submit Request</span>
+      <span class="btn-text">{{loading ? 'Submitting...' : 'Submit Request'}}</span>
       <div class="btn-shine"></div>
       <div class="btn-particles">
         <span></span><span></span><span></span>

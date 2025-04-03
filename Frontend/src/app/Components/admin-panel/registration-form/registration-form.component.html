@@ -1,4 +1,14 @@
 <div class="registration-container">
+
+  <app-loading 
+  *ngIf="loading"
+  [message]="'Registering New User...'"
+  [progress]="submissionProgress"
+  [showProgress]="true"
+  [fullScreen]="true"
+  spinnerType="dots"
+></app-loading>
+
   <div class="registration-card">
     <div class="card-header">
       <h2 class="text-center">

@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
 import { UserService } from 'src/app/services/user.service';
+import { LoadingComponent } from '../../loading/loading.component';
 
 @Component({
   selector: 'app-wfh-request',
@@ -13,6 +14,7 @@ export class WfhRequestComponent implements OnInit {
   userId!: number;
   userData: any;
   loading: boolean = false;
+  submissionProgress: number = 0;
 
   constructor(
     private fb: FormBuilder,
@@ -46,7 +48,12 @@ export class WfhRequestComponent implements OnInit {
     if (this.wfhForm.invalid || !this.userData || this.loading) return;
 
     this.loading = true;
+    this.submissionProgress = 0;
     const formData = this.prepareFormData();
+
+    const progressInterval = setInterval(() => {
+      this.submissionProgress = Math.min(this.submissionProgress + 10, 90);
+    }, 200);
     
     this.http.post('http://127.0.0.1:8000/api/send-email/', formData).subscribe({
       next: () => this.handleSubmissionSuccess(),
@@ -67,7 +74,7 @@ export class WfhRequestComponent implements OnInit {
 
   private handleSubmissionSuccess(): void {
     this.loading = false;
-    this.showAlert('Request submitted successfully!', 'success');
+    // this.showAlert('Request submitted successfully!', 'success');
     this.wfhForm.reset();
   }
 

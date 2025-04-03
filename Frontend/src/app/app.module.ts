@@ -28,6 +28,7 @@ import { WeeklyChartComponent } from './Components/user-panel/weekly-chart/weekl
 import { MonthlyChartComponent } from './Components/user-panel/monthly-chart/monthly-chart.component';
 import { CheckAttendanceComponent } from './Components/user-panel/check-attendance/check-attendance.component';
 import { ReportsComponent } from './Components/admin-panel/reports/reports.component';
+import { LoadingComponent } from './Components/loading/loading.component';
 // import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 @NgModule({
   declarations: [
@@ -51,6 +52,7 @@ import { ReportsComponent } from './Components/admin-panel/reports/reports.compo
     MonthlyChartComponent,
     CheckAttendanceComponent,
     ReportsComponent,
+    LoadingComponent,
   ],
   imports: [
     BrowserModule,
