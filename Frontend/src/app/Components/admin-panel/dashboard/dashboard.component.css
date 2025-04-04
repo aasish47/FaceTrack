@@ -475,3 +475,11 @@
   .department-card {
     margin-top: 20px;
   }
+
+  .reports-section {
+    background: white;
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+    margin-top: 20px;
+}

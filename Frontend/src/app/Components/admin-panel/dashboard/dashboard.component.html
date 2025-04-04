@@ -1,5 +1,4 @@
 <div class="dashboard-container">
-    <!-- Header Section -->
     <div class="dashboard-header">
         <div class="header-content">
             <h1 class="dashboard-title">
@@ -10,26 +9,31 @@
                     <i class="bi bi-calendar-date me-2"></i>
                     {{ today | date:'fullDate' }}
                 </div>
-                <!-- <div class="export-buttons">
-                    <button class="btn btn-sm btn-outline-light me-2" (click)="exportData('csv')">
-                        <i class="bi bi-file-earmark-spreadsheet"></i> CSV
-                    </button>
-                    <button class="btn btn-sm btn-outline-light me-2" (click)="exportData('excel')">
-                        <i class="bi bi-file-excel"></i> Excel
-                    </button>
-                    <button class="btn btn-sm btn-outline-light" (click)="exportData('pdf')">
-                        <i class="bi bi-file-earmark-pdf"></i> PDF
-                    </button>
-                </div> -->
             </div>
+
+            <!-- <div class="header-actions">
+                <div class="date-display">
+                    <i class="bi bi-calendar-date me-2"></i>
+                    {{ today | date:'fullDate' }}
+                </div>
+                <div class="dropdown">
+                    <button class="btn btn-sm btn-outline-light dropdown-toggle" type="button" id="exportDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                        <i class="bi bi-download me-1"></i> Export Reports
+                    </button>
+                    <ul class="dropdown-menu" aria-labelledby="exportDropdown">
+                        <li><a class="dropdown-item" (click)="exportRegisteredUsers()"><i class="bi bi-people-fill me-2"></i>All Registered Users</a></li>
+                        <li><a class="dropdown-item" (click)="exportDailyAttendance()"><i class="bi bi-calendar-day me-2"></i>Daily Attendance</a></li>
+                        <li><a class="dropdown-item" (click)="exportAttendanceTrends()"><i class="bi bi-graph-up me-2"></i>Attendance Trends</a></li>
+                    </ul>
+                </div>
+            </div> -->
         </div>
     </div>
 
-    <!-- Main Content -->
+
     <div class="dashboard-content">
         <!-- Left Column -->
         <div class="dashboard-main">
-            <!-- Date Filter Card -->
             <div class="card filter-card">
                 <div class="card-body">
                     <h5 class="card-title">
@@ -118,14 +122,14 @@
 
         <!-- Right Column -->
         <div class="dashboard-sidebar">
-            <!-- Attendance Trend Card -->
+
             <div class="card trend-card">
                 <div class="card-body">
                     <h5 class="card-title">
                         <i class="bi bi-graph-up me-2"></i>Attendance Trend
                     </h5>
                     
-                    <!-- Date Range Selector -->
+
                     <div class="date-range-selector">
                         <div class="form-group">
                             <label for="startDate">From</label>
@@ -143,7 +147,6 @@
                         </button>
                     </div>
                     
-                    <!-- Chart Container -->
                     <div class="chart-container">
                         <canvas #attendanceChart></canvas>
                     </div>
@@ -152,8 +155,6 @@
         </div>
     </div>
 
-    <!-- Floating User List for displaying the data when clicked -->
-    <!-- Floating User List for displaying the data when clicked -->
 <div *ngIf="filteredUsers.length > 0" #floatingCard class="floating-user-list mb-3" 
     [ngStyle]="{ top: positionTop + 'px', left: positionLeft + 'px' }">
    <div class="user-list-card">
@@ -177,9 +178,8 @@
                    <small>{{ user.userEmail || user.Email }}</small>
                    <div class="user-id">ID: {{ user.userId || user.UserId}}</div>
                    
-                   <!-- Only show Status and Reason if they exist -->
+                   <!-- To display the Reason in the wfh secion -->
                    <div *ngIf="user.Status && user.Reason">
-                       <!-- <div class="status"><strong>Status:</strong> {{ user.Status }}</div> -->
                        <div class="reason"><strong>Reason:</strong> {{ user.Reason }}</div>
                    </div>
                </div>
@@ -188,7 +188,7 @@
    </div>
 </div>
 
-    <!-- <div class="reports-section">
+    <div class="reports-section mt-4">
         <app-reports></app-reports>
-      </div> -->
+      </div>
 </div>

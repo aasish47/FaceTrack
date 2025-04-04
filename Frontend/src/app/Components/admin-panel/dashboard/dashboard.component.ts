@@ -2,6 +2,7 @@ import { Component, ElementRef, ViewChild, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Chart } from 'chart.js';
 import { Router } from '@angular/router';
+import * as XLSX from 'xlsx';
 
 export interface acceptedRequests {
   Id: number;
@@ -26,13 +27,13 @@ export class DashboardComponent implements OnInit {
   lateEmployees: number = 0;
   wfhCorporateVisit: number = 0;
   totalEmployees: number = 0;
-  
+
 
   today: Date = new Date();
   selectedDate: string = this.formatDate(this.today);
   startDate: string = this.formatDate(this.today);
   endDate: string = this.formatDate(this.today);
-  
+
 
   selectedCategory: string = '';
   filteredUsers: any[] = [];
@@ -112,7 +113,7 @@ export class DashboardComponent implements OnInit {
 
     const url = `${this.apiUrl}?date=${this.selectedDate}`;
     this.http.get<any>(url).subscribe(response => {
-      switch(category) {
+      switch (category) {
         case 'total':
           this.filteredUsers = response.total_users;
           break;
@@ -130,7 +131,7 @@ export class DashboardComponent implements OnInit {
           break;
         case 'wfhCorporate':
           // the wfh logic is not yet added , it will be added on or before 6th of april
-          this.filteredUsers = this.acceptedRequests; 
+          this.filteredUsers = this.acceptedRequests;
           break;
         default:
           this.filteredUsers = [];
@@ -223,6 +224,66 @@ export class DashboardComponent implements OnInit {
         }
       }
     });
+  }
+
+
+  // Add these methods to your component class
+  exportRegisteredUsers() {
+    const url = 'http://localhost:8000/Registration/user/';
+    this.http.get<any[]>(url).subscribe(users => {
+      this.exportToExcel(users, 'Registered_Users');
+    });
+  }
+
+  exportDailyAttendance() {
+    if (!this.selectedDate) {
+      alert('Please select a date first');
+      return;
+    }
+
+    const url = `${this.apiUrl}?date=${this.selectedDate}`;
+    this.http.get<any>(url).subscribe(data => {
+      // Combine all attendance data into one array
+      const attendanceData = [
+        ...data.on_time_users.map((user: any) => ({ ...user, Status: 'On Time' })),
+        ...data.late_users.map((user: any) => ({ ...user, Status: 'Late' })),
+        ...data.absent_users.map((user: any) => ({ ...user, Status: 'Absent' }))
+      ];
+
+      this.exportToExcel(attendanceData, `Daily_Attendance_${this.selectedDate}`);
+    });
+  }
+
+  exportAttendanceTrends() {
+    if (!this.startDate || !this.endDate) {
+      alert('Please select a date range first');
+      return;
+    }
+
+    const url = `${this.monthlyApiUrl}?start_date=${this.startDate}&end_date=${this.endDate}`;
+    this.http.get<any[]>(url).subscribe(data => {
+      // Format trend data for export
+      const trendData = data.map(item => ({
+        Date: item.date,
+        Present: item.present,
+        Absent: item.absent,
+        Percentage: (item.present / (item.present + item.absent) * 100).toFixed(2) + '%'
+      }));
+
+      this.exportToExcel(trendData, `Attendance_Trends_${this.startDate}_to_${this.endDate}`);
+    });
+  }
+
+  private exportToExcel(data: any[], fileName: string) {
+    // Convert data to worksheet
+    const ws: XLSX.WorkSheet = XLSX.utils.json_to_sheet(data);
+
+    // Create workbook
+    const wb: XLSX.WorkBook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, 'Sheet1');
+
+    // Generate file and download
+    XLSX.writeFile(wb, `${fileName}.xlsx`);
   }
 
 }
