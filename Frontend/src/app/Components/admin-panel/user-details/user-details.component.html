@@ -47,11 +47,29 @@
                 </td>
                 <td>
                   <span *ngIf="!user.isEditing" class="badge bg-primary-light text-primary">{{ user.userDesignation }}</span>
-                  <input *ngIf="user.isEditing" [(ngModel)]="user.userDesignation" class="form-control form-control-sm">
+                  <select *ngIf="user.isEditing" [(ngModel)]="user.userDesignation" class="form-select form-select-sm">
+                    <option value="" disabled selected>Select designation</option>
+                    <option value="Intern">Intern</option>
+                    <option value="Developer">Developer</option>
+                    <option value="Team Lead">Team Lead</option>
+                    <option value="Project Manager">Project Manager</option>
+                    <option value="HR Cordinator">HR Cordinator</option>
+                    <option value="HR Manager">HR Manager</option>
+                    <option value="Finance Analyst">Finance Analyst</option>
+                    <option value="Finance Manager">Finance Manager</option>
+                    <option value="Marketing Associate">Marketing Associate</option>
+                    <option value="Marketing Manager">Marketing Manager</option>
+                  </select>
                 </td>
                 <td>
                   <span *ngIf="!user.isEditing" class="badge bg-secondary-light text-secondary">{{ user.userDepartment }}</span>
-                  <input *ngIf="user.isEditing" [(ngModel)]="user.userDepartment" class="form-control form-control-sm">
+                  <select *ngIf="user.isEditing" [(ngModel)]="user.userDepartment" class="form-select form-select-sm">
+                    <option value="" disabled selected>Select department</option>
+                    <option value="IT">Information Technology</option>
+                    <option value="HR">Human Resources</option>
+                    <option value="Finance">Finance</option>
+                    <option value="Marketing">Marketing</option>
+                  </select>
                 </td>
                 <td class="text-end pe-4">
                   <div class="btn-group btn-group-sm" role="group">
