@@ -1,5 +1,5 @@
-from Registration.models import User, LoginDetails
-from Registration.serializers import UserSerializer
+from Registration.models import User, LoginDetails, Department
+from Registration.serializers import UserSerializer, DepartmentSerializer
 from django.views.decorators.csrf import csrf_exempt
 from rest_framework.parsers import JSONParser
 from django.http.response import JsonResponse
@@ -118,3 +118,38 @@ def userApi(request, id=0):
 def check_user_exists(request, user_id):
     exists = User.objects.filter(userId=user_id).exists()
     return JsonResponse({'exists': exists})
+    
+
+#views for department
+@csrf_exempt
+def departmentApi(request, id=0):
+    # For POST method
+    if request.method == 'POST':
+        department_data = JSONParser().parse(request)
+        department_serializer = DepartmentSerializer(data=department_data)
+        
+        if department_serializer.is_valid():
+            department_serializer.save()
+            return JsonResponse("Department added successfully!!", safe=False)
+        return JsonResponse("Failed to add department", safe=False)
+
+    # For DELETE method
+    elif request.method == 'DELETE':
+        try:
+            department = Department.objects.get(departmentId=id)
+        except Department.DoesNotExist:
+            return JsonResponse("Department not found", safe=False, status=404)
+        
+        # Delete all users with the same department name
+        users_to_delete = User.objects.filter(userDepartment=department.departmentName)
+        if users_to_delete.exists():
+            users_to_delete.delete()
+
+        department.delete()
+        return JsonResponse("Deleted successfully!!", safe=False)
+
+    #For GET method
+    if request.method == 'GET':
+        departments = Department.objects.all()
+        department_serializer = DepartmentSerializer(departments, many=True)
+        return JsonResponse(department_serializer.data, safe=False)

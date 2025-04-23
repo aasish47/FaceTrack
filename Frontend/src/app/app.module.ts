@@ -29,6 +29,7 @@ import { MonthlyChartComponent } from './Components/user-panel/monthly-chart/mon
 import { CheckAttendanceComponent } from './Components/user-panel/check-attendance/check-attendance.component';
 import { ReportsComponent } from './Components/admin-panel/reports/reports.component';
 import { LoadingComponent } from './Components/loading/loading.component';
+import { DepartmentRegistrationComponent } from './Components/admin-panel/department-registration/department-registration.component';
 // import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 @NgModule({
   declarations: [
@@ -53,6 +54,7 @@ import { LoadingComponent } from './Components/loading/loading.component';
     CheckAttendanceComponent,
     ReportsComponent,
     LoadingComponent,
+    DepartmentRegistrationComponent,
   ],
   imports: [
     BrowserModule,

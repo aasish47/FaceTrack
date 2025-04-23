@@ -1,0 +1,110 @@
+<div class="registration-container">
+    <div class="registration-card">
+      <div class="card-header">
+        <h2 class="text-center">
+          <i class="bi bi-building me-2"></i>Department Registration
+        </h2>
+        <p class="text-center text-muted">Fill in the details to register a new department</p>
+      </div>
+      
+      <div class="card-body">
+        <form #form="ngForm" class="needs-validation" novalidate>
+          <div class="row g-3">
+            <!-- Department ID -->
+            <div class="col-md-12">
+              <label for="departmentId" class="form-label">
+                <i class="bi bi-hash me-1"></i>Department ID
+              </label>
+              <div class="input-group">
+                <span class="input-group-text">
+                  <i class="bi bi-hash"></i>
+                </span>
+                <input type="text" class="form-control" id="departmentId" 
+                       [(ngModel)]="departmentForm.departmentId" name="departmentId" 
+                       #departmentId="ngModel" required
+                       placeholder="Enter Department ID">
+              </div>
+              <div class="invalid-feedback" *ngIf="departmentId.invalid && isFormSubmitted">
+                <span *ngIf="departmentId.errors?.['required']">Department ID is required</span>
+              </div>
+            </div>
+  
+            <!-- Department Name -->
+            <div class="col-md-12">
+              <label for="departmentName" class="form-label">
+                <i class="bi bi-building me-1"></i>Department Name
+              </label>
+              <div class="input-group">
+                <span class="input-group-text">
+                  <i class="bi bi-building"></i>
+                </span>
+                <input type="text" class="form-control" id="departmentName" 
+                       [(ngModel)]="departmentForm.departmentName" name="departmentName" 
+                       #departmentName="ngModel" required
+                       placeholder="Enter Department Name">
+              </div>
+              <div class="invalid-feedback" *ngIf="departmentName.invalid && isFormSubmitted">
+                <span *ngIf="departmentName.errors?.['required']">Department Name is required</span>
+              </div>
+            </div>
+  
+            <!-- Department Head -->
+            <div class="col-md-12">
+              <label for="departmentHead" class="form-label">
+                <i class="bi bi-person-circle me-1"></i>Department Head
+              </label>
+              <div class="input-group">
+                <span class="input-group-text">
+                  <i class="bi bi-person-circle"></i>
+                </span>
+                <input type="text" class="form-control" id="departmentHead" 
+                       [(ngModel)]="departmentForm.departmentHead" name="departmentHead" 
+                       #departmentHead="ngModel" required
+                       placeholder="Enter Department Head Name">
+              </div>
+              <div class="invalid-feedback" *ngIf="departmentHead.invalid && isFormSubmitted">
+                <span *ngIf="departmentHead.errors?.['required']">Department Head is required</span>
+              </div>
+            </div>
+  
+            <!-- Buttons -->
+            <div class="col-12 mt-4">
+              <div class="d-flex justify-content-center gap-3">
+                <button type="button" class="btn btn-outline-secondary me-md-2" 
+                        (click)="onReset()">
+                  <i class="bi bi-x-circle me-1"></i>Reset
+                </button>
+                <button type="submit" class="btn btn-primary me-md-2" 
+                        (click)="onSubmit(form)">
+                  <i class="bi bi-building-add me-1"></i>Register
+                </button>
+                <button type="button" class="btn btn-secondary" 
+                        (click)="toggleDeleteSection()">
+                  <i class="bi bi-trash me-1"></i>Delete
+                </button>
+              </div>
+            </div>
+          </div>
+        </form>
+
+        <!-- Delete Department Section -->
+        <div class="delete-department mt-5">
+            <div *ngIf="showDeleteSection" class="mt-3">
+              <label for="deleteDepartmentId" class="form-label">
+                <i class="bi bi-hash me-1"></i>Enter Department ID to Delete
+              </label>
+              <div class="input-group">
+                <span class="input-group-text">
+                  <i class="bi bi-hash"></i>
+                </span>
+                <input type="text" class="form-control" id="deleteDepartmentId" 
+                       [(ngModel)]="deleteDepartmentId" placeholder="Enter Department ID">
+              </div>
+              <button class="btn btn-danger mt-3" (click)="onDeleteDepartment()">
+                <i class="bi bi-trash me-1"></i>Confirm Delete
+              </button>
+            </div>
+        </div>
+      </div>
+    </div>
+  </div>

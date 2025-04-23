@@ -1,9 +1,9 @@
 from rest_framework import serializers
-from Registration.models import User
+from Registration.models import User, Department
 import base64
 from django.core.files.base import ContentFile
-#User serializer
 
+#User serializer
 class UserSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = User
@@ -13,4 +13,13 @@ class UserSerializer(serializers.HyperlinkedModelSerializer):
                  'userDepartment',
                  'userDesignation',
                  'userPhoto'
+                 )
+
+#Department serializer
+class DepartmentSerializer(serializers.HyperlinkedModelSerializer):
+    class Meta:
+        model = Department
+        fields= ('departmentId',
+                 'departmentName',
+                 'departmentHead'
                  )

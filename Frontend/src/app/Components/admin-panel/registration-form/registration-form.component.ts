@@ -12,6 +12,25 @@ export class RegistrationFormComponent {
   constructor(private http: HttpClient) { }
 
   isFormSubmitted: boolean = false;
+  departments: any[] = [];
+
+  //Fetching departments from department table
+  ngOnInit(): void {
+    this.fetchDepartments();
+  }
+
+  fetchDepartments(): void {
+    this.http.get('http://127.0.0.1:8000/Registration/department/')
+      .subscribe(
+        (response: any) => {
+          this.departments = response;
+        },
+        (error: any) => {
+          console.error('Error fetching departments:', error);
+        }
+      );
+  }
+
 
   loading: boolean = false;
   loadingStatus: 'loading' | 'success' | 'error' = 'loading';

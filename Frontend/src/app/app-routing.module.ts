@@ -7,6 +7,7 @@ import { AdminPanelComponent } from './Components/admin-panel/admin-panel.compon
 import { DashboardComponent } from './Components/admin-panel/dashboard/dashboard.component';
 import { UserDetailsComponent } from './Components/admin-panel/user-details/user-details.component';
 import { RegistrationFormComponent } from './Components/admin-panel/registration-form/registration-form.component';
+import { DepartmentRegistrationComponent } from './Components/admin-panel/department-registration/department-registration.component';
 
 import { LogsComponent } from './Components/admin-panel/logs/logs.component';
 import { NotificationComponent } from './Components/admin-panel/notification/notification.component';
@@ -42,7 +43,8 @@ const routes: Routes = [
       { path: 'attendance-log', component: LogsComponent },
       { path: 'notification', component: NotificationComponent },
       { path: 'add-camera', component: AddCameraComponent },
-      { path: 'reports', component: ReportsComponent}
+      { path: 'reports', component: ReportsComponent},
+      { path: 'department-registration', component: DepartmentRegistrationComponent },
     ]
   },
   {
