@@ -87,9 +87,9 @@ WSGI_APPLICATION = 'FaceRecognitionBackend.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'FaceTrack',
+        'NAME': 'testDB2',
         'USER': 'root',
-        'PASSWORD': 'Angelina@17',
+        'PASSWORD': 'password',
         'PORT': '3306',
         'HOST': '127.0.0.1'
 
