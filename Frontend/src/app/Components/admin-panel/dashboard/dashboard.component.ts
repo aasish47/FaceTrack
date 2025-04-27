@@ -58,8 +58,8 @@ export class DashboardComponent implements OnInit {
     if (!localStorage.getItem('adminLoggedIn')) {
       this.router.navigate(['/login']);
     }
+    this.loadAcceptedRequests();
     this.loadAttendanceData();
-    this.loadMonthlyAttendanceData();
     this.loadAcceptedRequests();
   }
 
@@ -82,7 +82,7 @@ export class DashboardComponent implements OnInit {
       this.lateEmployees = data.late_users.length;
       this.presentEmployees = data.on_time_users.length;
       this.absentEmployees = data.absent_users.length;
-      this.wfhCorporateVisit = this.pastAttendanceRequestAccepted;
+      this.wfhCorporateVisit = this.acceptedRequests.filter(request => request.Date === this.selectedDate).length;
     });
   }
 
@@ -130,8 +130,7 @@ export class DashboardComponent implements OnInit {
           this.filteredUsers = [...response.on_time_users, ...response.late_users];
           break;
         case 'wfhCorporate':
-          // the wfh logic is not yet added , it will be added on or before 6th of april
-          this.filteredUsers = this.acceptedRequests;
+          this.filteredUsers = this.acceptedRequests.filter(request => request.Date === this.selectedDate);
           break;
         default:
           this.filteredUsers = [];
