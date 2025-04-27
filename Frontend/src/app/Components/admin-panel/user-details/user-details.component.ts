@@ -53,6 +53,7 @@ export class UserDetailsComponent implements OnInit {
 
   ngOnInit(): void {
     this.fetchUsers();
+    this.fetchDepartments();
   }
 
   fetchUsers(): void {
@@ -260,6 +261,22 @@ export class UserDetailsComponent implements OnInit {
       }
       return 'No attendance data';
     });
+  }
+
+
+  //Fetching departments from department table
+  departments: any[] = [];
+
+  fetchDepartments(): void {
+    this.http.get('http://127.0.0.1:8000/Registration/department/')
+      .subscribe(
+        (response: any) => {
+          this.departments = response;
+        },
+        (error: any) => {
+          console.error('Error fetching departments:', error);
+        }
+      );
   }
 
 }
