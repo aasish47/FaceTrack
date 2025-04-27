@@ -13,6 +13,7 @@ export class WfhRequestComponent implements OnInit {
   wfhForm!: FormGroup;
   userId!: number;
   userData: any;
+  today: string | undefined;
   
   loading = false;
   loadingStatus: 'loading' | 'success' | 'error' = 'loading';
@@ -26,7 +27,10 @@ export class WfhRequestComponent implements OnInit {
     private fb: FormBuilder,
     private http: HttpClient,
     private userService: UserService
-  ) {}
+  ) {
+    const now = new Date();
+    this.today = now.toISOString().split('T')[0];
+  }
 
   ngOnInit(): void {
     this.initializeForm();
