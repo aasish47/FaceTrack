@@ -1,17 +1,10 @@
 from django.db import models
 
-class AdminUser(models.Model):
-    id = models.AutoField(primary_key=True)
-    admin_id = models.CharField(max_length=50, unique=True)
-    hashed_password = models.CharField(max_length=128) 
-
-    class Meta:
-        db_table = "admin_credentials"
-
-class NormalUser(models.Model):
+class User(models.Model):
     id = models.AutoField(primary_key=True)
     user_id = models.CharField(max_length=50, unique=True)
     hashed_password = models.CharField(max_length=128) 
+    role  = models.CharField(max_length=20) 
 
     class Meta:
         db_table = "Registration_logindetails"

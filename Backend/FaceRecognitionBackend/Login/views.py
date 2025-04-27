@@ -2,7 +2,7 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 from django.urls import reverse
-from .models import AdminUser, NormalUser
+from .models import User
 from .serializers import LoginSerializer
 
 class LoginView(APIView):

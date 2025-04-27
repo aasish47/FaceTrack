@@ -75,7 +75,7 @@ def userApi(request, id=0):
                 return JsonResponse("User added, but no email provided.", safe=False)
 
             # Saving id and password in LoginDetails table
-            login_details = LoginDetails(user=user, hashed_password=hashed_password)
+            login_details = LoginDetails(user=user, hashed_password=hashed_password, role='user')
             login_details.save()
             
             # Call embedding script after successful user registration
