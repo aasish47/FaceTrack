@@ -1,10 +1,9 @@
-from django.db.models import Min, Count
+from django.db.models import Min, Count, Q
 from django.utils.timezone import now
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
-from .models import User, UserAttendance
+from .models import User, UserAttendance, LoginDetails
 from datetime import datetime, timedelta
-
 
 @api_view(['GET'])
 def get_users(request):
@@ -17,7 +16,14 @@ def attendance_summary(request):
     date_param = request.GET.get('date', None)
     today = datetime.strptime(date_param, '%Y-%m-%d').date() if date_param else now().date()
 
-    first_entries = UserAttendance.objects.filter(date=today).values('user_id').annotate(first_entry=Min('time_in'))
+    # 1. Get all user_ids who are NOT admin
+    non_admin_user_ids = set(
+        LoginDetails.objects.filter(~Q(role='admin')).values_list('user_id', flat=True)
+    )
+
+    # 2. Attendance for today, only non-admin users
+    first_entries = UserAttendance.objects.filter(date=today, user_id__in=non_admin_user_ids)\
+                    .values('user_id').annotate(first_entry=Min('time_in'))
 
     late_users, on_time_users, all_attending_users = set(), set(), set()
 
@@ -30,7 +36,8 @@ def attendance_summary(request):
         else:
             on_time_users.add(user_id)
 
-    total_users = set(User.objects.values_list('userId', flat=True))
+    # 3. Total users (only non-admins)
+    total_users = non_admin_user_ids
     absent_users = total_users - all_attending_users
 
     users = User.objects.filter(userId__in=total_users)

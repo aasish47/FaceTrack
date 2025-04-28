@@ -1,5 +1,6 @@
 from django.db import models
 from Registration.models import User
+from Login.models import User as LoginDetails
 
 class UserAttendance(models.Model):
     id = models.AutoField(primary_key=True)  
