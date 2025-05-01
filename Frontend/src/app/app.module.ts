@@ -30,6 +30,7 @@ import { CheckAttendanceComponent } from './Components/user-panel/check-attendan
 import { ReportsComponent } from './Components/admin-panel/reports/reports.component';
 import { LoadingComponent } from './Components/loading/loading.component';
 import { DepartmentRegistrationComponent } from './Components/admin-panel/department-registration/department-registration.component';
+
 // import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 @NgModule({
   declarations: [

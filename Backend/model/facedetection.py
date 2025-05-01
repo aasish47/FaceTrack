@@ -35,6 +35,12 @@ weights_path = find_relative_path(root_directory, "res10_300x300_ssd_iter_140000
 input_directory =find_relative_path(root_directory, "captured_frames")
 output_directory =find_relative_path(root_directory, "filtered_frames")
 
+print(f"Root directory: {root_directory}")
+print(f"Model path: {model_path}")
+print(f"Weights path: {weights_path}")
+print(f"Input directory: {input_directory}")
+print(f"Output directory: {output_directory}")
+
 
 # Resnet model used
 # model_path = 'FaceTrack1/FaceTrack/Backend/model/deploy.prototxt.txt'
@@ -62,6 +68,9 @@ def ensure_camera_directories(cameras):
         os.makedirs(cam_input_dir, exist_ok=True)
         os.makedirs(cam_output_dir, exist_ok=True)
         print(f"Ensured directories exist for camera_{camera.id}")
+        print(f"Listing files in {cam_input_dir}...")
+        files = os.listdir(cam_input_dir)
+        print(f"Found {len(files)} files in {cam_input_dir}")
 
 def detect_faces_dnn(image_path, net, conf_threshold=0.5):
     image = cv2.imread(image_path)
@@ -106,6 +115,7 @@ def filter_frames_dnn():
             time.sleep(10)
             continue
         ensure_camera_directories(cameras)
+
 
 
         for camera in cameras:
