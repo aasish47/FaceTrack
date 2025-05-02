@@ -1,37 +1,54 @@
 <div class="bg-dark text-light py-3 text-center shadow-sm fixed-top">
-    <h4 class="mb-0">FaceTrack - The Ultimate Video Stream Attendance Management System</h4>
-  </div>
-  
-  <div class="container d-flex justify-content-center align-items-center">
-      <div class="card p-4 shadow-lg">
-          <div class="logo">
-              <img [src]="isAdmin ? 'https://img.icons8.com/?size=100&id=fphMIPtYUsxi&format=png&color=000000' 
-                                 : 'https://img.icons8.com/?size=100&id=7819&format=png&color=000000'" 
-                   alt="Login Logo">
-          </div>
-  
-          <h2 class="text-center mb-3">{{ isAdmin ? 'Admin Login' : 'User Login' }}</h2>
-  
-          <form [formGroup]="loginForm" (ngSubmit)="onLogin()">
-              <div class="mb-3">
-                  <label for="userId" class="form-label">User ID</label>
-                  <input id="userId" type="text" class="form-control" formControlName="userId" required />
-              </div>
-  
-              <div class="mb-3">
-                  <label for="password" class="form-label">Password</label>
-                  <input id="password" type="password" class="form-control" formControlName="password" required />
-              </div>
-  
-              <button type="submit" class="btn btn-primary w-100" [disabled]="loginForm.invalid">Login</button>
-          </form>
-  
-          <button class="btn btn-link mt-3 w-100" (click)="toggleLogin()">
-              {{ isAdmin ? 'Login as User Instead' : 'Login as Admin Instead' }}
-          </button>
-  
-          <p *ngIf="errorMessage" class="text-danger text-center mt-2">{{ errorMessage }}</p>
+  <h4 class="mb-0">
+    FaceTrack - The Ultimate Video Stream Attendance Management System
+  </h4>
+</div>
+
+<div class="container d-flex justify-content-center align-items-center">
+  <div class="card p-4 shadow-lg">
+    <div class="logo">
+      <img
+        src="https://img.icons8.com/?size=100&id=7819&format=png&color=000000"
+        alt="Login Logo"
+      />
+    </div>
+
+    <h2 class="text-center mb-3">Login</h2>
+
+    <form [formGroup]="loginForm" (ngSubmit)="onLogin()">
+      <div class="mb-3">
+        <label for="userId" class="form-label">User ID</label>
+        <input
+          id="userId"
+          type="text"
+          class="form-control"
+          formControlName="userId"
+          required
+        />
       </div>
+
+      <div class="mb-3">
+        <label for="password" class="form-label">Password</label>
+        <input
+          id="password"
+          type="password"
+          class="form-control"
+          formControlName="password"
+          required
+        />
+      </div>
+
+      <button
+        type="submit"
+        class="btn btn-primary w-100"
+        [disabled]="loginForm.invalid"
+      >
+        Login
+      </button>
+    </form>
+
+    <p *ngIf="errorMessage" class="text-danger text-center mt-2">
+      {{ errorMessage }}
+    </p>
   </div>
-  
-  
+</div>

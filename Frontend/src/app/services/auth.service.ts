@@ -12,12 +12,12 @@ export class AuthService {
 
   constructor(private http: HttpClient, private router: Router) {}
 
-  login(credentials: { userId: string; password: string; role: string }): Observable<any> {
+  login(credentials: { userId: string; password: string }): Observable<any> {
     return this.http.post(this.apiUrl, credentials).pipe(
       tap((res: any) => {
         if (res.message === 'Login successful') {
           // Redirect based on role
-          if (credentials.role.toLowerCase() === 'admin') {
+          if (res.user.role === 'admin') {
             localStorage.setItem('adminLoggedIn', 'true');
             this.router.navigateByUrl('/admin-panel');
           } else {
@@ -37,13 +37,5 @@ export class AuthService {
   logout(): void {
     sessionStorage.clear();
     this.router.navigateByUrl('/login');
-  }
-
-  isLoggedIn(): boolean {
-    return sessionStorage.getItem('userId') !== null;
-  }
-
-  getUserRole(): string | null {
-    return sessionStorage.getItem('userRole');
   }
 }

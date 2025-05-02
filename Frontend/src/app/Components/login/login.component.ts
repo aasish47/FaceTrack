@@ -19,18 +19,11 @@ export class LoginComponent {
     });
   }
 
-  toggleLogin() {
-    this.isAdmin = !this.isAdmin;
-    this.loginForm.reset();
-    this.errorMessage = '';
-  }
-
   onLogin() {
     const { userId, password } = this.loginForm.value;
-    const role = this.isAdmin ? 'admin' : 'user';
     this.errorMessage = '';
 
-    this.authService.login({ userId, password, role }).subscribe((res) => {
+    this.authService.login({ userId, password }).subscribe((res) => {
       if (res?.error) {
         this.errorMessage = 'Invalid credentials!';
       }

@@ -5,20 +5,18 @@ from .models import User
 class LoginSerializer(serializers.Serializer):
     userId = serializers.CharField()
     password = serializers.CharField(write_only=True)
-    role = serializers.CharField()
 
     def validate(self, data):
         user_id = data.get("userId")
         password = data.get("password")
-        role = data.get("role", "").lower()
 
-        if not user_id or not password or not role:
-            raise serializers.ValidationError("Missing required fields: userId, password, or role")
+        if not user_id or not password:
+            raise serializers.ValidationError("Missing required fields: userId or password")
 
         try:
-            user = User.objects.get(user_id=user_id, role=role)
+            user = User.objects.get(user_id=user_id)
         except User.DoesNotExist:
-            raise serializers.ValidationError("Invalid credentials or role mismatch")
+            raise serializers.ValidationError("Invalid credentials")
 
         if not check_password(password, user.hashed_password):
             raise serializers.ValidationError("Incorrect password")
