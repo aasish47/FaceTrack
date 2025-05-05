@@ -22,7 +22,7 @@ import { NgChartsModule } from 'ng2-charts'; //npm install chart.js@3.9.1 ng2-ch
 import { RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { UserService } from './services/user.service';
-import {HttpClientModule} from '@angular/common/http';
+import { HttpClientModule } from '@angular/common/http';
 import { WfhRequestComponent } from './Components/user-panel/wfh-request/wfh-request.component';
 import { WeeklyChartComponent } from './Components/user-panel/weekly-chart/weekly-chart.component';
 import { MonthlyChartComponent } from './Components/user-panel/monthly-chart/monthly-chart.component';
@@ -30,6 +30,9 @@ import { CheckAttendanceComponent } from './Components/user-panel/check-attendan
 import { ReportsComponent } from './Components/admin-panel/reports/reports.component';
 import { LoadingComponent } from './Components/loading/loading.component';
 import { DepartmentRegistrationComponent } from './Components/admin-panel/department-registration/department-registration.component';
+
+import { HTTP_INTERCEPTORS } from '@angular/common/http';
+import { AuthInterceptor } from './interceptors/auth.interceptor';
 
 // import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 @NgModule({
@@ -66,9 +69,17 @@ import { DepartmentRegistrationComponent } from './Components/admin-panel/depart
     NgChartsModule,
     RouterModule,
     CommonModule,
-    HttpClientModule
+    HttpClientModule,
   ],
-  providers: [UserService],
-  bootstrap: [AppComponent]
+  providers: [
+    UserService,
+    // {
+    //   provide: HTTP_INTERCEPTORS,
+    //   useClass: AuthInterceptor,
+    //   multi: true,
+    // },
+  ],
+  bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}
+

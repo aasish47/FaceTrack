@@ -19,10 +19,14 @@ export class AuthService {
           // Redirect based on role
           if (res.user.role === 'admin') {
             localStorage.setItem('adminLoggedIn', 'true');
+            localStorage.setItem('accessToken', res.user.access);   // or sessionStorage
+            localStorage.setItem('refreshToken', res.user.refresh);
             this.router.navigateByUrl('/admin-panel');
           } else {
             sessionStorage.setItem('userId', credentials.userId);
             localStorage.setItem('userLoggedIn', 'true');
+            localStorage.setItem('accessToken', res.user.access);   // or sessionStorage
+            localStorage.setItem('refreshToken', res.user.refresh);
             this.router.navigateByUrl('/user-panel');
           }
         }
@@ -36,6 +40,8 @@ export class AuthService {
 
   logout(): void {
     sessionStorage.clear();
+    localStorage.removeItem('accessToken');
+    localStorage.removeItem('refreshToken');
     this.router.navigateByUrl('/login');
   }
 }

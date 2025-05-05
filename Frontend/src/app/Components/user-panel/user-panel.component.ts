@@ -43,8 +43,8 @@ export class UserPanelComponent implements OnInit {
   }
 
   logout() {
-    localStorage.removeItem('userLoggedIn');
-    sessionStorage.removeItem('userId');
+    localStorage.clear();
+    sessionStorage.clear();
     this.router.navigate(['/login']);
   }
 }

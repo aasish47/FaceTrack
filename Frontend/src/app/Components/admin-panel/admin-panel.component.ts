@@ -73,7 +73,8 @@ export class AdminPanelComponent implements OnInit {
   logout() {
     const confirmLogout = window.confirm("Are you sure you want to logout?");
     if (confirmLogout) {
-      localStorage.removeItem('adminLoggedIn');
+      localStorage.clear();
+      sessionStorage.clear();
       this.router.navigate(['/login']);
     }
   }
