@@ -1,6 +1,9 @@
+# serializers.py
+
 from rest_framework import serializers
 from django.contrib.auth.hashers import check_password
 from .models import User
+from rest_framework_simplejwt.tokens import RefreshToken
 
 class LoginSerializer(serializers.Serializer):
     userId = serializers.CharField()
@@ -11,7 +14,7 @@ class LoginSerializer(serializers.Serializer):
         password = data.get("password")
 
         if not user_id or not password:
-            raise serializers.ValidationError("Missing required fields: userId or password")
+            raise serializers.ValidationError("Missing user_id or password")
 
         try:
             user = User.objects.get(user_id=user_id)
@@ -21,7 +24,12 @@ class LoginSerializer(serializers.Serializer):
         if not check_password(password, user.hashed_password):
             raise serializers.ValidationError("Incorrect password")
 
+        # Generate JWT tokens
+        refresh = RefreshToken.for_user(user)
+
         return {
-            "userId": user.user_id,
+            "user_id": user.user_id,
             "role": user.role,
+            "access": str(refresh.access_token),
+            "refresh": str(refresh),
         }
