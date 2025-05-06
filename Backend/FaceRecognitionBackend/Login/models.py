@@ -10,3 +10,6 @@ class User(models.Model):
         db_table = "Registration_logindetails"
         managed = False
 
+    @property
+    def is_authenticated(self):
+        return True

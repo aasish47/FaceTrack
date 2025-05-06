@@ -92,7 +92,6 @@ DATABASES = {
         'PASSWORD': 'password',
         'PORT': '3306',
         'HOST': '127.0.0.1'
-
     }
 }
 # Password validation
@@ -142,12 +141,12 @@ EMAIL_HOST_PASSWORD = "zjvn cokm vspf legr"
 
 
 REST_FRAMEWORK = {
-    'DEFAULT_AUTHENTICATION_CLASSES': [
-        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'Login.custom_backend.CustomJWTAuthentication',
+    ),
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.IsAuthenticated',
     ],
-    # 'DEFAULT_PERMISSION_CLASSES': [
-    #     'rest_framework.permissions.IsAuthenticated',
-    # ],
 }
 
 from datetime import timedelta
@@ -157,7 +156,10 @@ SIMPLE_JWT = {
     'REFRESH_TOKEN_LIFETIME': timedelta(days=1),
     'ROTATE_REFRESH_TOKENS': False,
     'BLACKLIST_AFTER_ROTATION': False,
+    'SIGNING_KEY': 'your_secret_key', #change this
     'USER_ID_FIELD': 'user_id',
-    'SIGNING_KEY': 'your_secret_key',  # Change this
+    'USER_ID_CLAIM': 'user_id',
+    'AUTH_HEADER_TYPES': ('Bearer',),
+    'AUTH_TOKEN_CLASSES': ('rest_framework_simplejwt.tokens.AccessToken',),
 }
 
