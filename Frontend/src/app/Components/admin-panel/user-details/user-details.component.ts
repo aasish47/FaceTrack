@@ -59,7 +59,8 @@ export class UserDetailsComponent implements OnInit {
   fetchUsers(): void {
     this.http.get<User[]>('http://localhost:8000/Registration/user/').subscribe({
       next: (data) => {
-        this.users = data;
+        // Filter out users with role 'Administrator', keep full user objects
+        this.users = data.filter(user => user.userDesignation !== 'Administrator');
         this.filteredUsers = [...this.users];
       },
       error: (error) => {
@@ -67,6 +68,8 @@ export class UserDetailsComponent implements OnInit {
       }
     });
   }
+  
+  
 
   // Add method for filtering users
   filterUsers(): void {

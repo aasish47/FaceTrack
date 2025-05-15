@@ -25,11 +25,6 @@ export class UserPanelComponent implements OnInit {
       this.currentTime = new Date();
     });
 
-    // Check authentication
-    if (!localStorage.getItem('userLoggedIn')) {
-      this.router.navigate(['/login']);
-    }
-
     // Load user photo (example - replace with actual implementation)
     this.userPhoto = localStorage.getItem('userPhoto');
   }

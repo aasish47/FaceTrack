@@ -18,14 +18,12 @@ export class AuthService {
         if (res.message === 'Login successful') {
           // Redirect based on role
           if (res.user.role === 'admin') {
-            localStorage.setItem('adminLoggedIn', 'true');
-            localStorage.setItem('accessToken', res.user.access);   // or sessionStorage
+            localStorage.setItem('accessToken', res.user.access);   
             localStorage.setItem('refreshToken', res.user.refresh);
             this.router.navigateByUrl('/admin-panel');
           } else {
             sessionStorage.setItem('userId', credentials.userId);
-            localStorage.setItem('userLoggedIn', 'true');
-            localStorage.setItem('accessToken', res.user.access);   // or sessionStorage
+            localStorage.setItem('accessToken', res.user.access);   
             localStorage.setItem('refreshToken', res.user.refresh);
             this.router.navigateByUrl('/user-panel');
           }

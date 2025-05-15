@@ -9,7 +9,6 @@ import { AuthService } from 'src/app/services/auth.service';
 })
 export class LoginComponent {
   loginForm: FormGroup;
-  isAdmin: boolean = false;
   errorMessage: string = '';
 
   constructor(private fb: FormBuilder, private authService: AuthService) {

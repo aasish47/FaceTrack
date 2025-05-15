@@ -142,7 +142,7 @@ EMAIL_HOST_PASSWORD = "zjvn cokm vspf legr"
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
-        'Login.custom_backend.CustomJWTAuthentication',
+        'Login.custom_auth.CustomJWTAuthentication',
     ),
     'DEFAULT_PERMISSION_CLASSES': [
         'rest_framework.permissions.IsAuthenticated',

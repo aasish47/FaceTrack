@@ -55,9 +55,6 @@ export class DashboardComponent implements OnInit {
   constructor(private http: HttpClient, private router: Router) { }
 
   ngOnInit() {
-    if (!localStorage.getItem('adminLoggedIn')) {
-      this.router.navigate(['/login']);
-    }
     this.loadAcceptedRequests();
     this.loadAttendanceData();
     this.loadAcceptedRequests();

@@ -136,7 +136,6 @@ export class UserDashboardComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.checkAuthentication();
     this.loadUserData();
     this.loadAttendanceData();
   }
@@ -172,12 +171,6 @@ export class UserDashboardComponent implements OnInit {
     return `${hours}h ${minutes}m`;
   }
 
-
-  private checkAuthentication() {
-    if (!localStorage.getItem('userLoggedIn')) {
-      this.router.navigate(['/login']);
-    }
-  }
 
   private loadUserData() {
     const userId = Number(sessionStorage.getItem('userId'));

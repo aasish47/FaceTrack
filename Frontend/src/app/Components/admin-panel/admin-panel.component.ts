@@ -47,9 +47,6 @@ export class AdminPanelComponent implements OnInit {
   }
 
   ngOnInit() {
-    if (!localStorage.getItem('adminLoggedIn')) {
-      this.router.navigate(['/login']);
-    }
   
     // Load saved theme
     // this.isDarkMode = localStorage.getItem('theme') === 'dark';
