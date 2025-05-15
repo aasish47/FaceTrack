@@ -59,11 +59,6 @@ export class UserLogsComponent implements OnInit {
   }
 
   ngOnInit() {
-    const isLoggedIn = localStorage.getItem('userLoggedIn') === 'true';
-    if (!isLoggedIn) {
-      this.router.navigate(['/login']);
-      return;
-    }
 
     const userId = sessionStorage.getItem('userId');
     if (!userId) {
